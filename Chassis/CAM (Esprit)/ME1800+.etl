@@ -1,0 +1,610 @@
+﻿BEGIN_PROCESS; Process Name; 4;
+BEGIN_OPERATION; 156; I drill; 0;
+   CustomSetting1; 1751; 0;  CAPTION; Custom Setting 1; SOURCE; 2; TECHCODETYPE; 2;
+   HolderDiameter; 850; 1.5;  CAPTION; Extension Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolUnit; 813; 70;  CAPTION; Unit; SOURCE; 2; TECHCODETYPE; 12;
+   ToolTip; 113; 0.081717044187748208;  LOCKED; CAPTION; Tool Tip; SOURCE; 2; TECHCODETYPE; 2;
+   ToolStyle; 110; 2;  LOCKED; CAPTION; Tool Style; SOURCE; 2; TECHCODETYPE; 376;
+   SpindleDirection; 195; -1;  CAPTION; Spindle Direction; SOURCE; 2; TECHCODETYPE; 6;
+   CustomSetting9; 1759; 0;  CAPTION; Custom Setting 9; SOURCE; 2; TECHCODETYPE; 2;
+   ShankAngle; 2524; 15;  LOCKED; CAPTION; Shank Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftZ; 127; 0;  CAPTION; Tool Shift Z|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting6; 1756; 0;  CAPTION; Custom Setting 6; SOURCE; 2; TECHCODETYPE; 2;
+   ShankTopDiameter; 2521; 0.27200000000000002;  LOCKED; CAPTION; Top Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   YTCLocation; 158; 0;  LOCKED; CAPTION; Tool Change Position Y|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolID; 498; ;  CAPTION; Tool ID; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 498;;
+		:I drill
+	END_STRING
+   CustomSetting3; 1753; 0;  CAPTION; Custom Setting 3; SOURCE; 2; TECHCODETYPE; 2;
+   OverallLength; 852; 4;  CAPTION; Overall Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorY; 1090; 0;  LOCKED; CAPTION; Vector Y|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   XTCMovement; 1770; 1;  CAPTION; Tool Change Movement X|Position X; SOURCE; 2; TECHCODETYPE; 298;
+   LengthCompRegister; 121; 2;  CAPTION; Length Comp Register; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftX; 526; 0;  CAPTION; Tool Shift X|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolNumber; 101; 2;  CAPTION; Tool Number; SOURCE; 2; TECHCODETYPE; 1;
+   ShankGeometry; 2546; 0;  CAPTION; Import Geometry; SOURCE; 2; TECHCODETYPE; 234;
+	BEGIN_CUSTOM_GEO; 2546;;
+	END_CUSTOM_GEO
+   SimulationColor; 1356; 16777088;  CAPTION; Simulation Cut Color; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftY; 860; 0;  CAPTION; Tool Shift Y|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Coolant; 214; 1;  CAPTION; Coolant; SOURCE; 2; TECHCODETYPE; 50;
+   StationID; 857; 1;  CAPTION; Station Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting8; 1758; 0;  CAPTION; Custom Setting 8; SOURCE; 2; TECHCODETYPE; 2;
+   Comment; 7; ;  CAPTION; Comment; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 7;;
+		:
+	END_STRING
+   CustomSetting5; 1755; 0;  CAPTION; Custom Setting 5; SOURCE; 2; TECHCODETYPE; 2;
+   ShankType; 2520; 0;  CAPTION; Type; SOURCE; 2; TECHCODETYPE; 425;
+   ZTCMovement; 1772; 1;  CAPTION; Tool Change Movement Z|Position Z; SOURCE; 2; TECHCODETYPE; 298;
+   XTCLocation; 157; 0;  LOCKED; CAPTION; Tool Change Position X|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolDiameter; 103; 0.27200000000000002;  CAPTION; Tool Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting2; 1752; 0;  CAPTION; Custom Setting 2; SOURCE; 2; TECHCODETYPE; 2;
+   ShankDiameter; 851; 0.27200000000000002;  CAPTION; Shank Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorX; 1089; 1;  LOCKED; CAPTION; Vector X|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   InitialClearance; 171; 2;  CAPTION; Initial Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ToolMaterial; 420; ;  CAPTION; Tool Material; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 420;;
+		:{7384604F-208D-45E0-8B33-94257DC3F661}
+	END_STRING
+   Orientation; 842; 1;  CAPTION; Axis Orientation; SOURCE; 2; TECHCODETYPE; 316;
+   NumberOfFlutes; 111; 2;  CAPTION; Number of Flutes; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting10; 1760; 0;  CAPTION; Custom Setting 10; SOURCE; 2; TECHCODETYPE; 2;
+   TurretID; 856; 1;  CAPTION; Turret Name; SOURCE; 2; TECHCODETYPE; 1;
+   TipAngle; 108; 118;  CAPTION; Tip Angle; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting7; 1757; 0;  CAPTION; Custom Setting 7; SOURCE; 2; TECHCODETYPE; 2;
+   ShankBottomLength; 2522; 1.6000000000000001;  LOCKED; CAPTION; Bottom Length; SOURCE; 2; TECHCODETYPE; 2;
+   ZTCLocation; 159; 5;  LOCKED; CAPTION; Tool Change Position Z|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CuttingLength; 853; 1.2;  CAPTION; Cutting Length; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting4; 1754; 0;  CAPTION; Custom Setting 4; SOURCE; 2; TECHCODETYPE; 2;
+   ToolLength; 105; 3;  CAPTION; Tool Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorZ; 1091; 0;  LOCKED; CAPTION; Vector Z|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   YTCMovement; 1771; 1;  CAPTION; Tool Change Movement Y|Position Y; SOURCE; 2; TECHCODETYPE; 298;
+   BEGIN_EXPRESSION
+     850; im(1.5,35)
+     813; im(70,71)
+     852; im(4,100)
+     171; im(2,50)
+     2522; im(1.6,40)
+     159; im(5,125)
+     853; im(1.2,30)
+     105; im(3,80)
+   END_EXPRESSION
+	BEGIN_ATTRIBUTES
+	END_ATTRIBUTES
+END_OPERATION;
+BEGIN_OPERATION; 164; Face Mill; 0;
+   CustomSetting1; 1751; 0;  CAPTION; Custom Setting 1; SOURCE; 2; TECHCODETYPE; 2;
+   HolderDiameter; 850; 2.75;  CAPTION; Extension Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolUnit; 813; 70;  CAPTION; Unit; SOURCE; 2; TECHCODETYPE; 12;
+   OrientationAngle; 2544; 0;  CAPTION; Orientation Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolThickness; 399; 0.29999999999999999;  CAPTION; Tool Thickness; SOURCE; 2; TECHCODETYPE; 2;
+   ShankAngle; 2524; 0.5;  CAPTION; Shank Angle; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting9; 1759; 0;  CAPTION; Custom Setting 9; SOURCE; 2; TECHCODETYPE; 2;
+   SpindleDirection; 195; -1;  CAPTION; Spindle Direction; SOURCE; 2; TECHCODETYPE; 6;
+   ToolShiftZ; 127; 0;  CAPTION; Tool Shift Z|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolStyle; 110; 8;  LOCKED; CAPTION; Tool Style; SOURCE; 2; TECHCODETYPE; 376;
+   CornerRadius; 2538; 0.014999999999999999;  CAPTION; Corner Radius; SOURCE; 2; TECHCODETYPE; 2;
+   ShankTopDiameter; 2521; 0.5;  CAPTION; Top Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting6; 1756; 0;  CAPTION; Custom Setting 6; SOURCE; 2; TECHCODETYPE; 2;
+   ToolID; 498; ;  CAPTION; Tool ID; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 498;;
+		:Face Mill
+	END_STRING
+   YTCLocation; 158; 0;  CAPTION; Tool Change Position Y|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   InsertType; 2535; 3;  CAPTION; Insert Type; SOURCE; 2; TECHCODETYPE; 430;
+   XTCMovement; 1770; 2;  CAPTION; Tool Change Movement X|Position X; SOURCE; 2; TECHCODETYPE; 298;
+   CustomSetting3; 1753; 0;  CAPTION; Custom Setting 3; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorY; 1090; 0;  LOCKED; CAPTION; Vector Y|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   OverallLength; 852; 4;  CAPTION; Overall Length; SOURCE; 2; TECHCODETYPE; 2;
+   LengthCompRegister; 121; 9;  CAPTION; Length Comp Register; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftX; 526; 0;  CAPTION; Tool Shift X|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolNumber; 101; 9;  CAPTION; Tool Number; SOURCE; 2; TECHCODETYPE; 1;
+   ToolRadius; 370; 0.014999999999999999;  CAPTION; Tool Radius; SOURCE; 2; TECHCODETYPE; 2;
+   ShankGeometry; 2546; 0;  CAPTION; Import Geometry; SOURCE; 2; TECHCODETYPE; 234;
+	BEGIN_CUSTOM_GEO; 2546;;
+	END_CUSTOM_GEO
+   SimulationColor; 1356; 65535;  CAPTION; Simulation Cut Color; SOURCE; 2; TECHCODETYPE; 1;
+   BottomClearance; 2543; 0.29999999999999999;  CAPTION; Bottom Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftY; 860; 0;  CAPTION; Tool Shift Y|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Coolant; 214; 1;  CAPTION; Coolant; SOURCE; 2; TECHCODETYPE; 50;
+   InsertHeight; 2540; 0.29999999999999999;  CAPTION; Insert Height; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting8; 1758; 0;  CAPTION; Custom Setting 8; SOURCE; 2; TECHCODETYPE; 2;
+   StationID; 857; 1;  CAPTION; Station Name; SOURCE; 2; TECHCODETYPE; 1;
+   Comment; 7; ;  CAPTION; Comment; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 7;;
+		:Kennemetal 3 inch Aluminum Face Mill
+		:Fix Perfect Holder Raduis Inserts
+		:MiniMill Tool 9 for ME1800
+	END_STRING
+   ICDiameter; 2537; 1;  CAPTION; IC Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ShankType; 2520; 0;  CAPTION; Type; SOURCE; 2; TECHCODETYPE; 440;
+   ZTCMovement; 1772; 2;  CAPTION; Tool Change Movement Z|Position Z; SOURCE; 2; TECHCODETYPE; 298;
+   CustomSetting5; 1755; 0;  CAPTION; Custom Setting 5; SOURCE; 2; TECHCODETYPE; 2;
+   XTCLocation; 157; 0;  CAPTION; Tool Change Position X|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting2; 1752; 0;  CAPTION; Custom Setting 2; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorX; 1089; 1;  LOCKED; CAPTION; Vector X|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   ShankDiameter; 851; 2.75;  CAPTION; Shank Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   InitialClearance; 171; 2;  CAPTION; Initial Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ToolDiameter; 103; 3;  CAPTION; Tool Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolMaterial; 420; ;  CAPTION; Tool Material; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 420;;
+		:{78A2CF79-BC96-4693-B672-54B4DEC84DD6}
+	END_STRING
+   DiamondAngle; 2542; 1;  CAPTION; Diamond Angle; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting10; 1760; 0;  CAPTION; Custom Setting 10; SOURCE; 2; TECHCODETYPE; 2;
+   Orientation; 842; 4;  CAPTION; Axis Orientation; SOURCE; 2; TECHCODETYPE; 316;
+   NumberOfInserts; 111; 3;  CAPTION; Number Of Inserts; SOURCE; 2; TECHCODETYPE; 1;
+   InsertWidth; 2539; 1.5;  CAPTION; Insert Width; SOURCE; 2; TECHCODETYPE; 2;
+   ShankBottomLength; 2522; 0.5;  CAPTION; Bottom Length; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting7; 1757; 0;  CAPTION; Custom Setting 7; SOURCE; 2; TECHCODETYPE; 2;
+   TurretID; 856; 1;  CAPTION; Turret Name; SOURCE; 2; TECHCODETYPE; 1;
+   ZTCLocation; 159; 5;  CAPTION; Tool Change Position Z|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   YTCMovement; 1771; 2;  CAPTION; Tool Change Movement Y|Position Y; SOURCE; 2; TECHCODETYPE; 298;
+   CustomSetting4; 1754; 0;  CAPTION; Custom Setting 4; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorZ; 1091; 0;  LOCKED; CAPTION; Vector Z|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   CuttingLength; 853; 1.5;  CAPTION; Cutting Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolLength; 105; 1;  CAPTION; Tool Length; SOURCE; 2; TECHCODETYPE; 2;
+   BEGIN_EXPRESSION
+     850; im(2.75,60)
+     813; im(70,71)
+     399; im(0.3,7)
+     852; im(4,100)
+     370; im(0.015,0.03)
+     851; im(2.75,60)
+     171; im(2,50)
+     103; im(3,75)
+     159; im(5,125)
+     105; im(1,25)
+   END_EXPRESSION
+	BEGIN_ATTRIBUTES
+	END_ATTRIBUTES
+END_OPERATION;
+BEGIN_OPERATION; 155; EM .25 Finish; 0;
+   CustomSetting1; 1751; 0;  CAPTION; Custom Setting 1; SOURCE; 2; TECHCODETYPE; 2;
+   HolderDiameter; 850; 1.5;  CAPTION; Extension Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolUnit; 813; 70;  CAPTION; Unit; SOURCE; 2; TECHCODETYPE; 12;
+   ToolStyle; 110; 1;  LOCKED; CAPTION; Tool Style; SOURCE; 2; TECHCODETYPE; 376;
+   SpindleDirection; 195; -1;  CAPTION; Spindle Direction; SOURCE; 2; TECHCODETYPE; 6;
+   CustomSetting9; 1759; 0;  CAPTION; Custom Setting 9; SOURCE; 2; TECHCODETYPE; 2;
+   ShankAngle; 2524; 0.5;  LOCKED; CAPTION; Shank Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftZ; 127; 0;  CAPTION; Tool Shift Z|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting6; 1756; 0;  CAPTION; Custom Setting 6; SOURCE; 2; TECHCODETYPE; 2;
+   ShankTopDiameter; 2521; 0.5;  LOCKED; CAPTION; Top Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   YTCLocation; 158; 0;  CAPTION; Tool Change Position Y|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolID; 498; ;  CAPTION; Tool ID; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 498;;
+		:EM .25 Finish
+	END_STRING
+   CustomSetting3; 1753; 0;  CAPTION; Custom Setting 3; SOURCE; 2; TECHCODETYPE; 2;
+   OverallLength; 852; 4;  CAPTION; Overall Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorY; 1090; 0;  LOCKED; CAPTION; Vector Y|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   XTCMovement; 1770; 2;  CAPTION; Tool Change Movement X|Position X; SOURCE; 2; TECHCODETYPE; 298;
+   LengthCompRegister; 121; 7;  CAPTION; Length Comp Register; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftX; 526; 0;  CAPTION; Tool Shift X|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolNumber; 101; 7;  CAPTION; Tool Number; SOURCE; 2; TECHCODETYPE; 1;
+   ShankGeometry; 2546; 0;  CAPTION; Import Geometry; SOURCE; 2; TECHCODETYPE; 234;
+	BEGIN_CUSTOM_GEO; 2546;;
+	END_CUSTOM_GEO
+   SimulationColor; 1356; 65280;  CAPTION; Simulation Cut Color; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftY; 860; 0;  CAPTION; Tool Shift Y|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Coolant; 214; 1;  CAPTION; Coolant; SOURCE; 2; TECHCODETYPE; 50;
+   StationID; 857; 1;  CAPTION; Station Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting8; 1758; 0;  CAPTION; Custom Setting 8; SOURCE; 2; TECHCODETYPE; 2;
+   Comment; 7; ;  CAPTION; Comment; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 7;;
+		:Kennemetal AADE0250J3BRB
+		:In Collet Holder 
+		:MiniMill Tool 7 for ME1800
+	END_STRING
+   CustomSetting5; 1755; 0;  CAPTION; Custom Setting 5; SOURCE; 2; TECHCODETYPE; 2;
+   ShankType; 2520; 0;  CAPTION; Type; SOURCE; 2; TECHCODETYPE; 425;
+   ZTCMovement; 1772; 2;  CAPTION; Tool Change Movement Z|Position Z; SOURCE; 2; TECHCODETYPE; 298;
+   XTCLocation; 157; 0;  CAPTION; Tool Change Position X|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolDiameter; 103; 0.25;  CAPTION; Tool Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting2; 1752; 0;  CAPTION; Custom Setting 2; SOURCE; 2; TECHCODETYPE; 2;
+   ShankDiameter; 851; 0.25;  CAPTION; Shank Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorX; 1089; 1;  LOCKED; CAPTION; Vector X|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   InitialClearance; 171; 2;  CAPTION; Initial Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ToolMaterial; 420; ;  CAPTION; Tool Material; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 420;;
+		:{EE59FFE2-E7EB-445B-B34C-F70BE7472EAD}
+	END_STRING
+   Orientation; 842; 4;  CAPTION; Axis Orientation; SOURCE; 2; TECHCODETYPE; 316;
+   NumberOfFlutes; 111; 3;  CAPTION; Number of Flutes; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting10; 1760; 0;  CAPTION; Custom Setting 10; SOURCE; 2; TECHCODETYPE; 2;
+   TurretID; 856; 1;  CAPTION; Turret Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting7; 1757; 0;  CAPTION; Custom Setting 7; SOURCE; 2; TECHCODETYPE; 2;
+   ShankBottomLength; 2522; 0.5;  LOCKED; CAPTION; Bottom Length; SOURCE; 2; TECHCODETYPE; 2;
+   ZTCLocation; 159; 5;  CAPTION; Tool Change Position Z|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CuttingLength; 853; 1.5;  CAPTION; Cutting Length; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting4; 1754; 0;  CAPTION; Custom Setting 4; SOURCE; 2; TECHCODETYPE; 2;
+   ToolLength; 105; 2;  CAPTION; Tool Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorZ; 1091; 0;  LOCKED; CAPTION; Vector Z|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   YTCMovement; 1771; 2;  CAPTION; Tool Change Movement Y|Position Y; SOURCE; 2; TECHCODETYPE; 298;
+   BEGIN_EXPRESSION
+     850; IM(1.5,35)
+     813; IM(70,71)
+     852; IM(4,100)
+     171; IM(2,50)
+     159; IM(5,125)
+     853; IM(1.5,35)
+     105; IM(2,50)
+   END_EXPRESSION
+	BEGIN_ATTRIBUTES
+	END_ATTRIBUTES
+END_OPERATION;
+BEGIN_OPERATION; 266; CM .375 DrillMill; 0;
+   CustomSetting1; 1751; 0;  CAPTION; Custom Setting 1; SOURCE; 2; TECHCODETYPE; 2;
+   HolderDiameter; 850; 2;  CAPTION; Extension Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolUnit; 813; 70;  CAPTION; Unit; SOURCE; 2; TECHCODETYPE; 12;
+   TipLength; 113; 0;  LOCKED; CAPTION; Tip Length; SOURCE; 2; TECHCODETYPE; 2;
+   ChamferShape; 2527; 2;  CAPTION; Chamfer Shape; SOURCE; 2; TECHCODETYPE; 426;
+   ToolStyle; 110; 11;  LOCKED; CAPTION; Tool Style; SOURCE; 2; TECHCODETYPE; 376;
+   SpindleDirection; 195; -1;  CAPTION; Spindle Direction; SOURCE; 2; TECHCODETYPE; 6;
+   TipDiameter; 858; 0.03125;  CAPTION; Tip Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting9; 1759; 0;  CAPTION; Custom Setting 9; SOURCE; 2; TECHCODETYPE; 2;
+   ShankAngle; 2524; 0.5;  LOCKED; CAPTION; Shank Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftZ; 127; 0;  CAPTION; Tool Shift Z|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting6; 1756; 0;  CAPTION; Custom Setting 6; SOURCE; 2; TECHCODETYPE; 2;
+   ShankTopDiameter; 2521; 0.37500000000000006;  LOCKED; CAPTION; Top Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   YTCLocation; 158; 0;  CAPTION; Tool Change Position Y|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolID; 498; ;  CAPTION; Tool ID; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 498;;
+		:CM .375 DrillMill
+	END_STRING
+   CustomSetting3; 1753; 0;  CAPTION; Custom Setting 3; SOURCE; 2; TECHCODETYPE; 2;
+   OverallLength; 852; 4;  CAPTION; Overall Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorY; 1090; 0;  LOCKED; CAPTION; Vector Y|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   XTCMovement; 1770; 2;  CAPTION; Tool Change Movement X|Position X; SOURCE; 2; TECHCODETYPE; 298;
+   LengthCompRegister; 121; 6;  CAPTION; Length Comp Register; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftX; 526; 0;  CAPTION; Tool Shift X|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolNumber; 101; 6;  CAPTION; Tool Number; SOURCE; 2; TECHCODETYPE; 1;
+   ShankGeometry; 2546; 0;  CAPTION; Import Geometry; SOURCE; 2; TECHCODETYPE; 234;
+	BEGIN_CUSTOM_GEO; 2546;;
+	END_CUSTOM_GEO
+   SimulationColor; 1356; 32896;  CAPTION; Simulation Cut Color; SOURCE; 2; TECHCODETYPE; 1;
+   ChamferAngle; 370; 45;  CAPTION; Chamfer Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftY; 860; 0;  CAPTION; Tool Shift Y|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Coolant; 214; 1;  CAPTION; Coolant; SOURCE; 2; TECHCODETYPE; 50;
+   StationID; 857; 1;  CAPTION; Station Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting8; 1758; 0;  CAPTION; Custom Setting 8; SOURCE; 2; TECHCODETYPE; 2;
+   Comment; 7; ;  CAPTION; Comment; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 7;;
+		:.375 90 deg Drill Mill
+		:Ridgid Holder 
+		:MiniMill Tool 6 for ME1800
+	END_STRING
+   CustomSetting5; 1755; 0;  CAPTION; Custom Setting 5; SOURCE; 2; TECHCODETYPE; 2;
+   ShankType; 2520; 0;  CAPTION; Type; SOURCE; 2; TECHCODETYPE; 425;
+   ZTCMovement; 1772; 2;  CAPTION; Tool Change Movement Z|Position Z; SOURCE; 2; TECHCODETYPE; 298;
+   XTCLocation; 157; 0;  CAPTION; Tool Change Position X|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ControlDiameter; 103; 0.375;  CAPTION; Control Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting2; 1752; 0;  CAPTION; Custom Setting 2; SOURCE; 2; TECHCODETYPE; 2;
+   ShankDiameter; 851; 0.375;  CAPTION; Shank Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorX; 1089; 1;  LOCKED; CAPTION; Vector X|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   InitialClearance; 171; 2;  CAPTION; Initial Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ToolMaterial; 420; ;  CAPTION; Tool Material; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 420;;
+		:{4FE7D4FB-BCAB-444D-A200-E458ADF77EF0}
+	END_STRING
+   Orientation; 842; 4;  CAPTION; Axis Orientation; SOURCE; 2; TECHCODETYPE; 316;
+   NumberOfFlutes; 111; 2;  CAPTION; Number of Flutes; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting10; 1760; 0;  CAPTION; Custom Setting 10; SOURCE; 2; TECHCODETYPE; 2;
+   TurretID; 856; 1;  CAPTION; Turret Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting7; 1757; 0;  CAPTION; Custom Setting 7; SOURCE; 2; TECHCODETYPE; 2;
+   ShankBottomLength; 2522; 0.5;  LOCKED; CAPTION; Bottom Length; SOURCE; 2; TECHCODETYPE; 2;
+   ZTCLocation; 159; 5;  CAPTION; Tool Change Position Z|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CuttingLength; 853; 0.171875;  CAPTION; Cutting Length; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting4; 1754; 0;  CAPTION; Custom Setting 4; SOURCE; 2; TECHCODETYPE; 2;
+   ToolLength; 105; 1.5;  CAPTION; Tool Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorZ; 1091; 0;  LOCKED; CAPTION; Vector Z|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   YTCMovement; 1771; 2;  CAPTION; Tool Change Movement Y|Position Y; SOURCE; 2; TECHCODETYPE; 298;
+   BEGIN_EXPRESSION
+     850; im(2,50)
+     813; im(70,71)
+     858; 1/32
+     852; im(4,100)
+     171; im(2,50)
+     159; im(5,125)
+     853; 0.187500-.015625
+     105; im(1.5,35)
+   END_EXPRESSION
+	BEGIN_ATTRIBUTES
+	END_ATTRIBUTES
+END_OPERATION;
+BEGIN_OPERATION; 155; 3/8" EM; 0;
+   CustomSetting1; 1751; 0;  CAPTION; Custom Setting 1; SOURCE; 2; TECHCODETYPE; 2;
+   HolderDiameter; 850; 2.5;  CAPTION; Extension Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolUnit; 813; 70;  CAPTION; Unit; SOURCE; 2; TECHCODETYPE; 12;
+   ToolStyle; 110; 1;  CAPTION; Tool Style; SOURCE; 2; TECHCODETYPE; 376;
+   SpindleDirection; 195; -1;  CAPTION; Spindle Direction; SOURCE; 2; TECHCODETYPE; 6;
+   CustomSetting9; 1759; 0;  CAPTION; Custom Setting 9; SOURCE; 2; TECHCODETYPE; 2;
+   ShankAngle; 2524; 15;  HIDDEN; CAPTION; Shank Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftZ; 127; 0;  CAPTION; Tool Shift Z|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting6; 1756; 0;  CAPTION; Custom Setting 6; SOURCE; 2; TECHCODETYPE; 2;
+   ShankTopDiameter; 2521; 0.37500000000000011;  HIDDEN; CAPTION; Top Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   YTCLocation; 158; 0;  LOCKED; CAPTION; Tool Change Position Y|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolID; 498; ;  CAPTION; Tool ID; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 498;;
+		:3/8" EM
+	END_STRING
+   CustomSetting3; 1753; 0;  CAPTION; Custom Setting 3; SOURCE; 2; TECHCODETYPE; 2;
+   OverallLength; 852; 3;  CAPTION; Overall Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorY; 1090; 0;  HIDDEN; CAPTION; Vector Y|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   XTCMovement; 1770; 1;  CAPTION; Tool Change Movement X|Position X; SOURCE; 2; TECHCODETYPE; 298;
+   LengthCompRegister; 121; 8;  CAPTION; Length Comp Register; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftX; 526; 0;  CAPTION; Tool Shift X|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolNumber; 101; 8;  CAPTION; Tool Number; SOURCE; 2; TECHCODETYPE; 1;
+   ShankGeometry; 2546; 0;  HIDDEN; CAPTION; Import Geometry; SOURCE; 2; TECHCODETYPE; 234;
+	BEGIN_CUSTOM_GEO; 2546;;
+	END_CUSTOM_GEO
+   SimulationColor; 1356; 65280;  CAPTION; Simulation Cut Color; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftY; 860; 0;  CAPTION; Tool Shift Y|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Coolant; 214; 1;  CAPTION; Coolant; SOURCE; 2; TECHCODETYPE; 50;
+   StationID; 857; 1;  CAPTION; Station Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting8; 1758; 0;  CAPTION; Custom Setting 8; SOURCE; 2; TECHCODETYPE; 2;
+   Comment; 7; ;  CAPTION; Comment; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 7;;
+		:
+	END_STRING
+   CustomSetting5; 1755; 0;  CAPTION; Custom Setting 5; SOURCE; 2; TECHCODETYPE; 2;
+   ShankType; 2520; 0;  CAPTION; Type; SOURCE; 2; TECHCODETYPE; 425;
+   ZTCMovement; 1772; 1;  CAPTION; Tool Change Movement Z|Position Z; SOURCE; 2; TECHCODETYPE; 298;
+   XTCLocation; 157; 0;  LOCKED; CAPTION; Tool Change Position X|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolDiameter; 103; 0.375;  CAPTION; Tool Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting2; 1752; 0;  CAPTION; Custom Setting 2; SOURCE; 2; TECHCODETYPE; 2;
+   ShankDiameter; 851; 0.375;  CAPTION; Shank Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorX; 1089; 1;  HIDDEN; CAPTION; Vector X|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   InitialClearance; 171; 2;  CAPTION; Initial Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ToolMaterial; 420; ;  CAPTION; Tool Material; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 420;;
+		:{7384604F-208D-45E0-8B33-94257DC3F661}
+	END_STRING
+   Orientation; 842; 1;  CAPTION; Axis Orientation; SOURCE; 2; TECHCODETYPE; 316;
+   NumberOfFlutes; 111; 3;  CAPTION; Number of Flutes; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting10; 1760; 0;  CAPTION; Custom Setting 10; SOURCE; 2; TECHCODETYPE; 2;
+   TurretID; 856; 1;  CAPTION; Turret Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting7; 1757; 0;  CAPTION; Custom Setting 7; SOURCE; 2; TECHCODETYPE; 2;
+   ShankBottomLength; 2522; 1.6000000000000001;  HIDDEN; CAPTION; Bottom Length; SOURCE; 2; TECHCODETYPE; 2;
+   ZTCLocation; 159; 0;  LOCKED; CAPTION; Tool Change Position Z|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CuttingLength; 853; 0.875;  CAPTION; Cutting Length; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting4; 1754; 0;  CAPTION; Custom Setting 4; SOURCE; 2; TECHCODETYPE; 2;
+   ToolLength; 105; 1.5;  CAPTION; Tool Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorZ; 1091; 0;  HIDDEN; CAPTION; Vector Z|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   YTCMovement; 1771; 1;  CAPTION; Tool Change Movement Y|Position Y; SOURCE; 2; TECHCODETYPE; 298;
+   BEGIN_EXPRESSION
+     813; IM(70,71)
+     2521; im(1,25)
+     171; IM(2,50)
+     2522; im(1.6,40)
+   END_EXPRESSION
+	BEGIN_ATTRIBUTES
+	END_ATTRIBUTES
+END_OPERATION;
+BEGIN_OPERATION; 264; 1/8 BEM; 0;
+   CustomSetting1; 1751; 0;  CAPTION; Custom Setting 1; SOURCE; 2; TECHCODETYPE; 2;
+   HolderDiameter; 850; 1.5;  CAPTION; Extension Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolUnit; 813; 70;  CAPTION; Unit; SOURCE; 2; TECHCODETYPE; 12;
+   ToolStyle; 110; 9;  LOCKED; CAPTION; Tool Style; SOURCE; 2; TECHCODETYPE; 376;
+   CustomSetting9; 1759; 0;  CAPTION; Custom Setting 9; SOURCE; 2; TECHCODETYPE; 2;
+   SpindleDirection; 195; -1;  CAPTION; Spindle Direction; SOURCE; 2; TECHCODETYPE; 6;
+   ShankAngle; 2524; 15;  LOCKED; CAPTION; Shank Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftZ; 127; 0;  CAPTION; Tool Shift Z|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting6; 1756; 0;  CAPTION; Custom Setting 6; SOURCE; 2; TECHCODETYPE; 2;
+   ShankTopDiameter; 2521; 0.25;  LOCKED; CAPTION; Top Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   YTCLocation; 158; 0;  LOCKED; CAPTION; Tool Change Position Y|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolID; 498; ;  CAPTION; Tool ID; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 498;;
+		:1/8 BEM
+	END_STRING
+   CustomSetting3; 1753; 0;  CAPTION; Custom Setting 3; SOURCE; 2; TECHCODETYPE; 2;
+   OverallLength; 852; 4;  CAPTION; Overall Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorY; 1090; 0;  LOCKED; CAPTION; Vector Y|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   XTCMovement; 1770; 1;  CAPTION; Tool Change Movement X|Position X; SOURCE; 2; TECHCODETYPE; 298;
+   LengthCompRegister; 121; 3;  CAPTION; Length Comp Register; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftX; 526; 0;  CAPTION; Tool Shift X|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolNumber; 101; 3;  CAPTION; Tool Number; SOURCE; 2; TECHCODETYPE; 1;
+   ShankGeometry; 2546; 0;  CAPTION; Import Geometry; SOURCE; 2; TECHCODETYPE; 234;
+	BEGIN_CUSTOM_GEO; 2546;;
+	END_CUSTOM_GEO
+   SimulationColor; 1356; 65280;  CAPTION; Simulation Cut Color; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftY; 860; 0;  CAPTION; Tool Shift Y|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Coolant; 214; 1;  CAPTION; Coolant; SOURCE; 2; TECHCODETYPE; 50;
+   CustomSetting8; 1758; 0;  CAPTION; Custom Setting 8; SOURCE; 2; TECHCODETYPE; 2;
+   StationID; 857; 1;  CAPTION; Station Name; SOURCE; 2; TECHCODETYPE; 1;
+   Comment; 7; ;  CAPTION; Comment; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 7;;
+		:
+	END_STRING
+   CustomSetting5; 1755; 0;  CAPTION; Custom Setting 5; SOURCE; 2; TECHCODETYPE; 2;
+   ShankType; 2520; 0;  CAPTION; Type; SOURCE; 2; TECHCODETYPE; 425;
+   ZTCMovement; 1772; 1;  CAPTION; Tool Change Movement Z|Position Z; SOURCE; 2; TECHCODETYPE; 298;
+   XTCLocation; 157; 0;  LOCKED; CAPTION; Tool Change Position X|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolDiameter; 103; 0.125;  CAPTION; Tool Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting2; 1752; 0;  CAPTION; Custom Setting 2; SOURCE; 2; TECHCODETYPE; 2;
+   ShankDiameter; 851; 0.125;  CAPTION; Shank Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorX; 1089; 1;  LOCKED; CAPTION; Vector X|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   InitialClearance; 171; 2;  CAPTION; Initial Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ToolMaterial; 420; ;  CAPTION; Tool Material; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 420;;
+		:{4FE7D4FB-BCAB-444D-A200-E458ADF77EF0}
+	END_STRING
+   NumberOfFlutes; 111; 3;  CAPTION; Number of Flutes; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting10; 1760; 0;  CAPTION; Custom Setting 10; SOURCE; 2; TECHCODETYPE; 2;
+   Orientation; 842; 4;  CAPTION; Axis Orientation; SOURCE; 2; TECHCODETYPE; 316;
+   CustomSetting7; 1757; 0;  CAPTION; Custom Setting 7; SOURCE; 2; TECHCODETYPE; 2;
+   TurretID; 856; 1;  CAPTION; Turret Name; SOURCE; 2; TECHCODETYPE; 1;
+   ShankBottomLength; 2522; 1.6000000000000001;  LOCKED; CAPTION; Bottom Length; SOURCE; 2; TECHCODETYPE; 2;
+   ZTCLocation; 159; 5;  LOCKED; CAPTION; Tool Change Position Z|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CuttingLength; 853; 0.375;  CAPTION; Cutting Length; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting4; 1754; 0;  CAPTION; Custom Setting 4; SOURCE; 2; TECHCODETYPE; 2;
+   ToolLength; 105; 1;  CAPTION; Tool Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorZ; 1091; 0;  LOCKED; CAPTION; Vector Z|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   YTCMovement; 1771; 1;  CAPTION; Tool Change Movement Y|Position Y; SOURCE; 2; TECHCODETYPE; 298;
+   BEGIN_EXPRESSION
+     850; im(1.5,35)
+     813; IM(70,71)
+     2521; im(1,25)
+     852; im(4,100)
+     171; IM(2,50)
+     2522; im(1.6,40)
+     159; IM(5,125)
+   END_EXPRESSION
+	BEGIN_ATTRIBUTES
+	END_ATTRIBUTES
+END_OPERATION;
+BEGIN_OPERATION; 160; 1/4-20 tap; 0;
+   CustomSetting1; 1751; 0;  CAPTION; Custom Setting 1; SOURCE; 2; TECHCODETYPE; 2;
+   HolderDiameter; 850; 1.5;  CAPTION; Extension Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolUnit; 813; 70;  CAPTION; Unit; SOURCE; 2; TECHCODETYPE; 12;
+   ToolStyle; 110; 4;  LOCKED; CAPTION; Tool Style; SOURCE; 2; TECHCODETYPE; 376;
+   SpindleDirection; 195; -1;  CAPTION; Spindle Direction; SOURCE; 2; TECHCODETYPE; 6;
+   CustomSetting9; 1759; 0;  CAPTION; Custom Setting 9; SOURCE; 2; TECHCODETYPE; 2;
+   ShankAngle; 2524; 15;  LOCKED; CAPTION; Shank Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftZ; 127; 0;  CAPTION; Tool Shift Z|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting6; 1756; 0;  CAPTION; Custom Setting 6; SOURCE; 2; TECHCODETYPE; 2;
+   ShankTopDiameter; 2521; 0.18500000000000003;  LOCKED; CAPTION; Top Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   YTCLocation; 158; 0;  LOCKED; CAPTION; Tool Change Position Y|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolID; 498; ;  CAPTION; Tool ID; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 498;;
+		:1/4-20 tap
+	END_STRING
+   CustomSetting3; 1753; 0;  CAPTION; Custom Setting 3; SOURCE; 2; TECHCODETYPE; 2;
+   OverallLength; 852; 4;  CAPTION; Overall Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorY; 1090; 0;  LOCKED; CAPTION; Vector Y|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   XTCMovement; 1770; 1;  CAPTION; Tool Change Movement X|Position X; SOURCE; 2; TECHCODETYPE; 298;
+   LengthCompRegister; 121; 5;  CAPTION; Length Comp Register; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftX; 526; 0;  CAPTION; Tool Shift X|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolNumber; 101; 5;  CAPTION; Tool Number; SOURCE; 2; TECHCODETYPE; 1;
+   ShankGeometry; 2546; 0;  CAPTION; Import Geometry; SOURCE; 2; TECHCODETYPE; 234;
+	BEGIN_CUSTOM_GEO; 2546;;
+	END_CUSTOM_GEO
+   SimulationColor; 1356; 65280;  CAPTION; Simulation Cut Color; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftY; 860; 0;  CAPTION; Tool Shift Y|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Coolant; 214; 1;  CAPTION; Coolant; SOURCE; 2; TECHCODETYPE; 50;
+   StationID; 857; 1;  CAPTION; Station Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting8; 1758; 0;  CAPTION; Custom Setting 8; SOURCE; 2; TECHCODETYPE; 2;
+   Comment; 7; ;  CAPTION; Comment; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 7;;
+		:
+	END_STRING
+   CustomSetting5; 1755; 0;  CAPTION; Custom Setting 5; SOURCE; 2; TECHCODETYPE; 2;
+   ShankType; 2520; 0;  CAPTION; Type; SOURCE; 2; TECHCODETYPE; 425;
+   ZTCMovement; 1772; 1;  CAPTION; Tool Change Movement Z|Position Z; SOURCE; 2; TECHCODETYPE; 298;
+   XTCLocation; 157; 0;  LOCKED; CAPTION; Tool Change Position X|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolDiameter; 103; 0.25;  CAPTION; Tool Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting2; 1752; 0;  CAPTION; Custom Setting 2; SOURCE; 2; TECHCODETYPE; 2;
+   ShankDiameter; 851; 0.185;  CAPTION; Shank Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorX; 1089; 1;  LOCKED; CAPTION; Vector X|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   InitialClearance; 171; 2;  CAPTION; Initial Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ThreadPerUnit; 491; 20;  CAPTION; Thread/Unit; SOURCE; 2; TECHCODETYPE; 2;
+   ToolMaterial; 420; ;  CAPTION; Tool Material; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 420;;
+		:{4FE7D4FB-BCAB-444D-A200-E458ADF77EF0}
+	END_STRING
+   Orientation; 842; 1;  CAPTION; Axis Orientation; SOURCE; 2; TECHCODETYPE; 316;
+   NumberOfFlutes; 111; 2;  CAPTION; Number of Flutes; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting10; 1760; 0;  CAPTION; Custom Setting 10; SOURCE; 2; TECHCODETYPE; 2;
+   TaperAngle; 108; 0;  CAPTION; Taper Angle; SOURCE; 2; TECHCODETYPE; 2;
+   TurretID; 856; 1;  CAPTION; Turret Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting7; 1757; 0;  CAPTION; Custom Setting 7; SOURCE; 2; TECHCODETYPE; 2;
+   ShankBottomLength; 2522; 1.6000000000000001;  LOCKED; CAPTION; Bottom Length; SOURCE; 2; TECHCODETYPE; 2;
+   ZTCLocation; 159; 5;  LOCKED; CAPTION; Tool Change Position Z|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Pitch; 1856; 0.050000000000000003;  CAPTION; Pitch; SOURCE; 2; TECHCODETYPE; 2;
+   CuttingLength; 853; 1.2;  CAPTION; Cutting Length; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting4; 1754; 0;  CAPTION; Custom Setting 4; SOURCE; 2; TECHCODETYPE; 2;
+   ToolLength; 105; 3;  CAPTION; Tool Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorZ; 1091; 0;  LOCKED; CAPTION; Vector Z|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   YTCMovement; 1771; 1;  CAPTION; Tool Change Movement Y|Position Y; SOURCE; 2; TECHCODETYPE; 298;
+   BEGIN_EXPRESSION
+     850; im(1.5,35)
+     813; im(70,71)
+     852; im(4,100)
+     171; im(2,50)
+     491; im(20,0.66666)
+     2522; im(1.6,40)
+     159; im(5,125)
+     1856; im(0.05,1.5)
+     853; im(1.2,30)
+     105; im(3,80)
+   END_EXPRESSION
+	BEGIN_ATTRIBUTES
+	END_ATTRIBUTES
+END_OPERATION;
+BEGIN_OPERATION; 156; #7 drill; 0;
+   CustomSetting1; 1751; 0;  CAPTION; Custom Setting 1; SOURCE; 2; TECHCODETYPE; 2;
+   HolderDiameter; 850; 1.5;  CAPTION; Extension Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolUnit; 813; 70;  CAPTION; Unit; SOURCE; 2; TECHCODETYPE; 12;
+   ToolTip; 113; 0.060386492212269813;  LOCKED; CAPTION; Tool Tip; SOURCE; 2; TECHCODETYPE; 2;
+   ToolStyle; 110; 2;  LOCKED; CAPTION; Tool Style; SOURCE; 2; TECHCODETYPE; 376;
+   SpindleDirection; 195; -1;  CAPTION; Spindle Direction; SOURCE; 2; TECHCODETYPE; 6;
+   CustomSetting9; 1759; 0;  CAPTION; Custom Setting 9; SOURCE; 2; TECHCODETYPE; 2;
+   ShankAngle; 2524; 15;  LOCKED; CAPTION; Shank Angle; SOURCE; 2; TECHCODETYPE; 2;
+   ToolShiftZ; 127; 0;  CAPTION; Tool Shift Z|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting6; 1756; 0;  CAPTION; Custom Setting 6; SOURCE; 2; TECHCODETYPE; 2;
+   ShankTopDiameter; 2521; 0.20100000000000001;  LOCKED; CAPTION; Top Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   YTCLocation; 158; 0;  LOCKED; CAPTION; Tool Change Position Y|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolID; 498; ;  CAPTION; Tool ID; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 498;;
+		:#7 drill
+	END_STRING
+   CustomSetting3; 1753; 0;  CAPTION; Custom Setting 3; SOURCE; 2; TECHCODETYPE; 2;
+   OverallLength; 852; 4;  CAPTION; Overall Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorY; 1090; 0;  LOCKED; CAPTION; Vector Y|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   XTCMovement; 1770; 1;  CAPTION; Tool Change Movement X|Position X; SOURCE; 2; TECHCODETYPE; 298;
+   LengthCompRegister; 121; 4;  CAPTION; Length Comp Register; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftX; 526; 0;  CAPTION; Tool Shift X|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolNumber; 101; 4;  CAPTION; Tool Number; SOURCE; 2; TECHCODETYPE; 1;
+   ShankGeometry; 2546; 0;  CAPTION; Import Geometry; SOURCE; 2; TECHCODETYPE; 234;
+	BEGIN_CUSTOM_GEO; 2546;;
+	END_CUSTOM_GEO
+   SimulationColor; 1356; 16777088;  CAPTION; Simulation Cut Color; SOURCE; 2; TECHCODETYPE; 1;
+   ToolShiftY; 860; 0;  CAPTION; Tool Shift Y|Tool Shift X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   Coolant; 214; 1;  CAPTION; Coolant; SOURCE; 2; TECHCODETYPE; 50;
+   StationID; 857; 1;  CAPTION; Station Name; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting8; 1758; 0;  CAPTION; Custom Setting 8; SOURCE; 2; TECHCODETYPE; 2;
+   Comment; 7; ;  CAPTION; Comment; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 7;;
+		:
+	END_STRING
+   CustomSetting5; 1755; 0;  CAPTION; Custom Setting 5; SOURCE; 2; TECHCODETYPE; 2;
+   ShankType; 2520; 0;  CAPTION; Type; SOURCE; 2; TECHCODETYPE; 425;
+   ZTCMovement; 1772; 1;  CAPTION; Tool Change Movement Z|Position Z; SOURCE; 2; TECHCODETYPE; 298;
+   XTCLocation; 157; 0;  LOCKED; CAPTION; Tool Change Position X|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   ToolDiameter; 103; 0.20100000000000001;  CAPTION; Tool Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting2; 1752; 0;  CAPTION; Custom Setting 2; SOURCE; 2; TECHCODETYPE; 2;
+   ShankDiameter; 851; 0.20100000000000001;  CAPTION; Shank Diameter; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorX; 1089; 1;  LOCKED; CAPTION; Vector X|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   InitialClearance; 171; 2;  CAPTION; Initial Clearance; SOURCE; 2; TECHCODETYPE; 2;
+   ToolMaterial; 420; ;  CAPTION; Tool Material; SOURCE; 2; TECHCODETYPE; 3;
+	BEGIN_STRING; 420;;
+		:{7384604F-208D-45E0-8B33-94257DC3F661}
+	END_STRING
+   Orientation; 842; 1;  CAPTION; Axis Orientation; SOURCE; 2; TECHCODETYPE; 316;
+   NumberOfFlutes; 111; 2;  CAPTION; Number of Flutes; SOURCE; 2; TECHCODETYPE; 1;
+   CustomSetting10; 1760; 0;  CAPTION; Custom Setting 10; SOURCE; 2; TECHCODETYPE; 2;
+   TurretID; 856; 1;  CAPTION; Turret Name; SOURCE; 2; TECHCODETYPE; 1;
+   TipAngle; 108; 118;  CAPTION; Tip Angle; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting7; 1757; 0;  CAPTION; Custom Setting 7; SOURCE; 2; TECHCODETYPE; 2;
+   ShankBottomLength; 2522; 1.6000000000000001;  LOCKED; CAPTION; Bottom Length; SOURCE; 2; TECHCODETYPE; 2;
+   ZTCLocation; 159; 5;  LOCKED; CAPTION; Tool Change Position Z|Position X,Y,Z; SOURCE; 2; TECHCODETYPE; 2;
+   CuttingLength; 853; 1.2;  CAPTION; Cutting Length; SOURCE; 2; TECHCODETYPE; 2;
+   CustomSetting4; 1754; 0;  CAPTION; Custom Setting 4; SOURCE; 2; TECHCODETYPE; 2;
+   ToolLength; 105; 3;  CAPTION; Tool Length; SOURCE; 2; TECHCODETYPE; 2;
+   ToolVectorZ; 1091; 0;  LOCKED; CAPTION; Vector Z|Vector X, Y, Z; SOURCE; 2; TECHCODETYPE; 2;
+   YTCMovement; 1771; 1;  CAPTION; Tool Change Movement Y|Position Y; SOURCE; 2; TECHCODETYPE; 298;
+   BEGIN_EXPRESSION
+     850; im(1.5,35)
+     813; im(70,71)
+     852; im(4,100)
+     171; im(2,50)
+     2522; im(1.6,40)
+     159; im(5,125)
+     853; im(1.2,30)
+     105; im(3,80)
+   END_EXPRESSION
+	BEGIN_ATTRIBUTES
+	END_ATTRIBUTES
+END_OPERATION;
