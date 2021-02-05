@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+from AdafruitIMU import AdafruitIMU
 from time import sleep
 
 class Chassis:
@@ -8,6 +9,7 @@ class Chassis:
         self.RPWMB = RPWMB
         self.LPWMF = LPWMF
         self.LPWMB = LPWMB
+        self.IMU = AdafruitIMU()
 
         GPIO.setwarnings(False)  # disable warnings
         GPIO.setmode(GPIO.BOARD)  # set pin numbering system
@@ -67,3 +69,36 @@ class Chassis:
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
+
+    def set_motor_power(self, right, left):
+        self.pi_rpwmf.ChangeDutyCycle(right)
+        self.pi_lpwmf.ChangeDutyCycle(left)
+        self.pi_rpwmb.ChangeDutyCycle(right)
+        self.pi_lpwmb.ChangeDutyCycle(left)
+
+    def limit(self, val, minVal, maxVal):
+        return min(max(val, minVal), maxVal)
+
+    def point_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
+        relativePointAngle = self.IMU.angleWrap(wantedAngle - currentAngle)
+        turn_speed = (relativePointAngle / decelerationAngle) * speed
+        turn_speed = self.limit(turn_speed, -speed, speed)
+        turn_speed = max(turn_speed, 50.0)
+        self.set_motor_power(-turn_speed, turn_speed)
+
+    def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
+        relativePointAngle = self.IMU.angleWrap(wantedAngle - currentAngle)
+        turn_speed = (relativePointAngle / decelerationAngle) * speed
+        turn_speed = self.limit(turn_speed, -speed, speed)
+        turn_speed = max(turn_speed, 50.0)
+        if relativePointAngle > 0:
+            self.set_motor_power(0, turn_speed)
+        else:
+            self.set_motor_power(turn_speed, 0)
+
+
+    def drive_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
+        relativePointAngle = self.angleWrap(wantedAngle - currentAngle)
+        turn_speed = (relativePointAngle / decelerationAngle) * speed
+        turn_speed = self.limit(turn_speed, -speed, speed)
+        turn_speed = max(turn_speed, 50.0)
