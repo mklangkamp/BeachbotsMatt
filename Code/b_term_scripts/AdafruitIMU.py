@@ -20,3 +20,8 @@ class AdafruitIMU:
     def getAngle(self):
         angle = self.sensor.euler[0]
         return angle
+
+    #unsure if this works
+    def getGyro(self):
+        gyro = self.sensor.gyro
+        return gyro

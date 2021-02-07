@@ -1,4 +1,5 @@
 import RPi.GPIO as GPIO
+import time
 from AdafruitIMU import AdafruitIMU
 from time import sleep
 
@@ -29,13 +30,28 @@ class Chassis:
         self.pi_lpwmf.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmb.start(0)  # start PWM of required Duty Cycle
 
-    def drive(self, speed):
-        if speed > 0:
-            self.pi_rpwmf.ChangeDutyCycle(speed)
-            self.pi_lpwmf.ChangeDutyCycle(speed)
-        elif speed < 0:
-            self.pi_rpwmb.ChangeDutyCycle(abs(speed))
-            self.pi_lpwmb.ChangeDutyCycle(abs(speed))
+    def drive(self, rightSpeed, leftSpeed):
+
+        #for right side of drivetrain
+        if rightSpeed > 0: #if speed is postive
+            self.pi_rpwmf.ChangeDutyCycle(rightSpeed) #drive right side forward
+            self.pi_lpwmf.ChangeDutyCycle(0)
+        elif rightSpeed < 0: #if speed is negative
+            self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed)) #drive right side backwards
+            self.pi_lpwmb.ChangeDutyCycle(0)
+        else:
+            self.pi_rpwmf.ChangeDutyCycle(0)
+            self.pi_rpwmb.ChangeDutyCycle(0)
+
+        if leftSpeed > 0:
+            self.pi_rpwmf.ChangeDutyCycle(0)
+            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+        elif leftSpeed < 0:
+            self.pi_rpwmb.ChangeDutyCycle(0)
+            self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+        else:
+            self.pi_lpwmf.ChangeDutyCycle(0)
+            self.pi_lpwmb.ChangeDutyCycle(0)
 
     def estop(self):
         self.pi_rpwmf.ChangeDutyCycle(0)
@@ -43,6 +59,7 @@ class Chassis:
         self.pi_rpwmb.ChangeDutyCycle(0)
         self.pi_lpwmb.ChangeDutyCycle(0)
 
+    '''
     def turn_left(self, time, speed): #Turn is the angle at which one wants tu turn bot
         for x in range(time):
             self.pi_rpwmf.ChangeDutyCycle(speed)
@@ -75,6 +92,8 @@ class Chassis:
         self.pi_lpwmf.ChangeDutyCycle(left)
         self.pi_rpwmb.ChangeDutyCycle(right)
         self.pi_lpwmb.ChangeDutyCycle(left)
+    '''
+
 
     def limit(self, val, minVal, maxVal):
         return min(max(val, minVal), maxVal)
@@ -84,7 +103,7 @@ class Chassis:
         turn_speed = (relativePointAngle / decelerationAngle) * speed
         turn_speed = self.limit(turn_speed, -speed, speed)
         turn_speed = max(turn_speed, 50.0)
-        self.set_motor_power(-turn_speed, turn_speed)
+        self.drive(-turn_speed, turn_speed)
 
     def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
         relativePointAngle = self.IMU.angleWrap(wantedAngle - currentAngle)
@@ -92,13 +111,34 @@ class Chassis:
         turn_speed = self.limit(turn_speed, -speed, speed)
         turn_speed = max(turn_speed, 50.0)
         if relativePointAngle > 0:
-            self.set_motor_power(0, turn_speed)
+            self.drive(0, turn_speed)
         else:
-            self.set_motor_power(turn_speed, 0)
+            self.drive(turn_speed, 0)
 
-
+    '''
     def drive_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
         relativePointAngle = self.angleWrap(wantedAngle - currentAngle)
         turn_speed = (relativePointAngle / decelerationAngle) * speed
         turn_speed = self.limit(turn_speed, -speed, speed)
         turn_speed = max(turn_speed, 50.0)
+    '''
+
+    #duration in millis
+    def driveStraightGyro(self, straightSpeed, duration):
+
+        target = self.IMU.getGyro()
+        destination = self.current_milli_time() + duration #calculate time when destination is reached
+
+        while self.current_milli_time() < destination: #while destination has not been reached
+
+            absolute = self.IMU.getGyro() #continue reading gyro
+
+            rightSpeed = straightSpeed - (absolute - target) #adjust motor speeds
+            leftSpeed = straightSpeed + (absolute - target)
+
+            self.drive(rightSpeed, leftSpeed) #write to chassis
+
+        self.estop() #stop when arrived at destination
+
+    def current_milli_time(self):
+        return round(time.time() * 1000)

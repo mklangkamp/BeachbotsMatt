@@ -7,7 +7,7 @@ import RPi.GPIO as GPIO
 # instead of physical pin numbers
 #GPIO.setmode(GPIO.BCM)
 mode=GPIO.getmode()
-print " mode ="+str(mode)
+#print " mode ="+str(mode)
 GPIO.cleanup()
 
 # Define GPIO signals to use
@@ -24,20 +24,20 @@ GPIO.setup(StepPinBackward, GPIO.OUT)
 
 def forward(x):
     GPIO.output(StepPinForward, GPIO.HIGH)
-    print "forwarding running  motor "
+    print('forwarding running  motor')
     time.sleep(x)
     GPIO.output(StepPinForward, GPIO.LOW)
 
 def reverse(x):
     GPIO.output(StepPinBackward, GPIO.HIGH)
-    print "backwarding running motor"
+    print("backwarding running motor")
     time.sleep(x)
     GPIO.output(StepPinBackward, GPIO.LOW)
 
-print "forward motor "
+print("forward motor ")
 forward(5)
-print "reverse motor"
+print("reverse motor")
 reverse(5)
 
-print "Stopping motor"
+print("Stopping motor")
 GPIO.cleanup()
