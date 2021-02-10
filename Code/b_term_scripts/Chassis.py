@@ -37,31 +37,29 @@ class Chassis:
     def drive(self, rightSpeed, leftSpeed):
 
         #for right side of drivetrain
-        if (rightSpeed > 0) & (leftSpeed > 0): #if speed is postive
+        if (rightSpeed > 0) and (leftSpeed > 0): #for going forward
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed) #drive right side forward
-#            self.pi_lpwmf.ChangeDutyCycle(0)
-#	    self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
-        elif rightSpeed < 0: #if speed is negative
-            self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed)) #drive right side backwards
-            self.pi_lpwmb.ChangeDutyCycle(0)
-#        elif leftSpeed > 0:
-#            self.pi_rpwmf.ChangeDutyCycle(0)
-#            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
-        elif leftSpeed < 0:
-            self.pi_rpwmb.ChangeDutyCycle(0)
+        elif (rightSpeed < 0) and (leftSpeed < 0): #for going backward
+            self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
             self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
-        else:
+        elif (rightSpeed > 0) and (leftSpeed < 0): #for point turn right
+            self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
+            self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+        elif (rightSpeed < 0) and (leftSpeed > 0): #for point turn left
+            self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
+            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+        elif (rightSpeed == 0) and (leftSpeed > 0): #for swing turn right
+            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+        elif (rightSpeed > 0) and (leftSpeed == 0): #for swing turn left
+            self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
+        else: #making robot stop 
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
 
-    def estop(self):
-        self.pi_rpwmf.ChangeDutyCycle(0)
-        self.pi_lpwmf.ChangeDutyCycle(0)
-        self.pi_rpwmb.ChangeDutyCycle(0)
-        self.pi_lpwmb.ChangeDutyCycle(0)
+
 
     '''
     def turn_left(self, time, speed): #Turn is the angle at which one wants tu turn bot
@@ -107,6 +105,7 @@ class Chassis:
         turn_speed = (relativePointAngle / decelerationAngle) * speed
         turn_speed = self.limit(turn_speed, -speed, speed)
         turn_speed = max(turn_speed, 50.0)
+        print("error", abs(wantedAngle-currentAngle))
         self.drive(-turn_speed, turn_speed)
 
     def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
@@ -118,7 +117,7 @@ class Chassis:
             self.drive(0, turn_speed)
         else:
             self.drive(turn_speed, 0)
-
+        
     '''
     def drive_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
         relativePointAngle = self.angleWrap(wantedAngle - currentAngle)
