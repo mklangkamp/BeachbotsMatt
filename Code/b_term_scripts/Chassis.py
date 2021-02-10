@@ -1,8 +1,12 @@
 import RPi.GPIO as GPIO
 import time
 from AdafruitIMU import AdafruitIMU
+from adafruit_extended_bus import ExtendedI2C as I2C
+import adafruit_bno055
 from time import sleep
 
+i2c = I2C(1)
+sensor = adafruit_bno055.BNO055_I2C(i2c)
 class Chassis:
 
     def __init__(self, RPWMF, RPWMB, LPWMF, LPWMB):
@@ -33,25 +37,25 @@ class Chassis:
     def drive(self, rightSpeed, leftSpeed):
 
         #for right side of drivetrain
-        if rightSpeed > 0: #if speed is postive
+        if (rightSpeed > 0) & (leftSpeed > 0): #if speed is postive
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed) #drive right side forward
-            self.pi_lpwmf.ChangeDutyCycle(0)
+#            self.pi_lpwmf.ChangeDutyCycle(0)
+#	    self.pi_rpwmf.ChangeDutyCycle(0)
+            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
         elif rightSpeed < 0: #if speed is negative
             self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed)) #drive right side backwards
             self.pi_lpwmb.ChangeDutyCycle(0)
-        else:
-            self.pi_rpwmf.ChangeDutyCycle(0)
-            self.pi_rpwmb.ChangeDutyCycle(0)
-
-        if leftSpeed > 0:
-            self.pi_rpwmf.ChangeDutyCycle(0)
-            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+#        elif leftSpeed > 0:
+#            self.pi_rpwmf.ChangeDutyCycle(0)
+#            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
         elif leftSpeed < 0:
             self.pi_rpwmb.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
         else:
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
+            self.pi_rpwmf.ChangeDutyCycle(0)
+            self.pi_rpwmb.ChangeDutyCycle(0)
 
     def estop(self):
         self.pi_rpwmf.ChangeDutyCycle(0)
@@ -125,17 +129,19 @@ class Chassis:
 
     #duration in millis
     def driveStraightGyro(self, straightSpeed, duration):
-
-        target = self.IMU.getGyro()
         destination = self.current_milli_time() + duration #calculate time when destination is reached
+        target = 0
 
         while self.current_milli_time() < destination: #while destination has not been reached
-
-            absolute = self.IMU.getGyro() #continue reading gyro
-
+	    
+            if(self.IMU.angleWrap(sensor.euler[0]) != None): 
+                absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
+            else: 
+                absolute = 0
             rightSpeed = straightSpeed - (absolute - target) #adjust motor speeds
             leftSpeed = straightSpeed + (absolute - target)
-
+            #print(rightSpeed, leftSpeed)
+            print(self.IMU.angleWrap(sensor.euler[0]))
             self.drive(rightSpeed, leftSpeed) #write to chassis
 
         self.estop() #stop when arrived at destination

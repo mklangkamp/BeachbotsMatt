@@ -10,11 +10,16 @@ class AdafruitIMU:
         self.sensor = adafruit_bno055.BNO055_I2C(i2c)
 
     def angleWrap(self, angle):
-        angle %= 360
-        while angle > 180:
-            angle -= 360
-        while angle <= -180:
-            angle += 360
+        if(angle != None):
+            angle = angle
+        else:
+            angle = 360.0        
+
+        angle %= 360.0
+        while angle > 180.0:
+            angle -= 360.0
+        while angle <= -180.0:
+            angle += 360.0
         return angle
 
     def getAngle(self):
@@ -23,5 +28,5 @@ class AdafruitIMU:
 
     #unsure if this works
     def getGyro(self):
-        gyro = self.sensor.gyro
+        gyro = self.sensor.gyro[0]
         return gyro
