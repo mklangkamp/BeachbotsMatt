@@ -31,7 +31,6 @@ servo = ServoController(GRIPPER, ELBOW, BUCKET)
 
 if state == False:
 
-
     servo.gripper(True)
 
     servo.elbow(DOWN_POSE_ELBOW)
