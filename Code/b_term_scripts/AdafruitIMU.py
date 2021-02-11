@@ -10,6 +10,7 @@ class AdafruitIMU:
         i2c = I2C(1)  # Device is /dev/i2c-1
         self.sensor = adafruit_bno055.BNO055_I2C(i2c)
         self.lastAngle = 0
+        self.lastQuat = 0
 
         
     def angleWrap(self, angle):
@@ -19,11 +20,11 @@ class AdafruitIMU:
         #    angle = 360.0
         if(angle == None):
             return self.lastAngle
-        angle %= 360.0
+        angle %= 180.0 #was 360
         while angle > 180.0:
-            angle -= 360.0
+            angle -= 180.0 #was 360
         while angle < -180.0:
-            angle += 360.0
+            angle += 180.0 #was 360
         self.lastAngle = angle
         return angle
 
@@ -33,8 +34,12 @@ class AdafruitIMU:
 
     #unsure if this works
     def getGyro(self):
-        gyro = self.sensor.gyro[0]
+        gyro = self.sensor.gyro
         return gyro
+    
+    def getQuaternion(self):
+        quat = self.sensor.quaternion
+        return quat
 
     def euler_from_quaternion(self):
         """
@@ -48,6 +53,9 @@ class AdafruitIMU:
         z = self.sensor.quaternion[2]
         w = self.sensor.quaternion[3]
 
+        if(not all(self.sensor.quaternion) or w == None or x == None or y == None or z == None):
+            return None
+        #print(w)
         t0 = +2.0 * (w * x + y * z)
         t1 = +1.0 - 2.0 * (x * x + y * y)
         roll_x = math.atan2(t0, t1)
@@ -64,5 +72,8 @@ class AdafruitIMU:
         roll_x = math.degrees(roll_x)
         pitch_y = math.degrees(pitch_y)
         yaw_z = math.degrees(yaw_z)
-
+        if roll_x > 0:
+            roll_x -= 180
+        elif roll_x < 0:
+            roll_x +=180
         return roll_x, pitch_y, yaw_z  # in degrees
