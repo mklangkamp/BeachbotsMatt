@@ -19,23 +19,17 @@ itteration = 0
 
 #Driving test starts here... ...
 while(itteration <= 0):
-    #print(AdafruitIMU.angleWrap(sensor, sensor.euler[2]), sensor.euler[2])
-    #print(IMU.getQuaternion())
-    euler_angles = IMU.euler_from_quaternion()
-    if euler_angles != None:
-        print(euler_angles)
-    #print(IMU.getQuaternion())
-    #print(AdafruitIMU.euler_from_quaternion())
-    '''
-    currAngle = AdafruitIMU.angleWrap(sensor, sensor.euler[0])
-    print(currAngle)
     
-    Chassis.point_turn_IMU(chassis, currAngle, 15, 5, 50)
-    if abs(15-currAngle) < 2:
-        self.drive(0, 0)
+    Chassis.driveStraightIMU(chassis, 50, 1000)
+    '''
+    euler_angles = IMU.euler_from_quaternion()
+    print(euler_angles)
+    
+    Chassis.point_turn_IMU(chassis, euler_angles, 10, 5, 25)
+    if abs(10-euler_angles) < 0.5:
+        Chassis.drive(0, 0)
         break
     '''
-    #Chassis.driveStraightGyro(chassis, 50, 1000)
     #itteration = itteration + 1
 
 

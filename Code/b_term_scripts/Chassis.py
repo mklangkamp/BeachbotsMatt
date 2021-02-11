@@ -101,15 +101,15 @@ class Chassis:
         return min(max(val, minVal), maxVal)
 
     def point_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
-        relativePointAngle = self.IMU.angleWrap(wantedAngle - currentAngle)
+        relativePointAngle = wantedAngle - currentAngle #self.IMU.angleWrap(wantedAngle - currentAngle)
         turn_speed = (relativePointAngle / decelerationAngle) * speed
         turn_speed = self.limit(turn_speed, -speed, speed)
         turn_speed = max(turn_speed, 50.0)
-        print("error", abs(wantedAngle-currentAngle))
+        #print("error", abs(wantedAngle-currentAngle))
         self.drive(-turn_speed, turn_speed)
 
     def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
-        relativePointAngle = self.IMU.angleWrap(wantedAngle - currentAngle)
+        relativePointAngle = wantedAngle - currentAngle #self.IMU.angleWrap(wantedAngle - currentAngle)
         turn_speed = (relativePointAngle / decelerationAngle) * speed
         turn_speed = self.limit(turn_speed, -speed, speed)
         turn_speed = max(turn_speed, 50.0)
@@ -127,23 +127,23 @@ class Chassis:
     '''
 
     #duration in millis
-    def driveStraightGyro(self, straightSpeed, duration):
+    def driveStraightIMU(self, straightSpeed, duration):
         destination = self.current_milli_time() + duration #calculate time when destination is reached
         target = 0
 
-        while self.current_milli_time() < destination: #while destination has not been reached
+        if self.current_milli_time() < destination: #while destination has not been reached
 	    
-            if(self.IMU.angleWrap(sensor.euler[0]) != None): 
-                absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
-            else: 
-                absolute = 0
+            #if(self.IMU.angleWrap(sensor.euler[0]) != None): 
+            #    absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
+            #else: 
+            #    absolute = 0
+            absolute = self.IMU.euler_from_quaternion()
             rightSpeed = straightSpeed - (absolute - target) #adjust motor speeds
             leftSpeed = straightSpeed + (absolute - target)
-            #print(rightSpeed, leftSpeed)
-            print(self.IMU.angleWrap(sensor.euler[0]))
+            print(rightSpeed, leftSpeed, absolute)
             self.drive(rightSpeed, leftSpeed) #write to chassis
-
-        self.estop() #stop when arrived at destination
+        else:
+            self.drive(0, 0) #stop when arrived at destination
 
     def current_milli_time(self):
         return round(time.time() * 1000)

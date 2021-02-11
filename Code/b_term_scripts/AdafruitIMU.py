@@ -54,7 +54,7 @@ class AdafruitIMU:
         w = self.sensor.quaternion[3]
 
         if(not all(self.sensor.quaternion) or w == None or x == None or y == None or z == None):
-            return None
+            return self.lastAngle
         #print(w)
         t0 = +2.0 * (w * x + y * z)
         t1 = +1.0 - 2.0 * (x * x + y * y)
@@ -76,4 +76,8 @@ class AdafruitIMU:
             roll_x -= 180
         elif roll_x < 0:
             roll_x +=180
-        return roll_x, pitch_y, yaw_z  # in degrees
+        if(roll_x == None):
+            return self.lastAngle
+        else:  
+            self.lastAngle = roll_x
+        return roll_x #pitch_y, yaw_z  # in degrees
