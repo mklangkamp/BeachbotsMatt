@@ -19,8 +19,8 @@ arm = Arm(STEP, DIR, SWITCH)
 
 while True:
     
-    pressed = arm.switch_press()
-    if pressed:
-        print("button pressed")
+    print(arm.switch_press())
+    #if pressed:
+    #    print("button pressed")
     #print(pressed)
     

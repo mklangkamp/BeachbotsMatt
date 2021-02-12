@@ -41,10 +41,7 @@ class Arm:
 
     def switch_press(self):
         pressed = GPIO.input(self.SWITCH)
-        if pressed:
-            return True
-        else:
-            return False
+        return pressed
         #print(GPIO.input(self.SWITCH))
     def pickup(self):
         self.move_shoulder_press()
