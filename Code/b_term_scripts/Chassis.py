@@ -131,7 +131,7 @@ class Chassis:
         destination = self.current_milli_time() + duration #calculate time when destination is reached
         target = 0
 
-        if self.current_milli_time() < destination: #while destination has not been reached
+        while self.current_milli_time() < destination: #while destination has not been reached
 	    
             #if(self.IMU.angleWrap(sensor.euler[0]) != None): 
             #    absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
@@ -142,8 +142,8 @@ class Chassis:
             leftSpeed = straightSpeed + (absolute - target)
             print(rightSpeed, leftSpeed, absolute)
             self.drive(rightSpeed, leftSpeed) #write to chassis
-        else:
-            self.drive(0, 0) #stop when arrived at destination
+        
+        self.drive(0, 0) #stop when arrived at destination
 
     def current_milli_time(self):
         return round(time.time() * 1000)

@@ -14,6 +14,7 @@ LPWMB = 36
 #for stepper
 DIR = 38
 STEP = 35
+SWITCH = 7
 
 GRIPPER = 1
 ELBOW = 0
@@ -25,7 +26,7 @@ UP_POSE_ELBOW = 8000
 SHOULDER_UP_DOWN_TIME = 2400
 
 chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB)
-arm = Arm(STEP, DIR)
+arm = Arm(STEP, DIR, SWITCH)
 servo = ServoController(GRIPPER, ELBOW, BUCKET)
 
 itteration = 0

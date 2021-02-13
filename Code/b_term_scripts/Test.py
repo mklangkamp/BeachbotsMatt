@@ -18,10 +18,9 @@ IMU = AdafruitIMU()
 itteration = 0
 
 #Driving test starts here... ...
-while(itteration <= 0):
-    
-    Chassis.driveStraightIMU(chassis, 50, 1000)
-    '''
+#while(itteration <= 0):
+Chassis.driveStraightIMU(chassis, 50, 1000)
+'''
     euler_angles = IMU.euler_from_quaternion()
     print(euler_angles)
     
@@ -29,7 +28,7 @@ while(itteration <= 0):
     if abs(10-euler_angles) < 0.5:
         Chassis.drive(0, 0)
         break
-    '''
+'''
     #itteration = itteration + 1
 
 
