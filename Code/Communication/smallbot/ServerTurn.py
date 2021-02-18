@@ -10,7 +10,7 @@ LPWMF = 31  # PWM
 LPWMB = 36
 chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB)
 IMU = AdafruitIMU()
-itteration = 0
+current_state = " "
 
 TCP_IP = '192.168.4.2'
 TCP_PORT = 5005
@@ -35,28 +35,55 @@ recieved = ""
 
 conn, addr = s.accept()
 print ('Connection address:', addr)
-while 1:
+
+counter = 0
+
+'''
+while True:
     euler_angles = IMU.euler_from_quaternion()
+    #print(euler_angles)
+
+    #Constantly updating data from basebot
     data = conn.recv(BUFFER_SIZE)
-    #if not data:
-    #    print("gooddaymite")
-    #    break
-    recieved = data
-    print ("received data:", recieved)
-    if recieved == b'turnleft':
+
+    print("times ran: ", counter)
+
+    conn.send(data)  # echo
+
+    counter += counter
+'''
+
+while True:
+
+    #Constantly updating current yaw angle
+    euler_angles = IMU.euler_from_quaternion()
+    print(euler_angles)
+
+    #Constantly updating data from basebot
+    data = conn.recv(BUFFER_SIZE)
+
+    if data != b'middle':
+        current_state = data
+
+    print ("received data: ", current_state)
+
+    if current_state == b'turnleft':
         Chassis.swing_turn_IMU(chassis, euler_angles, -10, 5, 50)
-        print(euler_angles)
+
         if abs(-10-euler_angles) < 0.5:
             Chassis.drive(0, 0)
             break
-    elif recieved == b'turnright':
+    elif current_state == b'turnright':
         Chassis.swing_turn_IMU(chassis, euler_angles, 10, 5, 50)
         if abs(10-euler_angles) < 0.5:
             Chassis.drive(0, 0)
             break
-    elif recieved == b'stop':
+    elif current_state == b'stop':
         Chassis.drive(0, 0)
+        break
+
     conn.send(data)  # echo
+
 conn.close()
 Chassis.drive(0, 0)
 

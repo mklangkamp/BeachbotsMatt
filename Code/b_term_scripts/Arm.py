@@ -27,7 +27,7 @@ class Arm:
         self.calibrate()
         
     def move_shoulder_angle(self, angle):
-        target = angle + self.shoulder_current
+        target = angle - self.shoulder_current
         steps = abs(int(target // self.STEP_ANGLE))
         num_steps = 0
         print("target:",  target)
@@ -48,6 +48,7 @@ class Arm:
         print("target:",  target)
         print("steps: ", steps)
         print("current angle: ", self.shoulder_current)
+
     def calibrate(self):
         self.servo.elbow(self.UP_POSE_ELBOW) #UP position for elbow
         GPIO.output(self.DIR, GPIO.LOW)
@@ -63,7 +64,8 @@ class Arm:
     #    pressed = GPIO.input(self.SWITCH)
     #    return pressed
         #print(GPIO.input(self.SWITCH))
-    def pickup(self, readypick):
+
+def pickup(self, readypick):
         if not readypick:
             self.move_shoulder_angle(30)
             self.servo.gripper(True)
@@ -74,14 +76,14 @@ class Arm:
         else:
             self.servo.gripper(False)
             self.usleep(1000)
-            self.move_shoulder_angle(80)
+            self.move_shoulder_angle(110)
             self.servo.elbow(self.UP_POSE_ELBOW)
             self.usleep(1000)
             self.servo.gripper(True)
             self.usleep(1000)
             self.servo.elbow(self.MID_POSE_ELBOW)
             self.usleep(1000)
-            self.move_shoulder_angle(-80)
+            self.move_shoulder_angle(30)
 
         
         

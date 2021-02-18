@@ -28,14 +28,16 @@ def meters_to_inches(current):
 	return current*39.37
 
 def detect_tag_pos(x, y):
-	if (x > 500):
+	if x > 500:
 		return "turnright"
-	elif (x < 100):
+	elif x < 100:
 		return "turnleft"
 	elif x > 100 and y > 380:
-		return "stop" 
-        else: 
-            return "middle"
+		return "stop"
+	elif x > "someNUM" and y > "someNUM": #only when front/back Apriltags are seen
+		return "drive"
+	else:
+		return "middle"
 
 # initialize the known distance from the camera to the object, which
 # in this case is 24 inches
@@ -67,7 +69,7 @@ s.connect((TCP_IP, TCP_PORT))
 s.send(str.encode("yooo"))
 data = s.recv(BUFFER_SIZE)
 
-while(True):
+while True:
 	# load the input image and convert it to grayscale
 	#print("[INFO] loading image...")
 	ret, frame = cap.read()
@@ -80,7 +82,13 @@ while(True):
 	#options = at.DetectorOptions(families="tagStandard41h12")
 	detector = apriltag.Detector(options)
 	results = detector.detect(gray)
+
 	#print("[INFO] {} total AprilTags detected".format(len(results)))
+
+	#Only when no april tags are seen, assume "middle" case
+	if len(results) < 1:
+		s.send(str.encode(detect_tag_pos(200, 0)))
+		data = s.recv(BUFFER_SIZE)
 
 	# loop over the AprilTag detection results
 	for r in results:
@@ -91,7 +99,7 @@ while(True):
 
 		s.send(str.encode(detect_tag_pos(cx, cy)))
 		data = s.recv(BUFFER_SIZE)
-		
+
 		#print("Inches: ", meters_to_inches(meters))
 
 
