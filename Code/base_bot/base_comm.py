@@ -1,6 +1,6 @@
 #!/usr/bin/env python
-
 import socket
+
 
 class TCP_COMM:
     def __init__(self, TCP_IP, TCP_PORT, BUFFER_SIZE):
@@ -16,7 +16,7 @@ class TCP_COMM:
     def send_data(self, new_data):
         self.MESSAGE = new_data
         self.small_bot.send(self.MESSAGE)
-        data = self.small_bot.recv(BUFFER_SIZE)
+        data = self.small_bot.recv(self.BUFFER_SIZE)
         print("received data:", data)
-        small_bot.close()
+        self.small_bot.close()
 

@@ -16,12 +16,9 @@ GRIPPER = 1
 ELBOW = 0
 BUCKET = 2
 
-DOWN_POSE_ELBOW = 5300
-UP_POSE_ELBOW = 8000
-
 chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
 current_state = b'drive'
-trash_detected = false
+trash_detected = False
 trash_count = 0
 last_turn = ' '
 
@@ -40,7 +37,7 @@ recieved = ""
 
 
 counter = 0
-finished_clean = false
+finished_clean = False
 
 while not finished_clean or trash_count < 4:
 
@@ -59,11 +56,11 @@ while not finished_clean or trash_count < 4:
         chassis.driveStraightIMU(100, 100) #drive at full speed for 100ms
 
         if trash_detected:
-            chassis.arm.pickup(0)
+            chassis.Arm.pickup(0)
             sleep(2) #wait 2 secs
-            chassis.arm.pickup(1)
+            chassis.Arm.pickup(1)
             trash_count += trash_count
-            trash_detected = false
+            trash_detected = False
 
         if x < 0 or x > 500:
             if last_turn != current_state:

@@ -1,4 +1,5 @@
-from Chassis import Chassis
+import sys
+from small_bot from Chassis import Chassis
 from Arm import Arm
 from ServoController import ServoController
 #from time import sleep

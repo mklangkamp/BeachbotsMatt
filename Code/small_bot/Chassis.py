@@ -1,13 +1,9 @@
 import RPi.GPIO as GPIO
 import time
+from Arm import Arm
 from AdafruitIMU import AdafruitIMU
-from adafruit_extended_bus import ExtendedI2C as I2C
-import adafruit_bno055
+
 from time import sleep
-
-i2c = I2C(1)
-sensor = adafruit_bno055.BNO055_I2C(i2c)
-
 
 class Chassis:
 
@@ -60,9 +56,13 @@ class Chassis:
             self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
             self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
         elif (rightSpeed == 0) and (leftSpeed > 0):  # for swing turn right
+            self.pi_rpwmf.ChangeDutyCycle(0)
+            self.pi_rpwmb.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
         elif (rightSpeed > 0) and (leftSpeed == 0):  # for swing turn left
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
+            self.pi_lpwmf.ChangeDutyCycle(0)
+            self.pi_lpwmb.ChangeDutyCycle(0)
         else:  # making robot stop
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
