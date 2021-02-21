@@ -65,7 +65,7 @@ while not finished_clean or trash_count < 4:
             trash_count += trash_count
             trash_detected = false
 
-        if april_tag_is_out_of_range:
+        if x < 0 or x > 500:
             if last_turn != current_state:
                 current_state = b'turnright'
             else:

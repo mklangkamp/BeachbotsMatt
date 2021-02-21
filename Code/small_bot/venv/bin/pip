@@ -1,4 +1,4 @@
-#!/home/ubuntu/PycharmProjects/b_term_scripts/venv/bin/python2.7
+#!/home/ubuntu/PycharmProjects/small_bot/venv/bin/python2.7
 # -*- coding: utf-8 -*-
 import re
 import sys
