@@ -15,8 +15,8 @@ KNOWN_WIDTH = 0.0975
 '''
 
 right_tag = "tag36h11"
-lef_tag = "tag16h5"
-back_tag = "tag25h9"
+lef_tag = "tagStandard41h12"
+back_tag = "tagStandard52h13"
 
 small_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
 april_tag_recognizer = AprilTag(right_tag, lef_tag, back_tag)
