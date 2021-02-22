@@ -145,8 +145,8 @@ class Chassis:
             # else:
             #    absolute = 0
             absolute = self.IMU.euler_from_quaternion()
-            rightSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
-            leftSpeed = straightSpeed + (absolute - target)
+            leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
+            rightSpeed = straightSpeed + (absolute - target)
             print(rightSpeed, leftSpeed, absolute)
             self.drive(rightSpeed, leftSpeed)  # write to chassis
 
