@@ -12,6 +12,7 @@ class AprilTag:
         self.cap = cv2.VideoCapture(0)
         self.current_tag = ""
         self.current_action = ""
+        print("running")
 
     def update_action(self, x, y):
         if x > 500 and self.current_tag == self.right_tag:
@@ -27,7 +28,7 @@ class AprilTag:
         return self.current_action
 
     def detect_tag(self):
-
+        print("detect_tag")
         # load the input image and convert it to grayscale
         #print("[INFO] loading image...")
         ret, frame = self.cap.read()
@@ -40,6 +41,9 @@ class AprilTag:
         results = detector.detect(gray)
         #print("[INFO] {} total AprilTags detected".format(len(results)))
         # loop over the AprilTag detection results
+        if len(results) < 1:
+            self.current_tag = "none"
+            self.current_action = "none"
 
         for r in results:
             cx = r.center[0]

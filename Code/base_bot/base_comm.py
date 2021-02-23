@@ -15,8 +15,12 @@ class TCP_COMM:
 
     def send_data(self, new_data):
         self.MESSAGE = new_data
+        #self.small_bot = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        #self.small_bot.connect((self.TCP_IP, self.TCP_PORT))
         self.small_bot.send(self.MESSAGE)
         data = self.small_bot.recv(self.BUFFER_SIZE)
         print("received data:", data)
+
+    def close_conn(self):
         self.small_bot.close()
 

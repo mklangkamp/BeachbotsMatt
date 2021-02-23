@@ -15,14 +15,18 @@ KNOWN_WIDTH = 0.0975
 '''
 
 right_tag = "tag36h11"
-lef_tag = "tagStandard41h12"
-back_tag = "tagStandard52h13"
+lef_tag = "tag16h5"
+back_tag = "tag25h9"
 
-small_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
 april_tag_recognizer = AprilTag(right_tag, lef_tag, back_tag)
+small_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
+#i = 0 
+
 
 while True:
     april_tag_recognizer.detect_tag()
     april_tag_pos = april_tag_recognizer.get_action()
     print(april_tag_pos)
     small_bot.send_data(april_tag_pos)
+    #i += 1
+small_bot.close_conn()
