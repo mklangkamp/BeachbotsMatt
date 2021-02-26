@@ -1,5 +1,5 @@
 #from vision import VideoStream
-from Vision import Detection
+from Code.small_bot.Vision import Detection
 #from Arm import Arm
 #from Testy import Testy
 
