@@ -21,7 +21,7 @@ class Arm:
         self.shoulder_current = 0.0
         self.STEP_ANGLE = 0.035 #degrees per step
         self.servo = ServoController(self.GRIPPER, self.ELBOW, self.BUCKET)
-        self.DOWN_POSE_ELBOW = 5300
+        self.DOWN_POSE_ELBOW = 4600 #original 5300 
         self.MID_POSE_ELBOW = 6500
         self.UP_POSE_ELBOW = 8000
         self.calibrate()
@@ -65,9 +65,9 @@ class Arm:
     #    return pressed
         #print(GPIO.input(self.SWITCH))
 
-def pickup(self, readypick):
+    def pickup(self, readypick):
         if not readypick:
-            self.move_shoulder_angle(30)
+            self.move_shoulder_angle(45) #original 30 changed for camera 
             self.servo.gripper(True)
             self.usleep(1000)
             self.servo.elbow(self.DOWN_POSE_ELBOW)

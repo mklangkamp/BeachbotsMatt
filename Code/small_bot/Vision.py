@@ -15,7 +15,7 @@ import importlib.util
 # Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
 class VideoStream:
     """Camera object that controls video streaming from the Picamera"""
-    def __init__(self,resolution=(320,240),framerate=30): #was 640,480 framerate was 30
+    def __init__(self,resolution=(640,360),framerate=30): #was 640,480 framerate was 30
         # Initialize the PiCamera and the camera image stream
         self.stream = cv2.VideoCapture(0)
         ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
@@ -54,7 +54,7 @@ class VideoStream:
         self.stopped = True
 
 class Detection:
-    def __init__(self):
+    def __init__(self, resolution):
         self.object = "test"
         self.object_area = 0.0
         MODEL_NAME = 'TFLite_model' #'TFLite_Edge'
@@ -62,7 +62,9 @@ class Detection:
         LABELMAP_NAME = 'labelmap.txt'
         self.min_conf_threshold = 0.5
         self.curr_object = ''
-        current_res = '320x240'#'512x512'
+        self.objectArea = 0
+        self.coordinates = 0,0
+        current_res = resolution#'512x512'
         resW, resH = current_res.split('x')
         self.imW, self.imH = int(resW), int(resH)
         use_TPU = True       
@@ -132,11 +134,17 @@ class Detection:
         self.freq = cv2.getTickFrequency()
 
         # Initialize video stream
-        self.videostream = VideoStream(resolution=(self.imW,self.imH),framerate=60).start() #framerate was 30
+        self.videostream = VideoStream(resolution=(self.imW,self.imH),framerate=30).start() #framerate was 30
         time.sleep(1)
 
     def get_current_object(self):
         return self.curr_object
+
+    def get_current_object_area(self):
+        return self.objectArea 
+
+    def get_current_center(self):
+        return self.coordinates
     
     def detect_litter(self):
         
@@ -182,12 +190,16 @@ class Detection:
                 ymax = int(min(self.imH,(boxes[i][2] * self.imH)))
                 xmax = int(min(self.imW,(boxes[i][3] * self.imW)))
                 
-                cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), (10, 255, 0), 2)
+                cv2.rectangle(frame, (xmin,ymin), (xmax,ymax), (10, 255, 0), 2) 
+                #print("x-max: ", xmax, ",x-min: ",xmin, ", y-max: ",ymax, ", y-min: ",ymin)
+                #print("x-mid pt: ", xmax-xmin, ", y-mid pt: ", ymax-ymin)
+                cv2.circle(frame, (int((xmin+xmax)/2),int((ymin + ymax)/2)), radius=5, color=(0, 0, 255), thickness=-1)
 
                 # Draw label
                 object_name = self.labels[int(classes[i])] # Look up object name from "labels" array using class index
                 self.curr_object = object_name
-                
+                self.objectArea = (xmax * ymax) / 100
+                self.coordinates = int((xmin+xmax)/2), int((ymin+ymax)/2)
                 #print the name of the detected object inside of the terminal for testing purposes.
                 #print(object_name)
 
@@ -198,6 +210,7 @@ class Detection:
                 cv2.rectangle(frame, (xmin, label_ymin-labelSize[1]-10), (xmin+labelSize[0], label_ymin+baseLine-10), (255, 255, 255), cv2.FILLED) 
                 cv2.putText(frame, label, (xmin, label_ymin-7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0), 2) # Draw label text
 
+                
         '''if(object_name == "b'bottle'"):
             #Testy.moveForward(testy)
             self.objectArea = (xmax * ymax) / 100
