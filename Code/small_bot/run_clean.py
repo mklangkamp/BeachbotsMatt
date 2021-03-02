@@ -1,6 +1,7 @@
 from Chassis import Chassis
 import socket
 from time import sleep
+from DriveDetect import DriveDetect
 
 RPWMF = 22  # PWM
 RPWMB = 29
@@ -16,7 +17,11 @@ GRIPPER = 1
 ELBOW = 0
 BUCKET = 2
 
+resolution = "640x360"
+
 chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
+driveDetect = DriveDetect(chassis, resolution)
+
 current_state = b'drive'
 trash_detected = False
 trash_count = 0
@@ -35,7 +40,6 @@ print('Connection address:', addr)
 
 recieved = ""
 
-
 counter = 0
 finished_clean = False
 
@@ -53,33 +57,15 @@ while not finished_clean or trash_count < 4:
         current_state = data
 
     if current_state == b'drive':
-        chassis.driveStraightIMU(100, 100) #drive at full speed for 100ms
-
-        if trash_detected:
-            chassis.Arm.pickup(0)
-            sleep(2) #wait 2 secs
-            chassis.Arm.pickup(1)
-            trash_count += trash_count
-            trash_detected = False
-
-        if x < 0 or x > 500:
-            if last_turn != current_state:
-                current_state = b'turnright'
-            else:
-                current_state = b'turnleft'
-
-            last_turn = current_state
-
-    if current_state == b'turnleft':
+        driveDetect.cleanLitter()
+    elif current_state == b'turnleft':
         chassis.swing_turn_IMU(chassis, euler_angles, -180, 5, 50)
         if abs(-10 - euler_angles) < 0.5:
             current_state = b'drive'
-
     elif current_state == b'turnright':
         chassis.swing_turn_IMU(chassis, euler_angles, 180, 5, 50)
         if abs(10 - euler_angles) < 0.5:
             current_state = b'drive'
-
     elif current_state == b'stop':
         chassis.drive(0, 0)
         break

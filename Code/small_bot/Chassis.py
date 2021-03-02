@@ -5,6 +5,7 @@ from AdafruitIMU import AdafruitIMU
 
 from time import sleep
 
+
 class Chassis:
 
     def __init__(self, RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET):
@@ -12,16 +13,10 @@ class Chassis:
         self.RPWMB = RPWMB
         self.LPWMF = LPWMF
         self.LPWMB = LPWMB
-        self.STEP = STEP
-        self.DIR = DIR
-        self.SWITCH = SWITCH
-        self.GRIPPER = GRIPPER
-        self.ELBOW = ELBOW
-        self.BUCKET = BUCKET
         self.align_threshold = 1.5
 
         self.IMU = AdafruitIMU()
-        self.Arm = Arm(self.STEP, self.DIR, self.SWITCH, self.GRIPPER, self.ELBOW, self.BUCKET)
+        self.arm = Arm(STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
 
         GPIO.setwarnings(False)  # disable warnings
         GPIO.setmode(GPIO.BOARD)  # set pin numbering system
@@ -70,62 +65,26 @@ class Chassis:
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
 
-    '''
-    def turn_left(self, time, speed): #Turn is the angle at which one wants tu turn bot
-        for x in range(time):
-            self.pi_rpwmf.ChangeDutyCycle(speed)
-            self.pi_lpwmb.ChangeDutyCycle(speed)
-
-    def turn_right(self, time, speed): #Turn is the angle at which one wants tu turn bot
-        for x in range(time):
-            self.pi_rpwmb.ChangeDutyCycle(speed)
-            self.pi_lpwmf.ChangeDutyCycle(speed)
-
-    def turn(self, time, speed):
-        if speed > 0: #Turn right
-            for x in range(time):
-                self.pi_rpwmb.ChangeDutyCycle(speed)
-                self.pi_lpwmf.ChangeDutyCycle(speed)
-
-        elif speed < 0: #Turn left
-            for x in range(time):
-                self.pi_rpwmf.ChangeDutyCycle(abs(speed))
-                self.pi_lpwmb.ChangeDutyCycle(abs(speed))
-
-        else:
-            self.pi_rpwmf.ChangeDutyCycle(0)
-            self.pi_lpwmf.ChangeDutyCycle(0)
-            self.pi_rpwmb.ChangeDutyCycle(0)
-            self.pi_lpwmb.ChangeDutyCycle(0)
-
-    def set_motor_power(self, right, left):
-        self.pi_rpwmf.ChangeDutyCycle(right)
-        self.pi_lpwmf.ChangeDutyCycle(left)
-        self.pi_rpwmb.ChangeDutyCycle(right)
-        self.pi_lpwmb.ChangeDutyCycle(left)
-    '''
-
     def limit(self, val, minVal, maxVal):
         return min(max(val, minVal), maxVal)
 
     def point_turn_IMU(self, wantedAngle, speed):
-        #relativePointAngle = wantedAngle - self.IMU.euler_from_quaternion()   # self.IMU.angleWrap(wantedAngle - currentAngle)
-        
-         while (self.IMU.euler_from_quaternion() > wantedAngle + self.align_threshold or self.IMU.euler_from_quaternion() 
-            < wantedAngle - self.align_threshold):
-        #turn_speed = max(turn_speed, 50.0)
-        # print("error", abs(wantedAngle-currentAngle))
+        # relativePointAngle = wantedAngle - self.IMU.euler_from_quaternion()   # self.IMU.angleWrap(wantedAngle - currentAngle)
+
+        while (self.IMU.euler_from_quaternion() > wantedAngle + self.align_threshold or self.IMU.euler_from_quaternion()
+               < wantedAngle - self.align_threshold):
+            # turn_speed = max(turn_speed, 50.0)
+            # print("error", abs(wantedAngle-currentAngle))
             if wantedAngle > 0:
                 self.drive(-speed, speed)
             else:
                 self.drive(speed, -speed)
-                
+
             print("desired angle: ", wantedAngle)
             print("current angle: ", self.IMU.euler_from_quaternion())
-                
-                
-         self.drive(0,0)
-            
+
+        self.drive(0, 0)
+
     def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
         relativePointAngle = wantedAngle - currentAngle  # self.IMU.angleWrap(wantedAngle - currentAngle)
         turn_speed = (relativePointAngle / decelerationAngle) * speed
@@ -136,32 +95,24 @@ class Chassis:
         else:
             self.drive(turn_speed, 0)
 
-    '''
-    def drive_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
-        relativePointAngle = self.angleWrap(wantedAngle - currentAngle)
-        turn_speed = (relativePointAngle / decelerationAngle) * speed
-        turn_speed = self.limit(turn_speed, -speed, speed)
-        turn_speed = max(turn_speed, 50.0)
-    '''
-
     # duration in millis
     def driveStraightIMU(self, straightSpeed, curr_angle):
-        #destination = self.current_milli_time() + duration  # calculate time when destination is reached
+        # destination = self.current_milli_time() + duration  # calculate time when destination is reached
         target = curr_angle
 
-        #while self.current_milli_time() < destination:  # while destination has not been reached
+        # while self.current_milli_time() < destination:  # while destination has not been reached
 
-            # if(self.IMU.angleWrap(sensor.euler[0]) != None):
-            #    absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
-            # else:
-            #    absolute = 0
+        # if(self.IMU.angleWrap(sensor.euler[0]) != None):
+        #    absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
+        # else:
+        #    absolute = 0
         absolute = self.IMU.euler_from_quaternion()
         leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
         rightSpeed = straightSpeed + (absolute - target)
-        #print(rightSpeed, leftSpeed, absolute)
+        # print(rightSpeed, leftSpeed, absolute)
         self.drive(rightSpeed, leftSpeed)  # write to chassis
 
-        #self.drive(0, 0)  # stop when arrived at destination
+        # self.drive(0, 0)  # stop when arrived at destination
 
     def current_milli_time(self):
         return round(time.time() * 1000)

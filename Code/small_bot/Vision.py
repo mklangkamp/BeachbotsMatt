@@ -62,7 +62,7 @@ class Detection:
         LABELMAP_NAME = 'labelmap.txt'
         self.min_conf_threshold = 0.5
         self.curr_object = ''
-        self.objectArea = 0
+        #self.objectArea = 0
         self.coordinates = 0,0
         current_res = resolution#'512x512'
         resW, resH = current_res.split('x')
@@ -140,10 +140,7 @@ class Detection:
     def get_current_object(self):
         return self.curr_object
 
-    def get_current_object_area(self):
-        return self.objectArea 
-
-    def get_current_center(self):
+    def get_centroid(self):
         return self.coordinates
     
     def detect_litter(self):
@@ -198,7 +195,7 @@ class Detection:
                 # Draw label
                 object_name = self.labels[int(classes[i])] # Look up object name from "labels" array using class index
                 self.curr_object = object_name
-                self.objectArea = (xmax * ymax) / 100
+                #self.objectArea = (xmax * ymax) / 100
                 self.coordinates = int((xmin+xmax)/2), int((ymin+ymax)/2)
                 #print the name of the detected object inside of the terminal for testing purposes.
                 #print(object_name)
