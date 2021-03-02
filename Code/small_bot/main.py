@@ -3,6 +3,7 @@ from Vision import Detection
 from VisionCalculations import Calculations
 from Chassis import Chassis
 from Arm import Arm
+from time import sleep
 #from Testy import Testy
 
 # Objects
@@ -27,9 +28,11 @@ resW, resH = resolution.split('x')
 imW, imH = int(resW), int(resH)
 desired_coords = imW/2, imH/2
 
-desired_y_val = 175
-align_threshold = 15
-viewing_ang = 75
+desired_y_val = 108
+align_threshold = 5
+viewing_ang_upper = 30
+viewing_ang_lower = -30
+aligned_angle = 0
 yaw_aligned = False
 
 chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
@@ -39,26 +42,27 @@ arm = Arm(STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
 
 def align_chassis(bottle_coords):
     global yaw_aligned
+    global aligned_angle
+    #Y = (X-A)/(B-A) * (D-C) + C
+    desired_angle = (bottle_coords[0] - 0)/(imW - 0) * (viewing_ang_upper - viewing_ang_lower) + viewing_ang_lower
 
+
+    #point turn to desired angle
     if not yaw_aligned:
-        desired_angle = (bottle_coords[0])/(imW) * viewing_ang - (viewing_ang/2)
-    else:
-        desired_angle = chassis.IMU.euler_from_quaternion()
+        chassis.point_turn_IMU(desired_angle, 20)
+        aligned_angle = chassis.IMU.euler_from_quaternion()
+        yaw_aligned = True
+    
 
-    while (chassis.IMU.euler_from_quaternion() > desired_angle + align_threshold or chassis.IMU.euler_from_quaternion() 
-    < desired_angle - align_threshold):
+    #print("turning...")
 
-        #point turn to desired angle
-        chassis.point_turn_IMU(desired_angle, desired_angle-5, 80)
-
-    yaw_aligned = True
 
     if bottle_coords[1]<(desired_y_val-align_threshold):
         #drive forward
-        chassis.drive(80,80)
+        chassis.driveStraightIMU(20, aligned_angle)
     elif bottle_coords[1]>(desired_y_val+align_threshold):
         #drive backwards
-        chassis.drive(-80,-80)
+        chassis.driveStraightIMU(-20, aligned_angle)
     else:
         print("ALIGNED")
         chassis.drive(0,0)
@@ -67,21 +71,33 @@ def align_chassis(bottle_coords):
     return False
         
         
+first_detection = True
 
-'''
 while True:
+  
     object_detect.detect_litter()
+    
+    chassis.driveStraightIMU(20, 0)
     
     if object_detect.get_current_object() == 'bottle':
         
-        print(object_detect.get_current_object())
-        print(object_detect.get_current_object_area())
+        if first_detection == True:
+            chassis.drive(0,0)
+            sleep(2)
+            first_detection = False
+            
+            
+        #print(object_detect.get_current_object())
+        #print(object_detect.get_current_object_area())
         bottle_coords = object_detect.get_current_center()
-        print(bottle_coords)
+        #print(bottle_coords)
         if align_chassis(bottle_coords):
             break
-'''
-arm.pickup(False)        
+            
+   
+
+    
+arm.pickup()
 
 '''
     if(object_detect.object == 'bottle'):

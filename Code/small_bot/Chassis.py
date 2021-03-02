@@ -18,6 +18,7 @@ class Chassis:
         self.GRIPPER = GRIPPER
         self.ELBOW = ELBOW
         self.BUCKET = BUCKET
+        self.align_threshold = 1.5
 
         self.IMU = AdafruitIMU()
         self.Arm = Arm(self.STEP, self.DIR, self.SWITCH, self.GRIPPER, self.ELBOW, self.BUCKET)
@@ -107,14 +108,24 @@ class Chassis:
     def limit(self, val, minVal, maxVal):
         return min(max(val, minVal), maxVal)
 
-    def point_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
-        relativePointAngle = wantedAngle - currentAngle  # self.IMU.angleWrap(wantedAngle - currentAngle)
-        turn_speed = (relativePointAngle / decelerationAngle) * speed
-        turn_speed = self.limit(turn_speed, -speed, speed)
-        turn_speed = max(turn_speed, 50.0)
+    def point_turn_IMU(self, wantedAngle, speed):
+        #relativePointAngle = wantedAngle - self.IMU.euler_from_quaternion()   # self.IMU.angleWrap(wantedAngle - currentAngle)
+        
+         while (self.IMU.euler_from_quaternion() > wantedAngle + self.align_threshold or self.IMU.euler_from_quaternion() 
+            < wantedAngle - self.align_threshold):
+        #turn_speed = max(turn_speed, 50.0)
         # print("error", abs(wantedAngle-currentAngle))
-        self.drive(-turn_speed, turn_speed)
-
+            if wantedAngle > 0:
+                self.drive(-speed, speed)
+            else:
+                self.drive(speed, -speed)
+                
+            print("desired angle: ", wantedAngle)
+            print("current angle: ", self.IMU.euler_from_quaternion())
+                
+                
+         self.drive(0,0)
+            
     def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
         relativePointAngle = wantedAngle - currentAngle  # self.IMU.angleWrap(wantedAngle - currentAngle)
         turn_speed = (relativePointAngle / decelerationAngle) * speed
@@ -134,23 +145,23 @@ class Chassis:
     '''
 
     # duration in millis
-    def driveStraightIMU(self, straightSpeed, duration):
-        destination = self.current_milli_time() + duration  # calculate time when destination is reached
-        target = 0
+    def driveStraightIMU(self, straightSpeed, curr_angle):
+        #destination = self.current_milli_time() + duration  # calculate time when destination is reached
+        target = curr_angle
 
-        while self.current_milli_time() < destination:  # while destination has not been reached
+        #while self.current_milli_time() < destination:  # while destination has not been reached
 
             # if(self.IMU.angleWrap(sensor.euler[0]) != None):
             #    absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
             # else:
             #    absolute = 0
-            absolute = self.IMU.euler_from_quaternion()
-            leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
-            rightSpeed = straightSpeed + (absolute - target)
-            print(rightSpeed, leftSpeed, absolute)
-            self.drive(rightSpeed, leftSpeed)  # write to chassis
+        absolute = self.IMU.euler_from_quaternion()
+        leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
+        rightSpeed = straightSpeed + (absolute - target)
+        #print(rightSpeed, leftSpeed, absolute)
+        self.drive(rightSpeed, leftSpeed)  # write to chassis
 
-        self.drive(0, 0)  # stop when arrived at destination
+        #self.drive(0, 0)  # stop when arrived at destination
 
     def current_milli_time(self):
         return round(time.time() * 1000)
