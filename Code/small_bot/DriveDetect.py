@@ -1,5 +1,6 @@
 from Vision import Detection
 from time import sleep
+import time
 
 
 class DriveDetect:
@@ -13,11 +14,17 @@ class DriveDetect:
         self.motor_speed = 20
         self.desired_y_val = 108
         self.align_threshold = 5
-        self.viewing_ang = 60
+        # Total viewing angle of 60
+        self.viewing_ang_max = 30
+        self.viewing_ang_min = -30
         self.aligned_angle = 0
         self.yaw_aligned = False
         self.first_detection = True
         self.bottles_acquired = 0
+        self.drive_start_time = 0
+        self.drive_stop_time = 0
+        self.drive_back_time = 0
+        self.dir_driven = ''
 
     def align_chassis(self, bottle_coords):
         # global yaw_aligned
@@ -25,13 +32,14 @@ class DriveDetect:
 
         # Map bottle coordinates (camera pixel values) to imu angles wrt our camera viewing angle
         # Y = (X-A)/(B-A) * (D-C) + C
-        desired_angle = bottle_coords[0] / self.imW * self.viewing_ang / 2
+        desired_angle = (bottle_coords[0] -0) / (self.imW - 0) * (self.viewing_ang_max - self.viewing_ang_min) + self.viewing_ang_min
 
         # Point turn to desired angle
         if not self.yaw_aligned:
             self.chassis.point_turn_IMU(desired_angle, self.motor_speed)
             self.aligned_angle = self.chassis.IMU.euler_from_quaternion()
             self.yaw_aligned = True
+            self.drive_start_time = time.time()
 
         # print("turning...")
 
@@ -40,13 +48,17 @@ class DriveDetect:
         if bottle_coords[1] < (self.desired_y_val - self.align_threshold):
             # drive forward
             self.chassis.driveStraightIMU(self.motor_speed, self.aligned_angle)
+            self.dir_driven = 'forward'
         elif bottle_coords[1] > (self.desired_y_val + self.align_threshold):
             # drive backwards
             self.chassis.driveStraightIMU(-self.motor_speed, self.aligned_angle)
+            self.dir_driven = 'backwards'
         else:
             # Once the y-axis is aligned
             # Stop driving
             print("ALIGNED")
+            self.drive_stop_time = time.time()
+            self.drive_back_time = self.drive_stop_time - self.drive_start_time
             self.chassis.drive(0, 0)
             return True
 
@@ -54,7 +66,19 @@ class DriveDetect:
 
     def drive_back(self):
         # TODO: make the robot drive back and face its original heading
-        pass
+        if self.dir_driven == 'forward':
+            updated_speed = -self.motor_speed
+        elif self.dir_driven == 'backwards':
+            updated_speed = self.motor_speed
+            
+        end_time = timer() + self.drive_back_time
+        while(timer() < end_time):
+            self.chassis.driveStraightIMU(updated_speed, self.aligned_angle)
+            
+        self.aligned_angle = 0
+        self.chassis.point_turn_IMU(self.aligned_angle, self.motor_speed)
+                                    
+        #self.chassis.drive(0,0)
 
     def cleanLitter(self):
 
@@ -63,6 +87,7 @@ class DriveDetect:
 
         # Keep driving straight with heading of 0 deg
         self.chassis.driveStraightIMU(self.motor_speed, 0)
+        print("driving straight w heading of  0 ..")
 
         # If camera sees a bottle
         if self.object_detect.get_current_object() == 'bottle':
@@ -78,6 +103,7 @@ class DriveDetect:
 
             # Align the chassis and pick up
             if self.align_chassis(bottle_coords):
+                print("pick up")
                 self.chassis.arm.pickup()
                 self.bottles_acquired += 1
                 self.first_detection = True

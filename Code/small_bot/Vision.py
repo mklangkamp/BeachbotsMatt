@@ -174,7 +174,9 @@ class Detection:
         scores = self.interpreter.get_tensor(self.output_details[2]['index'])[0] # Confidence of detected objects
         #num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
 
-        
+        # If no objects are detected
+        if len(scores) == 0:
+            self.curr_object = 'None'
 
         # Loop over all detections and draw detection box if confidence is above minimum threshold
         for i in range(len(scores)):
