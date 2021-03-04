@@ -138,6 +138,7 @@ class Detection:
         time.sleep(1)
 
     def get_current_object(self):
+        #print("current object: ", self.curr_object)
         return self.curr_object
 
     def get_centroid(self):
@@ -172,11 +173,11 @@ class Detection:
         boxes = self.interpreter.get_tensor(self.output_details[0]['index'])[0] # Bounding box coordinates of detected objects
         classes = self.interpreter.get_tensor(self.output_details[1]['index'])[0] # Class index of detected objects
         scores = self.interpreter.get_tensor(self.output_details[2]['index'])[0] # Confidence of detected objects
-        #num = interpreter.get_tensor(output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
+        #num = self.interpreter.get_tensor(self.output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
 
-        # If no objects are detected
-        if len(scores) == 0:
-            self.curr_object = 'None'
+        #print("number of objects detected: ", num)
+        self.curr_object = 'None'
+        
 
         # Loop over all detections and draw detection box if confidence is above minimum threshold
         for i in range(len(scores)):
@@ -196,7 +197,12 @@ class Detection:
 
                 # Draw label
                 object_name = self.labels[int(classes[i])] # Look up object name from "labels" array using class index
-                self.curr_object = object_name
+                
+                if object_name == 'bottle':
+                    self.curr_object = object_name
+                else:
+                    self.curr_object = 'None'
+                    
                 #self.objectArea = (xmax * ymax) / 100
                 self.coordinates = int((xmin+xmax)/2), int((ymin+ymax)/2)
                 #print the name of the detected object inside of the terminal for testing purposes.

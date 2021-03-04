@@ -45,21 +45,29 @@ class Chassis:
         elif (rightSpeed < 0) and (leftSpeed < 0):  # for going backward
             self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
             self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
-        elif (rightSpeed > 0) and (leftSpeed < 0):  # for point turn right
+        elif (rightSpeed > 0) and (leftSpeed < 0):  # for point turn left
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
             self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
-        elif (rightSpeed < 0) and (leftSpeed > 0):  # for point turn left
+        elif (rightSpeed < 0) and (leftSpeed > 0):  # for point turn right
             self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
             self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
         elif (rightSpeed == 0) and (leftSpeed > 0):  # for swing turn right
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+        elif (rightSpeed == 0) and (leftSpeed < 0):  # for swing turn right
+            self.pi_rpwmf.ChangeDutyCycle(0)
+            self.pi_rpwmb.ChangeDutyCycle(0)
+            self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
         elif (rightSpeed > 0) and (leftSpeed == 0):  # for swing turn left
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
-        else:  # making robot stop
+        elif (rightSpeed < 0) and (leftSpeed == 0):  # for swing turn left
+            self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
+            self.pi_lpwmf.ChangeDutyCycle(0)
+            self.pi_lpwmb.ChangeDutyCycle(0)
+        elif rightSpeed == 0 and leftSpeed == 0:  # making robot stop
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
             self.pi_rpwmf.ChangeDutyCycle(0)
@@ -75,11 +83,16 @@ class Chassis:
                < wantedAngle - self.align_threshold):
             # turn_speed = max(turn_speed, 50.0)
             # print("error", abs(wantedAngle-currentAngle))
+            
             if wantedAngle > 0:
-                self.drive(-speed, speed)
-            else:
-                self.drive(speed, -speed)
-
+                self.drive(-speed, speed) # Turn right
+            elif wantedAngle < 0:
+                self.drive(speed, -speed) # Turn left
+            elif self.IMU.euler_from_quaternion() > 0 and wantedAngle == 0:
+                self.drive(speed, -speed) # Turn left
+            elif self.IMU.euler_from_quaternion() < 0 and wantedAngle == 0:
+                self.drive(-speed, speed) # Turn right
+                
             print("desired angle: ", wantedAngle)
             print("current angle: ", self.IMU.euler_from_quaternion())
 
@@ -109,10 +122,21 @@ class Chassis:
         absolute = self.IMU.euler_from_quaternion()
         leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
         rightSpeed = straightSpeed + (absolute - target)
+        #print("LBWS: ", leftSpeed)
+        #print("RBWS: ", rightSpeed)
         # print(rightSpeed, leftSpeed, absolute)
+        #print("desired angle: ", curr_angle)
+        #print("current angle: ", self.IMU.euler_from_quaternion())
         self.drive(rightSpeed, leftSpeed)  # write to chassis
 
         # self.drive(0, 0)  # stop when arrived at destination
+
+    #currentProgress, an int based off of the amount of swing turns the small bot has already done
+    #Example: currentProgress = 4; swing turns = 4; robot did 1 down and back 
+    #def path(self, currentProgress):
+    #    if currentProgress == :
+    #    elif:
+
 
     def current_milli_time(self):
         return round(time.time() * 1000)

@@ -46,7 +46,9 @@ finished_clean = False
 '''
 
 while True:
+    #chassis.point_turn_IMU(0, 20)
     driveDetect.cleanLitter()
+    #chassis.driveStraightIMU(-20, 5)
 '''
 while not finished_clean or trash_count < 4:
 
