@@ -5,7 +5,7 @@ import time
 
 class DriveDetect:
 
-    def __init__(self, chassis, camera_res):
+    def __init__(self, chassis, camera_res, camera_view_angle):
         self.chassis = chassis
         self.object_detect = Detection(camera_res)
         resW, resH = camera_res.split('x')
@@ -14,9 +14,8 @@ class DriveDetect:
         self.motor_speed = 20
         self.desired_y_val = 115#108
         self.align_threshold = 5
-        # Total viewing angle of 60
-        self.viewing_ang_max = 30
-        self.viewing_ang_min = -30
+        self.viewing_ang_max = camera_view_angle/2
+        self.viewing_ang_min = -camera_view_angle/2
         self.aligned_angle = 0
         self.yaw_aligned = False
         self.first_detection = True

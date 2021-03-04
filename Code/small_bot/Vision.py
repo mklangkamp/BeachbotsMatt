@@ -241,7 +241,7 @@ class Detection:
         if cv2.waitKey(1) == ord('q'):
             # Clean up
             cv2.destroyAllWindows()
-            videostream.stop()
+            self.videostream.stop()
 
 
 

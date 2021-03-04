@@ -1,6 +1,5 @@
 from Chassis import Chassis
-import socket
-from time import sleep
+from small_comm import TCP_COMM
 from DriveDetect import DriveDetect
 
 RPWMF = 22  # PWM
@@ -18,27 +17,19 @@ ELBOW = 0
 BUCKET = 2
 
 resolution = "640x360"
-
-chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
-driveDetect = DriveDetect(chassis, resolution)
-
-current_state = b'drive'
-trash_detected = False
-trash_count = 0
-last_turn = ' '
+camera_view_angle = 60
 
 TCP_IP = '192.168.4.2'
 TCP_PORT = 5005
 BUFFER_SIZE = 20  # Normally 1024, but we want fast response
 
-s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-s.bind((TCP_IP, TCP_PORT))
-s.listen(1)
+chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
+driveDetect = DriveDetect(chassis, resolution, camera_view_angle)
+base_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
 
-conn, addr = s.accept()
-print('Connection address:', addr)
-
-recieved = ""
+current_state = b'drive'
+trash_detected = False
+trash_count = 0
 
 counter = 0
 finished_clean = False
@@ -51,10 +42,8 @@ while not finished_clean or trash_count < 4:
     # Constantly updating current yaw angle
     euler_angles = chassis.IMU.euler_from_quaternion()
 
-    data = conn.recv(BUFFER_SIZE)
-
-    if data != b'middle':
-        current_state = data
+    if base_bot.get_data() != b'middle':
+        current_state = base_bot.get_data()
 
     if current_state == b'drive':
         driveDetect.cleanLitter()
@@ -70,6 +59,4 @@ while not finished_clean or trash_count < 4:
         chassis.drive(0, 0)
         break
 
-    conn.send(data)  # echo
-
-conn.close()
+base_bot.close_conn()

@@ -128,15 +128,3 @@ class Chassis:
         #print("desired angle: ", curr_angle)
         #print("current angle: ", self.IMU.euler_from_quaternion())
         self.drive(rightSpeed, leftSpeed)  # write to chassis
-
-        # self.drive(0, 0)  # stop when arrived at destination
-
-    #currentProgress, an int based off of the amount of swing turns the small bot has already done
-    #Example: currentProgress = 4; swing turns = 4; robot did 1 down and back 
-    #def path(self, currentProgress):
-    #    if currentProgress == :
-    #    elif:
-
-
-    def current_milli_time(self):
-        return round(time.time() * 1000)
