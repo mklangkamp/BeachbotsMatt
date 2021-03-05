@@ -42,29 +42,41 @@ class Chassis:
         if (rightSpeed > 0) and (leftSpeed > 0):  # for going forward
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed)  # drive right side forward
             self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+            self.pi_rpwmb.ChangeDutyCycle(0)
+            self.pi_lpwmb.ChangeDutyCycle(0)
         elif (rightSpeed < 0) and (leftSpeed < 0):  # for going backward
             self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
             self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+            self.pi_rpwmf.ChangeDutyCycle(0) 
+            self.pi_lpwmf.ChangeDutyCycle(0)
         elif (rightSpeed > 0) and (leftSpeed < 0):  # for point turn left
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
             self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+            self.pi_rpwmb.ChangeDutyCycle(0)
+            self.pi_lpwmf.ChangeDutyCycle(0)
         elif (rightSpeed < 0) and (leftSpeed > 0):  # for point turn right
             self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
             self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+            self.pi_rpwmf.ChangeDutyCycle(0)
+            self.pi_lpwmb.ChangeDutyCycle(0)
         elif (rightSpeed == 0) and (leftSpeed > 0):  # for swing turn right
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+            self.pi_lpwmb.ChangeDutyCycle(0)
         elif (rightSpeed == 0) and (leftSpeed < 0):  # for swing turn right
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+            self.pi_lpwmf.ChangeDutyCycle(0)
         elif (rightSpeed > 0) and (leftSpeed == 0):  # for swing turn left
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
+            self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
         elif (rightSpeed < 0) and (leftSpeed == 0):  # for swing turn left
             self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
+            self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
         elif rightSpeed == 0 and leftSpeed == 0:  # making robot stop
@@ -122,8 +134,8 @@ class Chassis:
         absolute = self.IMU.euler_from_quaternion()
         leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
         rightSpeed = straightSpeed + (absolute - target)
-        #print("LBWS: ", leftSpeed)
-        #print("RBWS: ", rightSpeed)
+        #print("LEFTSPEED: ", leftSpeed)
+        #print("RIGHTSPEED: ", rightSpeed)
         # print(rightSpeed, leftSpeed, absolute)
         #print("desired angle: ", curr_angle)
         #print("current angle: ", self.IMU.euler_from_quaternion())

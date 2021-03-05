@@ -12,21 +12,6 @@ class AdafruitIMU:
         self.lastAngle = 0
         self.lastQuat = 0
 
-        
-    def angleWrap(self, angle):
-        #if(angle != None):
-        #    angle = angle
-        #else:
-        #    angle = 360.0
-        if(angle == None):
-            return self.lastAngle
-        angle %= 180.0 #was 360
-        while angle > 180.0:
-            angle -= 180.0 #was 360
-        while angle < -180.0:
-            angle += 180.0 #was 360
-        self.lastAngle = angle
-        return angle
 
     def getAngle(self):
         angle = self.sensor.euler[0]
@@ -72,6 +57,7 @@ class AdafruitIMU:
         roll_x = math.degrees(roll_x)
         pitch_y = math.degrees(pitch_y)
         yaw_z = math.degrees(yaw_z)
+        
         if roll_x > 0:
             roll_x -= 180
         elif roll_x < 0:
@@ -80,4 +66,5 @@ class AdafruitIMU:
             return self.lastAngle
         else:  
             self.lastAngle = roll_x
+            
         return roll_x #pitch_y, yaw_z  # in degrees

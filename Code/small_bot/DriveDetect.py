@@ -24,6 +24,8 @@ class DriveDetect:
         self.drive_start_time = 0
         self.drive_stop_time = 0
         self.drive_back_time = 0
+        self.drive_forward_time = 0
+        self.drive_time = 0
         self.dir_driven = ''
 
     def align_chassis(self, bottle_coords):
@@ -32,7 +34,7 @@ class DriveDetect:
 
         # Map bottle coordinates (camera pixel values) to imu angles wrt our camera viewing angle
         # Y = (X-A)/(B-A) * (D-C) + C
-        desired_angle = (bottle_coords[0] -0) / (self.imW - 0) * (self.viewing_ang_max - self.viewing_ang_min) + self.viewing_ang_min
+        desired_angle = bottle_coords[0] / self.imW * (self.viewing_ang_max - self.viewing_ang_min) + self.viewing_ang_min
         self.picking_up = True
         # Point turn to desired angle
         if not self.yaw_aligned:
@@ -40,43 +42,58 @@ class DriveDetect:
             self.aligned_angle = self.chassis.IMU.euler_from_quaternion()
             self.yaw_aligned = True
             self.drive_start_time = time.time()
+            self.drive_back_time = 0
+            self.drive_forward_time = 0
+            self.drive_time = 0
 
         # print("turning...")
 
         # Once chassis is aligned with the bottle
         # Drive straight/backwards until the bottle is within a given y-axis threshold
-        print("y-axis bootle coordinates: ", bottle_coords[1])
-        print("upper align threshold: ", (self.desired_y_val + self.align_threshold))
-        print("lower align threshold: ", (self.desired_y_val - self.align_threshold))
+        #print("y-axis bootle coordinates: ", bottle_coords[1])
+        #print("upper align threshold: ", (self.desired_y_val + self.align_threshold))
+        #print("lower align threshold: ", (self.desired_y_val - self.align_threshold))
         if bottle_coords[1] < (self.desired_y_val - self.align_threshold):
             # drive forward
             self.chassis.driveStraightIMU(self.motor_speed, self.aligned_angle)
             self.dir_driven = 'forward'
             print("driving forward for alignement")
+            self.drive_back_time = time.time() - self.drive_start_time
+            print("time to drive backwards: ", self.drive_back_time)
         elif bottle_coords[1] > (self.desired_y_val + self.align_threshold):
             # drive backwards
             self.chassis.driveStraightIMU(-self.motor_speed, self.aligned_angle)
             self.dir_driven = 'backwards'
             print("driving backwards for alignement")
+            self.drive_forward_time = -(time.time() - self.drive_start_time)
+            print("time to drive forwards: ", self.drive_forward_time)
         else:
             # Once the y-axis is aligned
             # Stop driving
             print("ALIGNED")
             self.drive_stop_time = time.time()
-            self.drive_back_time = self.drive_stop_time - self.drive_start_time
+            self.drive_time = self.drive_back_time + self.drive_forward_time
+            
+            if self.drive_time < 0:
+                self.drive_time = abs(self.drive_time)
+            elif self.drive_time > 0:
+                self.drive_time = self.drive_time
+            
+            print("time to drive back/forward: ", self.drive_time)
             self.chassis.drive(0, 0)
             return True
 
         return False
 
     def drive_back(self):
-        # TODO: make the robot drive back and face its original heading
         if self.dir_driven == 'forward':
             updated_speed = -self.motor_speed
         elif self.dir_driven == 'backwards':
             updated_speed = self.motor_speed
+        else:
+            updated_speed = 0
             
-        end_time = time.time() + self.drive_back_time
+        end_time = time.time() + self.drive_time
         while(time.time() < end_time):
             self.chassis.driveStraightIMU(updated_speed, self.aligned_angle)
             
@@ -118,3 +135,5 @@ class DriveDetect:
                 self.yaw_aligned = False
                 self.picking_up = False
                 self.drive_back()
+        else:
+            self.picking_up = False
