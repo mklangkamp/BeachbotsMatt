@@ -35,6 +35,9 @@ class Chassis:
         self.pi_rpwmb.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmf.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmb.start(0)  # start PWM of required Duty Cycle
+        
+    def reset_heading(self):
+        self.IMU = AdafruitIMU()
 
     def drive(self, rightSpeed, leftSpeed):
 
