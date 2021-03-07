@@ -1,5 +1,6 @@
 # import the necessary packages
 import apriltag
+#import time
 import cv2
 
 
@@ -17,6 +18,8 @@ class AprilTag:
 	self.options = apriltag.DetectorOptions(families=self.tag_families)
         self.detector = apriltag.Detector(self.options)	
 	self.y_val_thres = 10
+	self.y_val_after_turn = 0
+	self.get_y_turn_val = False
         print("running")
 
     def update_action(self, x, y):
@@ -24,10 +27,22 @@ class AprilTag:
 		self.current_action = "drive"
 	elif (x < 120) and self.current_tag == self.left_tag: # Point turn right 
 		self.current_action = "turnright"
+		self.get_y_turn_val = True
 	elif (x < 120) and self.current_tag == self.back_tag:
+		if self.get_y_turn_val:
+			self.y_val_after_turn = y
+			#print("Y VAL AFTER TURN-------------------------------------------: ", self.y_val_after_turn)
+			#time.sleep(10)
+			self.get_y_turn_val = False
+
 		self.current_action = "drive"
-	elif self.current_action == "drive" and (y <= y + self.y_val_thres or y >= y - self.y_val_thres):
-		self.current_action = "turnright"
+
+		if y < self.y_val_after_turn - self.y_val_thres:
+			self.current_action = "turnright"
+			#print("second turn right")
+			#time.sleep(10)
+
+
 	else:
 		self.current_action = "none"
 		
@@ -47,7 +62,7 @@ class AprilTag:
         return self.current_action
 
     def detect_tag(self):
-        print("detect_tag")
+        #print("detect_tag")
         # load the input image and convert it to grayscale
         #print("[INFO] loading image...")
         ret, frame = self.cap.read()
