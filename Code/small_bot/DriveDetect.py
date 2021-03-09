@@ -35,6 +35,12 @@ class DriveDetect:
         else:
             return False
 
+    def is_full_capacity(self):
+        if self.bottles_acquired >= 4:
+            return True
+        else:
+            return False
+
     def align_chassis(self, bottle_coords):
         # global yaw_aligned
         # global aligned_angle

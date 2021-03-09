@@ -1,7 +1,7 @@
 from base_comm import TCP_COMM
 from april_tag_recognition import AprilTag
 
-TCP_IP = '192.168.4.2'
+TCP_IP = '192.168.137.210'#'192.168.4.2' ---current working w hotspot ip
 TCP_PORT = 5005
 BUFFER_SIZE = 1024
 
@@ -14,11 +14,11 @@ KNOWN_DISTANCE = 0.2
 KNOWN_WIDTH = 0.0975
 '''
 
-right_tag = "tag36h11"
-lef_tag = "tag16h5"
+right_tag = "tag25h7"
+left_tag = "tag36h11"
 back_tag = "tag25h9"
 
-april_tag_recognizer = AprilTag(right_tag, lef_tag, back_tag)
+april_tag_recognizer = AprilTag(right_tag, left_tag, back_tag)
 small_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
 #i = 0 
 

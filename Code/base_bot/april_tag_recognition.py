@@ -1,5 +1,6 @@
 # import the necessary packages
 import apriltag
+#import time
 import cv2
 
 
@@ -10,11 +11,43 @@ class AprilTag:
         self.back_tag = back_tag
         self.tag_families = self.right_tag + " " + self.left_tag + " " + self.back_tag
         self.cap = cv2.VideoCapture(0)
+	self.cam_width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH) #640 pixels wide
+	self.cam_height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT) #480 pixels tall
         self.current_tag = ""
         self.current_action = ""
+	self.options = apriltag.DetectorOptions(families=self.tag_families)
+        self.detector = apriltag.Detector(self.options)	
+	self.y_val_thres = 10
+	self.y_val_after_turn = 0
+	self.get_y_turn_val = False
         print("running")
 
     def update_action(self, x, y):
+	if (x <= 580 and x >= 120) and (self.current_tag == self.right_tag or self.current_tag == self.left_tag):
+		self.current_action = "drive"
+	elif (x < 120) and self.current_tag == self.left_tag: # Point turn right 
+		self.current_action = "turnright"
+		self.get_y_turn_val = True
+	elif (x < 120) and self.current_tag == self.back_tag:
+		if self.get_y_turn_val:
+			self.y_val_after_turn = y
+			#print("Y VAL AFTER TURN-------------------------------------------: ", self.y_val_after_turn)
+			#time.sleep(10)
+			self.get_y_turn_val = False
+
+		self.current_action = "drive"
+
+		if y < self.y_val_after_turn - self.y_val_thres:
+			self.current_action = "turnright"
+			#print("second turn right")
+			#time.sleep(10)
+
+
+	else:
+		self.current_action = "none"
+		
+	
+	'''
         if x > 500 and self.current_tag == self.right_tag:
             self.current_action = "turnright"
         elif x < 100 and self.current_tag == self.left_tag:
@@ -23,12 +56,13 @@ class AprilTag:
             self.current_action = "stop"
         else:
             self.current_action = "middle"
+	'''
 
     def get_action(self):
         return self.current_action
 
     def detect_tag(self):
-        print("detect_tag")
+        #print("detect_tag")
         # load the input image and convert it to grayscale
         #print("[INFO] loading image...")
         ret, frame = self.cap.read()
@@ -36,9 +70,8 @@ class AprilTag:
         # define the AprilTags detector options and then detect the AprilTags
         # in the input image
         #print("[INFO] detecting AprilTags...")
-        options = apriltag.DetectorOptions(families=self.tag_families)
-        detector = apriltag.Detector(options)
-        results = detector.detect(gray)
+        
+        results = self.detector.detect(gray)
         #print("[INFO] {} total AprilTags detected".format(len(results)))
         # loop over the AprilTag detection results
         if len(results) < 1:
