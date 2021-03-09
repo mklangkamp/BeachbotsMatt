@@ -35,6 +35,9 @@ class Chassis:
         self.pi_rpwmb.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmf.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmb.start(0)  # start PWM of required Duty Cycle
+        
+    def reset_heading(self):
+        self.IMU = AdafruitIMU()
 
     def drive(self, rightSpeed, leftSpeed):
 
@@ -105,10 +108,33 @@ class Chassis:
             elif self.IMU.euler_from_quaternion() < 0 and wantedAngle == 0:
                 self.drive(-speed, speed) # Turn right
                 
-            print("desired angle: ", wantedAngle)
-            print("current angle: ", self.IMU.euler_from_quaternion())
+            #print("desired angle: ", wantedAngle)
+            #print("current angle: ", self.IMU.euler_from_quaternion())
 
         self.drive(0, 0)
+        
+        
+    def point_turn_basebot(self, wantedAngle, speed):
+        # relativePointAngle = wantedAngle - self.IMU.euler_from_quaternion()   # self.IMU.angleWrap(wantedAngle - currentAngle)
+        current_angle = self.IMU.euler_from_quaternion()
+        
+        if(current_angle > wantedAngle + self.align_threshold or current_angle < wantedAngle - self.align_threshold):
+            # turn_speed = max(turn_speed, 50.0)
+            # print("error", abs(wantedAngle-currentAngle))
+            
+            if wantedAngle > 0:
+                self.drive(-speed, speed) # Turn right
+            elif wantedAngle < 0:
+                self.drive(speed, -speed) # Turn left
+            elif self.IMU.euler_from_quaternion() > 0 and wantedAngle == 0:
+                self.drive(speed, -speed) # Turn left
+            elif self.IMU.euler_from_quaternion() < 0 and wantedAngle == 0:
+                self.drive(-speed, speed) # Turn right
+        else:
+            self.drive(0,0)
+            return True
+        
+        return False
 
     def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
         relativePointAngle = wantedAngle - currentAngle  # self.IMU.angleWrap(wantedAngle - currentAngle)
@@ -134,8 +160,8 @@ class Chassis:
         absolute = self.IMU.euler_from_quaternion()
         leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
         rightSpeed = straightSpeed + (absolute - target)
-        #print("LEFTSPEED: ", leftSpeed)
-        #print("RIGHTSPEED: ", rightSpeed)
+        print("LEFTSPEED: ", leftSpeed)
+        print("RIGHTSPEED: ", rightSpeed)
         # print(rightSpeed, leftSpeed, absolute)
         #print("desired angle: ", curr_angle)
         #print("current angle: ", self.IMU.euler_from_quaternion())

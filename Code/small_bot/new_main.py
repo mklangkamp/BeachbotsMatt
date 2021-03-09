@@ -48,7 +48,8 @@ finished_clean = False
 
 while True:
     #chassis.point_turn_IMU(0, 20)
-    driveDetect.cleanLitter()
+    chassis.point_turn_basebot(-90, 20)
+
     #driveDetect.object_detect.detect_litter()
     #chassis.driveStraightIMU(-20, 5)
 '''

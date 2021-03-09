@@ -22,11 +22,16 @@ class TCP_COMM:
         if not self.data:
             return None
 
+        if self.data == b'turnrightdrive':
+            self.data = b'drive'
         print("Recieved data:", self.data)
 
         self.conn.send(self.data) #echo
 
         return self.data
+
+    def send_turning_confirmation(self, data):
+        self.conn.send(data) #echo
 
     def close_conn(self):
         self.conn.close()
