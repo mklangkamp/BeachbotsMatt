@@ -1,6 +1,7 @@
 from Chassis import Chassis
 from small_comm import TCP_COMM
 from DriveDetect import DriveDetect
+# from support.Constants import *
 
 RPWMF = 22  # PWM
 RPWMB = 29
@@ -36,19 +37,9 @@ finished_clean = False
 
 while not finished_clean or not driveDetect.is_full_capacity():
 
-
-    # Constantly updating current yaw angle
-    # euler_angles = chassis.IMU.euler_from_quaternion()
-
-    # if base_bot.get_data() != b'middle':
-    #    current_state = base_bot.get_data()
-
     current_state = base_bot.get_data()
-
     
     if current_state == b'drive':
-        #pass
-        
         driveDetect.cleanLitter()
     elif current_state == b'turnright' or current_state == b'turnleft':
 
@@ -61,9 +52,10 @@ while not finished_clean or not driveDetect.is_full_capacity():
             base_bot.get_data()
             base_bot.send_turning_confirmation(b'done_turning')
             chassis.reset_heading()
+    elif current_state == b'stop':
+        finished_clean = True
     elif current_state == b'none':
         chassis.drive(0, 0)
-
 
 base_bot.close_conn()
 

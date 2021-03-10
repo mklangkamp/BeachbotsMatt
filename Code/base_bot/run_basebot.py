@@ -21,13 +21,9 @@ back_tag = "tag25h9"
 small_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
 april_tag_recognizer = AprilTag(right_tag, left_tag, back_tag, small_bot)
 
-#i = 0 
-
-
 while True:
     april_tag_recognizer.detect_tag()
     smallbot_action = april_tag_recognizer.get_action()
     print(smallbot_action)
     small_bot.send_data(smallbot_action)
-    #i += 1
 small_bot.close_conn()

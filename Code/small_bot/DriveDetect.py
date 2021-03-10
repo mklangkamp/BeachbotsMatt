@@ -35,12 +35,6 @@ class DriveDetect:
         else:
             return False
 
-    def is_full_capacity(self):
-        if self.bottles_acquired >= 4:
-            return True
-        else:
-            return False
-
     def align_chassis(self, bottle_coords):
         # global yaw_aligned
         # global aligned_angle
@@ -107,7 +101,8 @@ class DriveDetect:
             updated_speed = 0
             
         end_time = time.time() + self.drive_time
-        while(time.time() < end_time):
+
+        while time.time() < end_time:
             self.chassis.driveStraightIMU(updated_speed, self.aligned_angle)
             
         self.aligned_angle = 0
