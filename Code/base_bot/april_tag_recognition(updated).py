@@ -12,19 +12,19 @@ class AprilTag:
         self.small_bot = small_bot
         self.tag_families = self.right_tag + " " + self.left_tag + " " + self.back_tag
         self.cap = cv2.VideoCapture(0)
-	self.cam_width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH) #640 pixels wide
-	self.cam_height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT) #480 pixels tall
+        self.cam_width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH) #640 pixels wide
+        self.cam_height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT) #480 pixels tall
         self.current_tag = ""
         self.current_action = ""
-	self.options = apriltag.DetectorOptions(families=self.tag_families)
+        self.options = apriltag.DetectorOptions(families=self.tag_families)
         self.detector = apriltag.Detector(self.options)	
-	self.y_val_thres = 10
-	self.y_val_after_turn = 0
-	self.get_y_turn_val = False
-	self.tags_in_view = range(5)
-	self.canUpdate_act = True
-	self.needs_to_drive = False
-	self.first_drive = True
+        self.y_val_thres = 10
+        self.y_val_after_turn = 0
+        self.get_y_turn_val = False
+        self.tags_in_view = range(5)
+        self.canUpdate_act = True
+        self.needs_to_drive = False
+        self.first_drive = True
         
         
     
@@ -38,16 +38,28 @@ class AprilTag:
     
     def update_action(self, x, y):
 	print("CURRENT TAG IN VIEW: ",self.tags_in_view) 
-	if (x <= 580 and x >= 120) and (self.current_tag == self.right_tag or self.current_tag == self.left_tag) and (self.first_drive or self.needs_to_drive):
+	
+	if (x <= 580 and x >= 120) 
+	    and (self.current_tag == self.right_tag or self.current_tag == self.left_tag) 
+        and (self.first_drive or self.needs_to_drive):
+		
 		self.current_action = "drive"
-	elif ((x < 120) and self.current_tag == self.left_tag) or (self.check_turn() != 'done_turning' and self.current_tag == self.back_tag and not self.needs_to_drive): # Point turn right 
-	        self.first_drive = False
+	
+#-------------------------------- Left side of path turning -----------------------------------
+	elif ((x < 120) and self.current_tag == self.left_tag)
+	    or (self.check_turn() != 'done_turning' and self.current_tag == self.back_tag 
+        and not self.needs_to_drive): # Point turn right 
+        
+        print("STARTING TURN AROUND (LEFT SIDE) PROCESS")
+        
+        self.first_drive = False
 		self.current_action = "turnright"
 		self.get_y_turn_val = True
+		
 	elif (x < 120) and self.current_tag == self.back_tag and self.needs_to_drive:
 		if self.get_y_turn_val:
 			self.y_val_after_turn = y
-			#print("Y VAL AFTER TURN-------------------------------------------: ", self.y_val_after_turn)
+			#print("Y VAL AFTER TURN-------------------------------------------: ",                 self.y_val_after_turn)
 			#time.sleep(10)
 			self.get_y_turn_val = False
 
@@ -59,12 +71,48 @@ class AprilTag:
 			print("second turn right")
 			#time.sleep(10)
     
-	elif ((x < 120) and self.current_tag == self.back_tag) or (self.check_turn() != 'done_turning' and self.current_tag == self.right_tag and not self.needs_to_drive): # Point turn left 
-    		self.current_action = "turnright"
-	else:
-		self.current_action = "none"
+	elif ((x < 120) and self.current_tag == self.back_tag) 
+        or (self.check_turn() != 'done_turning' and self.current_tag == self.right_tag 
+        and not self.needs_to_drive): # Point turn left 
+    	self.current_action = "turnright"
 		
-	
+
+# --------------------- Right side of path turning ------------------------------------------
+	#Right side of path turning
+	elif ((x > 580) and self.current_tag == self.right_tag)
+	    or (self.check_turn() != 'done_turning' and self.current_tag == self.back_tag 
+        and not self.needs_to_drive): # Point turn right 
+       
+        print("STARTING TURN AROUND (RIGHT SIDE) PROCESS")
+       
+        self.first_drive = False
+		self.current_action = "turnleft"
+		self.get_y_turn_val = True
+
+    elif (x > 580) and self.current_tag == self.back_tag and self.needs_to_drive:
+		if self.get_y_turn_val:
+			self.y_val_after_turn = y
+			self.get_y_turn_val = False
+
+		self.current_action = "drive"
+
+		if y < self.y_val_after_turn - self.y_val_thres:
+			self.current_action = "turnleft"
+			self.needs_to_drive = False
+			print("second turn left")
+
+	elif ((x > 580) and self.current_tag == self.back_tag) 
+        or (self.check_turn() != 'done_turning' and self.current_tag == self.left_tag 
+        and not self.needs_to_drive): # Point turn left 
+    	self.current_action = "turnleft"
+
+
+    else:
+		self.current_action = "none"
+
+
+
+
 	'''
         if x > 500 and self.current_tag == self.right_tag:
             self.current_action = "turnright"
@@ -140,3 +188,4 @@ class AprilTag:
         cv2.imshow("Image", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
+
