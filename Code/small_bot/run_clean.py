@@ -50,9 +50,12 @@ while not finished_clean or not driveDetect.is_full_capacity():
         #pass
         
         driveDetect.cleanLitter()
-    elif current_state == b'turnright':
+    elif current_state == b'turnright' or current_state == b'turnleft':
 
-        isDoneTurning = chassis.point_turn_basebot(90, 20)
+        if current_state == b'turnright':
+            isDoneTurning = chassis.point_turn_basebot(90, 20)
+        elif current_state == b'turnleft':
+            isDoneTurning = chassis.point_turn_basebot(-90, 20)
         
         if isDoneTurning:
             base_bot.get_data()
