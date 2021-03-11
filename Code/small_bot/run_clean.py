@@ -53,6 +53,7 @@ while not finished_clean or not driveDetect.is_full_capacity():
             base_bot.send_turning_confirmation(b'done_turning')
             chassis.reset_heading()
     elif current_state == b'stop':
+        chassis.drive(0, 0)
         finished_clean = True
     elif current_state == b'none':
         chassis.drive(0, 0)

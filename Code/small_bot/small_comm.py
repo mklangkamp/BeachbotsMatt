@@ -22,8 +22,8 @@ class TCP_COMM:
         if not self.data:
             return None
 
-        if self.data == b'turnrightdrive':
-            self.data = b'drive'
+        if self.data == b'turnrightnone' or self.data == b'turnleftnone':
+            self.data = b'none'
         print("Recieved data:", self.data)
 
         self.conn.send(self.data) #echo

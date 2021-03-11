@@ -160,8 +160,8 @@ class Chassis:
         absolute = self.IMU.euler_from_quaternion()
         leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
         rightSpeed = straightSpeed + (absolute - target)
-        print("LEFTSPEED: ", leftSpeed)
-        print("RIGHTSPEED: ", rightSpeed)
+        # print("LEFTSPEED: ", leftSpeed)
+        # print("RIGHTSPEED: ", rightSpeed)
         # print(rightSpeed, leftSpeed, absolute)
         #print("desired angle: ", curr_angle)
         #print("current angle: ", self.IMU.euler_from_quaternion())
