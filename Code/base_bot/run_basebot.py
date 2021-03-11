@@ -1,5 +1,5 @@
 from base_comm import TCP_COMM
-from april_tag_recognition import AprilTag
+from apriltag_detection import AprilTag
 
 TCP_IP = '192.168.137.210'#'192.168.4.2' ---current working w hotspot ip
 TCP_PORT = 5005
