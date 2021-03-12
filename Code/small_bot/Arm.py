@@ -53,6 +53,7 @@ class Arm:
         '''
 
     def calibrate(self):
+        self.servo.bucket(False)
         self.servo.elbow(self.UP_POSE_ELBOW) #UP position for elbow
         self.servo.gripper(False) #Closed position for gripper
         GPIO.output(self.DIR, GPIO.LOW)

@@ -1,6 +1,7 @@
 from Chassis import Chassis
 from small_comm import TCP_COMM
 from DriveDetect import DriveDetect
+from time import sleep
 # from support.Constants import *
 
 RPWMF = 22  # PWM
@@ -52,9 +53,15 @@ while not finished_clean or not driveDetect.is_full_capacity():
             base_bot.get_data()
             base_bot.send_turning_confirmation(b'done_turning')
             chassis.reset_heading()
+    elif current_state == b'drivebackwards':
+        chassis.driveStraightIMU(-20, 0)
     elif current_state == b'stop':
         chassis.drive(0, 0)
         finished_clean = True
+    elif current_state == b'dump':
+        chassis.arm.servo.bucket(True)      
+        sleep(3) 
+        chassis.arm.servo.bucket(False)
     elif current_state == b'none':
         chassis.drive(0, 0)
 
