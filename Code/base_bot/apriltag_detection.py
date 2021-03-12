@@ -14,6 +14,13 @@ class AprilTag:
         self.cap = cv2.VideoCapture(0)
         self.cam_width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)  # 640 pixels wide
         self.cam_height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # 480 pixels tall
+        # actual distance of the apriltag when pointed 0.6m away from the camera
+        KNOWN_DISTANCE = 0.6
+        # width of the apiltag in meters
+        self.KNOWN_WIDTH = 0.1651
+        # width of the apriltag in pixels when pointed 0.6m away from the camera
+        KNOWN_PXL_WIDTH = 170
+        self.focalLength = (KNOWN_PXL_WIDTH * KNOWN_DISTANCE) / self.KNOWN_WIDTH
         self.current_tag = ""
         self.current_action = ""
         self.options = apriltag.DetectorOptions(families=self.tag_families)
@@ -23,9 +30,14 @@ class AprilTag:
         self.path_states = 'FORWARD', 'TURN_RIGHT', 'CREEP_FORWARD', 'TURN_RIGHT', 'FORWARD', 'TURN_LEFT', 'CREEP_FORWARD', 'TURN_LEFT', 'FORWARD', 'STOP'
         self.status = 'FORWARD'
 
-        self.y_val_thres = 10
+        self.dist_to_travel = 6 # in inches
+        self.dist_after_turn = 0 # in inches
         self.tags_in_view = []
         # self.canUpdate_act = True
+        
+    def distance_to_camera(self, perWidth):
+	# compute and return the distance from the maker to the camera in inches
+	return ((self.KNOWN_WIDTH * self.focalLength) / perWidth)*39.37
 
     def is_done_turning(self):
         check = self.small_bot.is_done_turning()
@@ -37,16 +49,17 @@ class AprilTag:
         self.current_state_index += 1
         self.status = self.path_states[self.current_state_index]
 
-    def update_action(self, status, x, y):
+    def update_action(self, status, x, y, dist_in):
         # print("TAGS IN VIEW:", self.tags_in_view)
         print("CURRENT STATE:", self.status)
+        print("DISTANCE IN IN: ", dist_in)
 
         if status == 'STARTUP':
             raw_input('Press Enter to continue...')
             self.next_state()
 
         elif status == 'FORWARD':
-            if 530 >= x >= 120 and (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
+            if 550 >= x >= 120 and (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
                 self.current_action = "drive"
             else:
                 self.next_state()
@@ -56,13 +69,13 @@ class AprilTag:
                 self.current_action = 'turnright'
             else:
 		self.current_action = 'none'
-                self.y_val_after_turn = y
-		print("CAPTURED Y VAL AT Y: ", self.y_val_after_turn)
+                self.dist_after_turn = dist_in
+		print("CAPTURED DIST: ", self.dist_after_turn)
                 self.next_state()
 
         elif status == 'CREEP_FORWARD':
             print("current Y VAL AT Y: ", y)
-            if (y > self.y_val_after_turn - self.y_val_thres) and self.current_tag == self.back_tag:
+            if (dist_in < self.dist_after_turn + self.dist_to_travel) and self.current_tag == self.back_tag:
                 self.current_action = "drive"
 		print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
             else:
@@ -75,8 +88,8 @@ class AprilTag:
                 self.current_action = 'turnleft'
             else:
 		self.current_action = 'none'
-                self.y_val_after_turn = y
-                print("CAPTURED Y VAL AT Y: ", self.y_val_after_turn)
+                self.dist_after_turn = dist_in
+                print("CAPTURED DIST: ", self.dist_after_turn)
                 self.next_state()
 
         elif status == 'STOP':
@@ -136,7 +149,9 @@ class AprilTag:
             tagFamily = r.tag_family.decode("utf-8")
             cv2.putText(frame, tagFamily, (ptA[0], ptA[1] - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             # print("[INFO] tag family: {}".format(tagFamily))
-
+            pxl_width = int(ptB[0])-int(ptA[0])
+            dist_in = self.distance_to_camera(pxl_width)
+            
             # del self.tags_in_view[:]
             '''
             for i in range(len(results)):
@@ -146,14 +161,14 @@ class AprilTag:
             self.current_tag = tagFamily
             
             if self.status == 'CREEP_FORWARD' and (tagFamily == self.back_tag):
-                print("ATTEMPTING TO UPDATE STATUS")
-                self.update_action(self.status, cx, cy)
+                print("ATTEMPTING TO UPDATE STATUS 1")
+                self.update_action(self.status, cx, cy, dist_in)
             if self.status == 'CREEP_FORWARD' and (tagFamily == self.right_tag):
-                print("ATTEMPTING TO UPDATE STATUS")
+                print("ATTEMPTING TO UPDATE STATUS 2")
                 pass
             else:
-                print("ATTEMPTING TO UPDATE STATUS")
-                self.update_action(self.status, cx, cy)
+                print("ATTEMPTING TO UPDATE STATUS 3")
+                self.update_action(self.status, cx, cy, dist_in)
 
         # show the output image after AprilTag detection
         cv2.imshow("Image", frame)
