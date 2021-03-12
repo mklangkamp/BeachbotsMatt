@@ -27,7 +27,8 @@ class AprilTag:
         self.detector = apriltag.Detector(self.options)
 
         self.current_state_index = 0
-        self.path_states = 'FORWARD', 'TURN_RIGHT', 'CREEP_FORWARD', 'TURN_RIGHT', 'FORWARD', 'TURN_LEFT', 'CREEP_FORWARD', 'TURN_LEFT', 'FORWARD', 'STOP'
+        self.path_states = 'FORWARD', 'TURN_RIGHT', 'CREEP_FORWARD', 'TURN_RIGHT', 'FORWARD', 'TURN_LEFT', 'CREEP_FORWARD', 'TURN_LEFT', 'FORWARD','TURN_RIGHT','CREEP_BACKWARD','TURN_LEFT','BACKWARDS','HALT','DUMP','STOP'
+        self.times_driven_forward = self.path_states.count('CREEP_FORWARD')
         self.status = 'FORWARD'
 
         self.dist_to_travel = 6 # in inches
@@ -37,7 +38,10 @@ class AprilTag:
         
     def distance_to_camera(self, perWidth):
 	# compute and return the distance from the maker to the camera in inches
-	return ((self.KNOWN_WIDTH * self.focalLength) / perWidth)*39.37
+	if perWidth == 0:
+	        return None
+        return ((self.KNOWN_WIDTH * self.focalLength) / perWidth)*39.37
+        
 
     def is_done_turning(self):
         check = self.small_bot.is_done_turning()
@@ -63,7 +67,13 @@ class AprilTag:
                 self.current_action = "drive"
             else:
                 self.next_state()
-
+                
+        elif status == 'BACKWARDS':
+            if x <= 550 and (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
+                self.current_action = "drivebackwards"
+            else:
+                self.next_state()
+                
         elif status == 'TURN_RIGHT':
             if self.is_done_turning() != 'done_turning':
                 self.current_action = 'turnright'
@@ -75,6 +85,7 @@ class AprilTag:
 
         elif status == 'CREEP_FORWARD':
             print("current Y VAL AT Y: ", y)
+            # 70.45 < 70.45 + 6 == 70.45 < 76.45
             if (dist_in < self.dist_after_turn + self.dist_to_travel) and self.current_tag == self.back_tag:
                 self.current_action = "drive"
 		print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
@@ -91,9 +102,26 @@ class AprilTag:
                 self.dist_after_turn = dist_in
                 print("CAPTURED DIST: ", self.dist_after_turn)
                 self.next_state()
+        
+        elif status == 'CREEP_BACKWARD':
+            print("current Y VAL AT Y: ", y)
+            if (dist_in > self.dist_after_turn - (self.dist_to_travel*self.times_driven_forward)) and self.current_tag == self.back_tag:
+                self.current_action = "drivebackwards"
+		print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
+            else:
+		print("----------GONE TO NEXT STATE----------")
+                self.next_state()
 
         elif status == 'STOP':
             self.current_action = 'stop'
+        
+        elif status == 'HALT':
+            self.current_action = 'stop' 
+            self.next_state()
+            
+        elif status == 'DUMP':
+            self.current_action = 'dump'
+            self.next_state()
 
         else:
             self.current_action = 'none'
