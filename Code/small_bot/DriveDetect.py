@@ -123,7 +123,7 @@ class DriveDetect:
         # If camera sees a bottle
         #print("current object: ", self.object_detect.get_current_object())
         
-        if self.object_detect.get_current_object() == 'bottle':
+        if self.object_detect.get_current_object() == 'bottle' or self.object_detect.get_current_object() == 'can':
 
             # First come to a full stop
             if self.first_detection:

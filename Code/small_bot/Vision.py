@@ -60,10 +60,10 @@ class Detection:
     def __init__(self, resolution):
         self.object = "test"
         self.object_area = 0.0
-        MODEL_NAME = 'TFLite_model'  # 'TFLite_Edge'
+        MODEL_NAME = 'BottlesCan_model'  # 'TFLite_Edge'
         GRAPH_NAME = 'detect.tflite'  # 'edgetpu.tflite'
         LABELMAP_NAME = 'labelmap.txt'
-        self.min_conf_threshold = 0.5
+        self.min_conf_threshold = 0.78
         self.curr_object = ''
         # self.objectArea = 0
         self.coordinates = 0, 0
