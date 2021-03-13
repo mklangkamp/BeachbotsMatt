@@ -200,9 +200,11 @@ class Detection:
                            thickness=-1)
 
                 # Draw label
+
+                # Change to avoid drawing labels to 'not' objects
                 object_name = self.labels[int(classes[i])]  # Look up object name from "labels" array using class index
 
-                if object_name == 'bottle':
+                if object_name == 'bottle' or object_name == 'can':
                     self.curr_object = object_name
                 else:
                     self.curr_object = 'None'
