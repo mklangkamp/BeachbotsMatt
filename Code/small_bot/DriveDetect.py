@@ -12,7 +12,7 @@ class DriveDetect:
         self.imW, self.imH = int(resW), int(resH)
         self.desired_coords = self.imW / 2, self.imH / 2
         self.motor_speed = 20
-        self.desired_y_val = 115#108
+        self.desired_y_val = 168#115#108
         self.align_threshold = 5
         self.viewing_ang_max = camera_view_angle/2
         self.viewing_ang_min = -camera_view_angle/2

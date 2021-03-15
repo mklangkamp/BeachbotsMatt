@@ -63,7 +63,7 @@ class Detection:
         MODEL_NAME = 'BottlesCan_model'  # 'TFLite_Edge'
         GRAPH_NAME = 'detect.tflite'  # 'edgetpu.tflite'
         LABELMAP_NAME = 'labelmap.txt'
-        self.min_conf_threshold = 0.78
+        self.min_conf_threshold = 0.5
         self.curr_object = ''
         # self.objectArea = 0
         self.coordinates = 0, 0
@@ -185,43 +185,46 @@ class Detection:
         # Loop over all detections and draw detection box if confidence is above minimum threshold
         for i in range(len(scores)):
             if ((scores[i] > self.min_conf_threshold) and (scores[i] <= 1.0)):
-
-                # Get bounding box coordinates and draw box
-                # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
-                ymin = int(max(1, (boxes[i][0] * self.imH)))
-                xmin = int(max(1, (boxes[i][1] * self.imW)))
-                ymax = int(min(self.imH, (boxes[i][2] * self.imH)))
-                xmax = int(min(self.imW, (boxes[i][3] * self.imW)))
-
-                cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
-
-                # Draw centroid
-                cv2.circle(frame, (int((xmin + xmax) / 2), int((ymin + ymax) / 2)), radius=5, color=(0, 0, 255),
-                           thickness=-1)
-
-                # Draw label
-
-                # Change to avoid drawing labels to 'not' objects
+                
                 object_name = self.labels[int(classes[i])]  # Look up object name from "labels" array using class index
+                
+                if object_name != 'not': 
+                    # Get bounding box coordinates and draw box
+                    # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
+                    ymin = int(max(1, (boxes[i][0] * self.imH)))
+                    xmin = int(max(1, (boxes[i][1] * self.imW)))
+                    ymax = int(min(self.imH, (boxes[i][2] * self.imH)))
+                    xmax = int(min(self.imW, (boxes[i][3] * self.imW)))
 
-                if object_name == 'bottle' or object_name == 'can':
-                    self.curr_object = object_name
-                else:
-                    self.curr_object = 'None'
+                    cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
 
-                # self.objectArea = (xmax * ymax) / 100
-                self.coordinates = int((xmin + xmax) / 2), int((ymin + ymax) / 2)
-                # print the name of the detected object inside of the terminal for testing purposes.
-                # print(object_name)
+                    # Draw centroid
+                    cv2.circle(frame, (int((xmin + xmax) / 2), int((ymin + ymax) / 2)), radius=5, color=(0, 0, 255),
+                               thickness=-1)
 
-                label = '%s: %d%%' % (object_name, int(scores[i] * 100))  # Example: 'person: 72%'
-                labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
-                label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
-                # Draw white box to put label text in
-                cv2.rectangle(frame, (xmin, label_ymin - labelSize[1] - 10),
-                              (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255), cv2.FILLED)
-                cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
-                            2)  # Draw label text
+                    # Draw label
+
+                    # Change to avoid drawing labels to 'not' objects
+                    
+
+                    if object_name == 'bottle' or object_name == 'can':
+                        self.curr_object = object_name
+                    else:
+                        self.curr_object = 'None'
+
+                    # self.objectArea = (xmax * ymax) / 100
+                    self.coordinates = int((xmin + xmax) / 2), int((ymin + ymax) / 2)
+                    # print the name of the detected object inside of the terminal for testing purposes.
+                    # print(object_name)
+
+                    label = '%s: %d%%' % (object_name, int(scores[i] * 100))  # Example: 'person: 72%'
+                    labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
+                    label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
+                    # Draw white box to put label text in
+                    cv2.rectangle(frame, (xmin, label_ymin - labelSize[1] - 10),
+                                  (xmin + labelSize[0], label_ymin + baseLine - 10), (255, 255, 255), cv2.FILLED)
+                    cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
+                                2)  # Draw label text
 
 
         # Calculate framerate

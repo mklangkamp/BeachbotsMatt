@@ -49,9 +49,11 @@ finished_clean = False
 #chassis.arm.servo.gripper(True)
 #sleep(2)
 #chassis.arm.servo.gripper(False)
+#chassis.arm.pickup()
 
 while True:
     #chassis.point_turn_IMU(0, 20)
+
     driveDetect.cleanLitter()
 
     #driveDetect.object_detect.detect_litter()
