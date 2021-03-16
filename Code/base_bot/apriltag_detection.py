@@ -2,7 +2,7 @@
 import apriltag
 # import time
 import cv2
-
+from support.Constants import *
 
 class AprilTag:
     def __init__(self, right_tag, left_tag, back_tag, small_bot):
@@ -14,13 +14,7 @@ class AprilTag:
         self.cap = cv2.VideoCapture(0)
         self.cam_width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)  # 640 pixels wide
         self.cam_height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # 480 pixels tall
-        # actual distance of the apriltag when pointed 0.6m away from the camera
-        KNOWN_DISTANCE = 0.6
-        # width of the apiltag in meters
-        self.KNOWN_WIDTH = 0.1651
-        # width of the apriltag in pixels when pointed 0.6m away from the camera
-        KNOWN_PXL_WIDTH = 170
-        self.focalLength = (KNOWN_PXL_WIDTH * KNOWN_DISTANCE) / self.KNOWN_WIDTH
+        self.focalLength = (KNOWN_PXL_WIDTH * KNOWN_DISTANCE) / KNOWN_WIDTH
         self.current_tag = ""
         self.current_action = ""
         self.options = apriltag.DetectorOptions(families=self.tag_families)
@@ -40,7 +34,7 @@ class AprilTag:
         # compute and return the distance from the maker to the camera in inches
         if perWidth == 0:
             return None
-        return ((self.KNOWN_WIDTH * self.focalLength) / perWidth) * 39.37
+        return ((KNOWN_WIDTH * self.focalLength) / perWidth) * 39.37
 
     def is_done_turning(self):
         check = self.small_bot.is_done_turning()
@@ -126,6 +120,19 @@ class AprilTag:
 
     def get_action(self):
         return self.current_action
+
+    def chunkIt(seq, num):
+        avg = len(seq) / float(num)
+        out = []
+        last = 0.0
+
+        while last < len(seq):
+            out.append(seq[int(last):int(last + avg)])
+            last += avg
+
+        return out
+
+
 
     def detect_tag(self):
         # print("detect_tag")

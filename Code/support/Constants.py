@@ -62,6 +62,13 @@ RIGHT_ARPILTAG = 'tag25h7'
 LEFT_ARPILTAG = 'tag36h11'
 BACK_ARPILTAG = 'tag25h9'
 
+# Actual Distance of the Apriltag When Pointed 0.6 Meters Away From the Camera
+KNOWN_DISTANCE = 0.6
+# Width of the Apriltag in Pixels When Pointed 0.6 Meters Away From the Camera
+KNOWN_PXL_WIDTH = 170
+# Width of the Apiltag in Meters
+KNOWN_WIDTH = 0.1651
+
 # --------------------- TCP Communication Parameters ---------------------
 TCP_IP = '192.168.137.210'  # '192.168.4.2'
 TCP_PORT = 5005
