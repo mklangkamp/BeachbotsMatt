@@ -8,7 +8,7 @@ from time import sleep
 
 class Chassis:
 
-    def __init__(self, RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET):
+    def __init__(self, RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET, MAX_BUCKET_CAPACITY):
         self.RPWMF = RPWMF
         self.RPWMB = RPWMB
         self.LPWMF = LPWMF
@@ -17,6 +17,7 @@ class Chassis:
 
         self.IMU = AdafruitIMU()
         self.arm = Arm(STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
+        self.MAX_BUCKET_CAPACITY = MAX_BUCKET_CAPACITY
 
         GPIO.setwarnings(False)  # disable warnings
         GPIO.setmode(GPIO.BOARD)  # set pin numbering system
@@ -35,7 +36,10 @@ class Chassis:
         self.pi_rpwmb.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmf.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmb.start(0)  # start PWM of required Duty Cycle
-        
+
+    def get_max_bucket_capacity(self):
+        return self.MAX_BUCKET_CAPACITY
+
     def reset_heading(self):
         self.IMU = AdafruitIMU()
 
@@ -92,9 +96,9 @@ class Chassis:
         return min(max(val, minVal), maxVal)
 
     def point_turn_IMU(self, wantedAngle, speed):
-        # relativePointAngle = wantedAngle - self.IMU.euler_from_quaternion()   # self.IMU.angleWrap(wantedAngle - currentAngle)
+        # relativePointAngle = wantedAngle - self.IMU.get_yaw()   # self.IMU.angleWrap(wantedAngle - currentAngle)
 
-        while (self.IMU.euler_from_quaternion() > wantedAngle + self.align_threshold or self.IMU.euler_from_quaternion()
+        while (self.IMU.get_yaw() > wantedAngle + self.align_threshold or self.IMU.get_yaw()
                < wantedAngle - self.align_threshold):
             # turn_speed = max(turn_speed, 50.0)
             # print("error", abs(wantedAngle-currentAngle))
@@ -103,20 +107,20 @@ class Chassis:
                 self.drive(-speed, speed) # Turn right
             elif wantedAngle < 0:
                 self.drive(speed, -speed) # Turn left
-            elif self.IMU.euler_from_quaternion() > 0 and wantedAngle == 0:
+            elif self.IMU.get_yaw() > 0 and wantedAngle == 0:
                 self.drive(speed, -speed) # Turn left
-            elif self.IMU.euler_from_quaternion() < 0 and wantedAngle == 0:
+            elif self.IMU.get_yaw() < 0 and wantedAngle == 0:
                 self.drive(-speed, speed) # Turn right
                 
             #print("desired angle: ", wantedAngle)
-            #print("current angle: ", self.IMU.euler_from_quaternion())
+            #print("current angle: ", self.IMU.get_yaw())
 
         self.drive(0, 0)
         
         
     def point_turn_basebot(self, wantedAngle, speed):
-        # relativePointAngle = wantedAngle - self.IMU.euler_from_quaternion()   # self.IMU.angleWrap(wantedAngle - currentAngle)
-        current_angle = self.IMU.euler_from_quaternion()
+        # relativePointAngle = wantedAngle - self.IMU.get_yaw()   # self.IMU.angleWrap(wantedAngle - currentAngle)
+        current_angle = self.IMU.get_yaw()
         
         if(current_angle > wantedAngle + self.align_threshold or current_angle < wantedAngle - self.align_threshold):
             # turn_speed = max(turn_speed, 50.0)
@@ -126,9 +130,9 @@ class Chassis:
                 self.drive(-speed, speed) # Turn right
             elif wantedAngle < 0:
                 self.drive(speed, -speed) # Turn left
-            elif self.IMU.euler_from_quaternion() > 0 and wantedAngle == 0:
+            elif self.IMU.get_yaw() > 0 and wantedAngle == 0:
                 self.drive(speed, -speed) # Turn left
-            elif self.IMU.euler_from_quaternion() < 0 and wantedAngle == 0:
+            elif self.IMU.get_yaw() < 0 and wantedAngle == 0:
                 self.drive(-speed, speed) # Turn right
         else:
             self.drive(0,0)
@@ -157,7 +161,7 @@ class Chassis:
         #    absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
         # else:
         #    absolute = 0
-        absolute = self.IMU.euler_from_quaternion()
+        absolute = self.IMU.get_yaw()
         leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
         rightSpeed = straightSpeed + (absolute - target)
         # print("LEFTSPEED: ", leftSpeed)

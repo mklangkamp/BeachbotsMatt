@@ -17,10 +17,12 @@ GRIPPER = 1
 ELBOW = 0
 BUCKET = 2
 
+MAX_BUCKET_CAPACITY = 4
+
 resolution = "640x360"
 camera_view_angle = 60
 
-chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
+chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET, MAX_BUCKET_CAPACITY)
 driveDetect = DriveDetect(chassis, resolution, camera_view_angle)
 
 '''

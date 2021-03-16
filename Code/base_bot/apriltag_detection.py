@@ -27,27 +27,25 @@ class AprilTag:
         self.detector = apriltag.Detector(self.options)
 
         self.current_state_index = 0
-        self.path_states = 'FORWARD', 'TURN_RIGHT', 'CREEP_FORWARD', 'TURN_RIGHT', 'FORWARD', 'TURN_LEFT', 'CREEP_FORWARD', 'TURN_LEFT', 'FORWARD','TURN_RIGHT','CREEP_BACKWARD','TURN_LEFT','BACKWARDS','HALT','DUMP','STOP'
+        self.path_states = 'FORWARD', 'TURN_RIGHT', 'CREEP_FORWARD', 'TURN_RIGHT', 'FORWARD', 'TURN_LEFT', 'CREEP_FORWARD', 'TURN_LEFT', 'FORWARD', 'TURN_RIGHT', 'CREEP_BACKWARD', 'TURN_LEFT', 'BACKWARDS', 'HALT', 'DUMP', 'STOP'
         self.times_driven_forward = self.path_states.count('CREEP_FORWARD')
         self.status = 'FORWARD'
 
-        self.dist_to_travel = 5 # in inches
-        self.dist_after_turn = 0 # in inches
+        self.dist_to_travel = 5  # in inches
+        self.dist_after_turn = 0  # in inches
         self.tags_in_view = []
         # self.canUpdate_act = True
-        
+
     def distance_to_camera(self, perWidth):
-	# compute and return the distance from the maker to the camera in inches
-	if perWidth == 0:
-	        return None
-        return ((self.KNOWN_WIDTH * self.focalLength) / perWidth)*39.37
-        
+        # compute and return the distance from the maker to the camera in inches
+        if perWidth == 0:
+            return None
+        return ((self.KNOWN_WIDTH * self.focalLength) / perWidth) * 39.37
 
     def is_done_turning(self):
         check = self.small_bot.is_done_turning()
         print("DONE TURNING CHECK: ", check)
-        return check 
-
+        return check
 
     def next_state(self):
         self.current_state_index += 1
@@ -67,20 +65,20 @@ class AprilTag:
                 self.current_action = "drive"
             else:
                 self.next_state()
-                
+
         elif status == 'BACKWARDS':
             if x <= 550 and (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
                 self.current_action = "drivebackwards"
             else:
                 self.next_state()
-                
+
         elif status == 'TURN_RIGHT':
             if self.is_done_turning() != 'done_turning':
                 self.current_action = 'turnright'
             else:
-		self.current_action = 'none'
+                self.current_action = 'none'
                 self.dist_after_turn = dist_in
-		print("CAPTURED DIST: ", self.dist_after_turn)
+                print("CAPTURED DIST: ", self.dist_after_turn)
                 self.next_state()
 
         elif status == 'CREEP_FORWARD':
@@ -88,9 +86,9 @@ class AprilTag:
             # 70.45 < 70.45 + 6 == 70.45 < 76.45
             if (dist_in < self.dist_after_turn + self.dist_to_travel) and self.current_tag == self.back_tag:
                 self.current_action = "drive"
-		print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
+                print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
             else:
-		print("----------GONE TO NEXT STATE----------")
+                print("----------GONE TO NEXT STATE----------")
                 self.next_state()
 
         elif status == 'TURN_LEFT':
@@ -98,27 +96,28 @@ class AprilTag:
             if self.is_done_turning() != 'done_turning':
                 self.current_action = 'turnleft'
             else:
-		self.current_action = 'none'
+                self.current_action = 'none'
                 self.dist_after_turn = dist_in
                 print("CAPTURED DIST: ", self.dist_after_turn)
                 self.next_state()
-        
+
         elif status == 'CREEP_BACKWARD':
             print("current Y VAL AT Y: ", y)
-            if (dist_in > self.dist_after_turn - (self.dist_to_travel*self.times_driven_forward)) and self.current_tag == self.back_tag:
+            if (dist_in > self.dist_after_turn - (
+                    self.dist_to_travel * self.times_driven_forward)) and self.current_tag == self.back_tag:
                 self.current_action = "drivebackwards"
-		print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
+                print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
             else:
-		print("----------GONE TO NEXT STATE----------")
+                print("----------GONE TO NEXT STATE----------")
                 self.next_state()
 
         elif status == 'STOP':
             self.current_action = 'stop'
-        
+
         elif status == 'HALT':
-            self.current_action = 'stop' 
+            self.current_action = 'stop'
             self.next_state()
-            
+
         elif status == 'DUMP':
             self.current_action = 'dump'
             self.next_state()
@@ -177,17 +176,17 @@ class AprilTag:
             tagFamily = r.tag_family.decode("utf-8")
             cv2.putText(frame, tagFamily, (ptA[0], ptA[1] - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
             # print("[INFO] tag family: {}".format(tagFamily))
-            pxl_width = int(ptB[0])-int(ptA[0])
+            pxl_width = int(ptB[0]) - int(ptA[0])
             dist_in = self.distance_to_camera(pxl_width)
-            
+
             # del self.tags_in_view[:]
             '''
             for i in range(len(results)):
                 self.tags_in_view.append(tagFamily)
-            '''    
+            '''
             # if self.canUpdate_act:
             self.current_tag = tagFamily
-            
+
             if self.status == 'CREEP_FORWARD' and (tagFamily == self.back_tag):
                 print("ATTEMPTING TO UPDATE STATUS 1")
                 self.update_action(self.status, cx, cy, dist_in)

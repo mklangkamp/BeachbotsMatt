@@ -1,106 +1,68 @@
-# TODO: ADD CONSTANTS FROM SMALLBOT & BASEBOT
+# --------------------- CONSTANTS FOR SMALLBOT ---------------------
 
-TRASH_BIN_THRESHOLD = 12  # TODO: Get the actual value for this constant
+# Right PWM Wheel Pins
+RPWMF = 22
+RPWMB = 29
 
-STORED_MAP_SIZE = 10
-SAFE_DISTANCE_BETWEEN_BOTS = 100
-AVOID_DISTANCE = 30
+# Left PWM Wheel Pins
+LPWMF = 31
+LPWMB = 36
 
-# SmallBot general
-POSITION_THRESHOLD = .1  # how close the robot needs to be to a position to count it as reached, this is for zone paths
+# Max Bucket Capacity (Bottles & Cans)
+MAX_BUCKET_CAPACITY = 4
 
-# Zones
-ZONE_LENGTH = 2
-ZONE_WIDTH = .5
-LANDING_STRIP_WIDTH = .25
-WAYPOINT_DENSITY = 10
+# Alignment Threshold for Turning (Degrees)
+DEG_THRESHOLD = 1.5
 
-# ask Chris. Essentially we prioritize to avoiding robots by backing up first rather than trying to move forward.
-# UPDATE: this is Legacy
-AVOID_DIRECTION_PRIORITY_LIST = [3, 4, 2, 5, 1, 6, 0, 7]
+# Stepper Motor Pins
+DIR = 38
+STEP = 35
 
-# AStar
-STANDARD_MOVE_COST = 1
-DIFFICULT_TERRAIN_FACTOR = 1
-TURNING_FACTOR = 1
+# Stepper Motor Degrees/Step
+STEP_ANGLE = 0.035
 
-TERRAIN_TOO_DIFFICULT = 30
-ZONE_TOO_DIFFICULT_PERCENT = .1
+# Pin for Limit Switch
+SWITCH = 13
 
-# ZED
-MESH_REFRESH_RATE = 2  # update mesh per second
-# this is the z value of the triangle's normal to indicate if the triangle is traversable
-TRIANGLE_NORMAL_Z_TRAVERSABLE = .7
-TRIANGLE_NORMAL_ANGLE_TRAVERSABLE = .523599
-MAX_INCLINE = 30  # max angle incline
-# visible area for zed (used for finding visible zones)
-Y_MIN = .5
-Y_MAX = 5.0
-X_MAX = 2.25
-# Occupancy grid width
-OG_WIDTH = 20
+# Servo Controller Pins
+GRIPPER = 1
+ELBOW = 0
+BUCKET = 2
 
-### SEAN CONSTANTS ###
+# Servo Values for Poses
+DOWN_POSE_ELBOW = 3200
+MID_POSE_ELBOW = 6500
+UP_POSE_ELBOW = 8000
 
-# Collector Arm D-H Frame Data
-A1 = 0.130  # meters
-ALPHA1 = 0.0
-D1 = 0.0
-THETA1 = 0.0
-A2 = 0.180  # meters
-ALPHA2 = 0.0
-D2 = 0.0
-THETA2 = 0.0
+# Servos Pre-determined
+GRIPPER_OPEN_VAL = 8400
+GRIPPER_CLOSE_VAL = 5900
 
-# make true to activate debug print statements
-DEBUG = False
+BUCKET_DISPOSE_VAL = 7500
+BUCKET_DEFAULT_VAL = 4900
 
-# Navigation
-DISTANCE_THRESHOLD_MIN = 0.001
-DISTANCE_THRESHOLD_MAX = 0.001
-ANGLE_THRESHOLD_MIN = 1.0
-ANGLE_THRESHOLD_MAX = 1.0
+# Vision Constants
+MODEL_FOLDER_NAME = 'BottlesCan_model'
 
-# PID
-TURN_ANGLE_KP = 1.5
-TURN_ANGLE_IP = 0.1
-TURN_ANGLE_DP = 0.01
-DRIVE_DIST_KP = 1.0
-DRIVE_DIST_IP = 0.1
-DRIVE_DIST_DP = 0.01
+# Camera Smallbot Resolution for OpenCV
+RESOLUTION = "640x360"
 
-TREAD_CIRCUMFERENCE = 0.0113  # meters/pulse
+# Smallbot Camera Viewing Angle
+VIEW_ANGLE = 60
 
-# Servo Driver Pins
-SD_TRANS = 14
-SD_RECEIVE = 15
+# Constants for DriveDetect.py
+MOTOR_SPEED = 20
+# in pixels
+OPENCV_Y_VAL = 168
+Y_VAL_THRESHOLD = 5
 
-# Servo Driver Serial Pins
-CAMERA = 0
-ELBOW = 1
-GRIPPER = 2
-BUCKET = 3
+# --------------------- CONSTANTS FOR BASEBOT ---------------------
 
-# Collector Arm Motors
-STEP_ANGLE = 0.035  # Degrees per step
-SWITCH = 23  # limit switch for stepper calibration
-SM_STEP = 22  # Stepper motor driver step pin
-SM_DIRECTION = 17  # Stepper motor driver direction pin
+RIGHT_ARPILTAG = 'tag25h7'
+LEFT_ARPILTAG = 'tag36h11'
+BACK_ARPILTAG = 'tag25h9'
 
-# IMU Pins
-SCL_PIN = 3
-SDA_PIN = 2
-
-# Drive Motors
-L_WHEEL_PIN = 21
-R_WHEEL_PIN = 13
-
-L_DIRECT_1 = 25
-L_DIRECT_2 = 24
-
-R_DIRECT_1 = 6
-R_DIRECT_2 = 5
-
-# Robot Encoder Interrupts
-ENCODER1_PIN1 = 4
-ENCODER1_PIN2 = 27
+# --------------------- TCP Communication Parameters ---------------------
+TCP_IP = '192.168.137.210'  # '192.168.4.2'
+TCP_PORT = 5005
+BUFFER_SIZE = 20

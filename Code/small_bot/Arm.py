@@ -82,7 +82,6 @@ class Arm:
         self.servo.gripper(True)
         sleep(4)
         self.servo.elbow(self.DOWN_POSE_ELBOW)
-
         sleep(3)
         self.move_shoulder_angle(45)
         self.servo.gripper(False)

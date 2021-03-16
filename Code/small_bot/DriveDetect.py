@@ -16,7 +16,6 @@ class DriveDetect:
         self.align_threshold = 5
         self.viewing_ang_max = camera_view_angle/2
         self.viewing_ang_min = -camera_view_angle/2
-        self.max_capacity = 1
         self.aligned_angle = 0
         self.yaw_aligned = False
         self.first_detection = True
@@ -31,7 +30,7 @@ class DriveDetect:
         #print("inside func")
 
     def is_full_capacity(self):
-        if self.bottles_acquired >= self.max_capacity:
+        if self.bottles_acquired >= chassis.get_max_bucket_capacity():
             return True
         else:
             return False
@@ -47,7 +46,7 @@ class DriveDetect:
         # Point turn to desired angle
         if not self.yaw_aligned:
             self.chassis.point_turn_IMU(desired_angle, self.motor_speed)
-            self.aligned_angle = self.chassis.IMU.euler_from_quaternion()
+            self.aligned_angle = self.chassis.IMU.get_yaw()
             self.yaw_aligned = True
             self.drive_start_time = time.time()
             self.drive_back_time = 0

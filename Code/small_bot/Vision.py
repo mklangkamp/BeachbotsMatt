@@ -65,7 +65,6 @@ class Detection:
         LABELMAP_NAME = 'labelmap.txt'
         self.min_conf_threshold = 0.5
         self.curr_object = ''
-        # self.objectArea = 0
         self.coordinates = 0, 0
         current_res = resolution  # '512x512'
         resW, resH = current_res.split('x')
@@ -75,6 +74,7 @@ class Detection:
         # Import TensorFlow libraries
         # If tflite_runtime is installed, import interpreter from tflite_runtime, else import from regular tensorflow
         # If using Coral Edge TPU, import the load_delegate library
+        # ---------------------------------TEST AGAIN-------------------------------------------
         pkg = importlib.util.find_spec('tflite_runtime')
         # if pkg:
         from tflite_runtime.interpreter import Interpreter

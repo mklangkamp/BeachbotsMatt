@@ -8,8 +8,6 @@ import RPi.GPIO as GPIO
 
 class ServoController:
     def __init__(self, GRIPPER, ELBOW, BUCKET):
-        # Initialization of the node
-        #rospy.init_node('ServoController')
 
         self.servo = maestro.Controller()
 
@@ -18,51 +16,7 @@ class ServoController:
         self.elbow_pin = ELBOW
         self.bucket_pin = BUCKET
 
-        #GPIO.setmode(GPIO.BCM)
-        #GPIO.setwarnings(False)
-        #GPIO.setup(SWITCH, GPIO.IN, pull_up_down=GPIO.PUD_DOWN)
-        #GPIO.setup(SM_DIRECTION, GPIO.OUT)
-        #GPIO.setup(SM_STEP, GPIO.OUT)
         self.delay = 0.001
-
-        # ROS Subscribers and Publishers
-        #rospy.Subscriber('pickup_flag', Bool, self.pickup_can)
-        #self.pickup_pub = rospy.Publisher('pickup_done', Bool, queue_size=10)
-
-        #self.picking_can = False
-
-        # Run Calibration of Joints
-        #self.calibrate()
-
-
-    '''
-    def stepper_motor(self):
-        """
-        Handles the Stepper motor
-        """
-        trigger = True
-        trigger2 = True
-
-        # Zero joint0
-        # Move arm until it triggers the switch
-        GPIO.output(SM_DIRECTION, GPIO.LOW)
-        while trigger:
-            # print("Made it into step loop")
-            GPIO.output(SM_STEP, GPIO.HIGH)
-            time.sleep(self.delay)
-            GPIO.output(SM_STEP, GPIO.LOW)
-            time.sleep(self.delay)
-            if GPIO.input(SWITCH):
-                trigger = False
-                break
-        # Move arm off of switch until it deactivates
-        GPIO.output(SM_DIRECTION, GPIO.HIGH)
-        for x in range(24 * 20):
-            GPIO.output(SM_STEP, GPIO.HIGH)
-            time.sleep(self.delay)
-            GPIO.output(SM_STEP, GPIO.LOW)
-            time.sleep(self.delay)
-    '''
 
     def gripper(self, val, accel=5, speed=15):
         """
@@ -75,9 +29,9 @@ class ServoController:
         self.servo.setSpeed(self.gripper_pin, speed)  # set gripper speed
 
         if val:
-            self.servo.setTarget(self.gripper_pin, 8400)  #6500 set gripper position
+            self.servo.setTarget(self.gripper_pin, 8400)
         else:
-            self.servo.setTarget(self.gripper_pin, 5900)  #8400 set gripper position (originally 9000)
+            self.servo.setTarget(self.gripper_pin, 5900)
 
     def get_gripper_pos(self):
         """
@@ -125,68 +79,3 @@ class ServoController:
         :return: Position of the elbow
         """
         return self.servo.getPosition(self.elbow_pin)  # get the current position of elbow servo
-
-    '''  
-    def pickup_can(self, msg):
-        """
-        Pickup the Can
-        """
-        self.picking_can = True
-
-        while self.picking_can:
-            print("Picking Up Can")
-            # Open Gripper
-            self.gripper(True)
-            # Move Elbow down
-            self.elbow(2000)
-            rospy.sleep(4)
-
-            # Close Gripper
-            self.gripper(False)
-            rospy.sleep(3)
-
-            # Move Arm back up
-            self.elbow(8500)
-            rospy.sleep(3)
-
-            # Open the Gripper
-            self.gripper(True)
-            rospy.sleep(3)
-
-            # Done Picking up
-            self.picking_can = False
-            rospy.sleep(5)
-
-        bool_msg = Bool()
-        bool_msg.data = True
-        self.pickup_pub.publish(bool_msg)
-    '''
-
-    def go_to_position(self, start, end):
-        i = 0
-        self.gripper(True)
-        self.elbow(start)
-        #rospy.sleep(4)
-        print("At Start Position")
-        self.elbow(end)
-        while i < 100:
-            pos = self.servo.getPosition(self.elbow_pin)
-            print(pos)
-            #rospy.sleep(0.1)
-            i += 1
-        print("At End Position")
-
-'''def cleanup(self):
-        """
-        Cleans up if keyboard interrupt
-        """
-        self.servo.close()
-'''
-
-'''if __name__ == "__main__":
-    sc = ServoController()
-    try:
-        rospy.spin()
-    except KeyboardInterrupt:
-        sc.cleanup()
-'''

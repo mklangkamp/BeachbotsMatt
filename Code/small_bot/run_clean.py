@@ -18,6 +18,8 @@ GRIPPER = 1
 ELBOW = 0
 BUCKET = 2
 
+MAX_BUCKET_CAPACITY = 4
+
 resolution = "640x360"
 camera_view_angle = 60
 
@@ -25,7 +27,7 @@ TCP_IP = '192.168.137.210'#'192.168.4.2'
 TCP_PORT = 5005
 BUFFER_SIZE = 20  # Normally 1024, but we want fast response
 
-chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
+chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET, MAX_BUCKET_CAPACITY)
 driveDetect = DriveDetect(chassis, resolution, camera_view_angle)
 base_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
 
