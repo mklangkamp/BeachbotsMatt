@@ -83,7 +83,6 @@ class AprilTag:
 
         elif status == 'CREEP_FORWARD':
             print("current Y VAL AT Y: ", y)
-            # 70.45 < 70.45 + 6 == 70.45 < 76.45
             if (dist_in < self.dist_after_turn + self.dist_to_travel) and self.current_tag == self.back_tag:
                 self.current_action = "drive"
                 print("INSIDE IF STATMT----CURRENT Y VAL: ", y)

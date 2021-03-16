@@ -2,28 +2,10 @@ from Chassis import Chassis
 import socket
 from time import sleep
 from DriveDetect import DriveDetect
-
-RPWMF = 22  # PWM
-RPWMB = 29
-
-LPWMF = 31  # PWM
-LPWMB = 36
-
-DIR = 38
-STEP = 35
-SWITCH = 13
-
-GRIPPER = 1
-ELBOW = 0
-BUCKET = 2
-
-MAX_BUCKET_CAPACITY = 4
-
-resolution = "640x360"
-camera_view_angle = 60
+from support.Constants import *
 
 chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET, MAX_BUCKET_CAPACITY)
-driveDetect = DriveDetect(chassis, resolution, camera_view_angle)
+driveDetect = DriveDetect(chassis, RESOLUTION, VIEW_ANGLE)
 
 '''
 current_state = b'drive'
