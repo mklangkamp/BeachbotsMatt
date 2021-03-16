@@ -31,7 +31,7 @@ class AprilTag:
         self.times_driven_forward = self.path_states.count('CREEP_FORWARD')
         self.status = 'FORWARD'
 
-        self.dist_to_travel = 6 # in inches
+        self.dist_to_travel = 5 # in inches
         self.dist_after_turn = 0 # in inches
         self.tags_in_view = []
         # self.canUpdate_act = True
