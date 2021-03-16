@@ -16,6 +16,7 @@ class DriveDetect:
         self.align_threshold = 5
         self.viewing_ang_max = camera_view_angle/2
         self.viewing_ang_min = -camera_view_angle/2
+        self.max_capacity = 1
         self.aligned_angle = 0
         self.yaw_aligned = False
         self.first_detection = True
@@ -30,7 +31,7 @@ class DriveDetect:
         #print("inside func")
 
     def is_full_capacity(self):
-        if self.bottles_acquired >= 4:
+        if self.bottles_acquired >= self.max_capacity:
             return True
         else:
             return False

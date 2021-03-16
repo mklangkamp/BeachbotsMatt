@@ -36,9 +36,10 @@ trash_count = 0
 counter = 0
 finished_clean = False
 
-while not finished_clean or not driveDetect.is_full_capacity():
+while not finished_clean and not driveDetect.is_full_capacity():
 
     current_state = base_bot.get_data()
+    
     
     if current_state == b'drive':
         driveDetect.cleanLitter()
