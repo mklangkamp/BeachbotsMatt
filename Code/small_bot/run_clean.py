@@ -2,34 +2,16 @@ from Chassis import Chassis
 from small_comm import TCP_COMM
 from DriveDetect import DriveDetect
 from time import sleep
-# from support.Constants import *
+import sys
 
-RPWMF = 22  # PWM
-RPWMB = 29
+sys.path.insert(1, 'beachbots2020\Code\support')
 
-LPWMF = 31  # PWM
-LPWMB = 36
+import Constants
 
-DIR = 38
-STEP = 35
-SWITCH = 13
 
-GRIPPER = 1
-ELBOW = 0
-BUCKET = 2
-
-MAX_BUCKET_CAPACITY = 4
-
-resolution = "640x360"
-camera_view_angle = 60
-
-TCP_IP = '192.168.137.210'#'192.168.4.2'
-TCP_PORT = 5005
-BUFFER_SIZE = 20  # Normally 1024, but we want fast response
-
-chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET, MAX_BUCKET_CAPACITY)
-driveDetect = DriveDetect(chassis, resolution, camera_view_angle)
-base_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
+chassis = Chassis(Constants.RPWMF, Constants.RPWMB, Constants.LPWMF, Constants.LPWMB, Constants.STEP, Constants.DIR, Constants.SWITCH, Constants.GRIPPER, Constants.ELBOW, Constants.BUCKET, Constants.MAX_BUCKET_CAPACITY)
+driveDetect = DriveDetect(chassis, Constants.RESOLUTION, Constants.VIEW_ANGLE)
+base_bot = TCP_COMM(Constants.TCP_IP, Constants.TCP_PORT, Constants.BUFFER_SIZE)
 
 current_state = b'none'
 trash_detected = False

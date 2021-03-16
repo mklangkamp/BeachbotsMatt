@@ -1,25 +1,13 @@
 from base_comm import TCP_COMM
 from apriltag_detection import AprilTag
+import sys
 
-TCP_IP = '192.168.137.210'#'192.168.4.2' ---current working w hotspot ip
-TCP_PORT = 5005
-BUFFER_SIZE = 1024
+sys.path.insert(1, 'beachbots2020\Code\support')
 
-'''
-# initialize the known distance from the camera to the object, which
-# in this case is 24 inches
-KNOWN_DISTANCE = 0.2
-# initialize the known object width, which in this case, the piece of
-# paper is 12 inches wide
-KNOWN_WIDTH = 0.0975
-'''
+import Constants
 
-right_tag = "tag25h7"
-left_tag = "tag36h11"
-back_tag = "tag25h9"
-
-small_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
-april_tag_recognizer = AprilTag(right_tag, left_tag, back_tag, small_bot)
+small_bot = TCP_COMM(Constants.TCP_IP, Constants.TCP_PORT, Constants.BUFFER_SIZE)
+april_tag_recognizer = AprilTag(Constants.RIGHT_ARPILTAG, Constants.LEFT_ARPILTAG, Constants.BACK_ARPILTAG, small_bot)
 
 while True:
     april_tag_recognizer.detect_tag()

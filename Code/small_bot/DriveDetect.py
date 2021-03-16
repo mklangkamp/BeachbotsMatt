@@ -1,7 +1,11 @@
 from Vision import Detection
 from time import sleep
 import time
+import sys
 
+sys.path.insert(1, 'beachbots2020\Code\support')
+
+import Constants
 
 class DriveDetect:
 
@@ -11,9 +15,6 @@ class DriveDetect:
         resW, resH = camera_res.split('x')
         self.imW, self.imH = int(resW), int(resH)
         self.desired_coords = self.imW / 2, self.imH / 2
-        self.motor_speed = 20
-        self.desired_y_val = 168#115#108
-        self.align_threshold = 5
         self.viewing_ang_max = camera_view_angle/2
         self.viewing_ang_min = -camera_view_angle/2
         self.aligned_angle = 0
@@ -45,7 +46,7 @@ class DriveDetect:
         self.picking_up = True
         # Point turn to desired angle
         if not self.yaw_aligned:
-            self.chassis.point_turn_IMU(desired_angle, self.motor_speed)
+            self.chassis.point_turn_IMU(desired_angle, Constants.MOTOR_SPEED)
             self.aligned_angle = self.chassis.IMU.get_yaw()
             self.yaw_aligned = True
             self.drive_start_time = time.time()
@@ -60,16 +61,16 @@ class DriveDetect:
         #print("y-axis bootle coordinates: ", bottle_coords[1])
         #print("upper align threshold: ", (self.desired_y_val + self.align_threshold))
         #print("lower align threshold: ", (self.desired_y_val - self.align_threshold))
-        if bottle_coords[1] < (self.desired_y_val - self.align_threshold):
+        if bottle_coords[1] < (Constants.OPENCV_Y_VAL - Constants.Y_VAL_THRESHOLD):
             # drive forward
-            self.chassis.driveStraightIMU(self.motor_speed, self.aligned_angle)
+            self.chassis.driveStraightIMU(Constants.MOTOR_SPEED, self.aligned_angle)
             self.dir_driven = 'forward'
             print("driving forward for alignement")
             self.drive_back_time = time.time() - self.drive_start_time
             print("time to drive backwards: ", self.drive_back_time)
-        elif bottle_coords[1] > (self.desired_y_val + self.align_threshold):
+        elif bottle_coords[1] > (Constants.OPENCV_Y_VAL + Constants.Y_VAL_THRESHOLD):
             # drive backwards
-            self.chassis.driveStraightIMU(-self.motor_speed, self.aligned_angle)
+            self.chassis.driveStraightIMU(-Constants.MOTOR_SPEED, self.aligned_angle)
             self.dir_driven = 'backwards'
             print("driving backwards for alignement")
             self.drive_forward_time = -(time.time() - self.drive_start_time)
@@ -94,9 +95,9 @@ class DriveDetect:
 
     def drive_back(self):
         if self.dir_driven == 'forward':
-            updated_speed = -self.motor_speed
+            updated_speed = -Constants.MOTOR_SPEED
         elif self.dir_driven == 'backwards':
-            updated_speed = self.motor_speed
+            updated_speed = Constants.MOTOR_SPEED
         else:
             updated_speed = 0
             
@@ -106,7 +107,7 @@ class DriveDetect:
             self.chassis.driveStraightIMU(updated_speed, self.aligned_angle)
             
         self.aligned_angle = 0
-        self.chassis.point_turn_IMU(self.aligned_angle, self.motor_speed)
+        self.chassis.point_turn_IMU(self.aligned_angle, Constants.MOTOR_SPEED)
                                     
         #self.chassis.drive(0,0)
 
@@ -117,7 +118,7 @@ class DriveDetect:
 
         # Keep driving straight with heading of 0 deg
         if not self.picking_up:
-            self.chassis.driveStraightIMU(self.motor_speed, 0)
+            self.chassis.driveStraightIMU(Constants.MOTOR_SPEED, 0)
             #print("driving straight w heading of  0 ..")
 
         # If camera sees a bottle

@@ -2,9 +2,12 @@ import RPi.GPIO as GPIO
 import time
 from Arm import Arm
 from AdafruitIMU import AdafruitIMU
-
 from time import sleep
+import sys
 
+sys.path.insert(1, 'beachbots2020\Code\support')
+
+import Constants
 
 class Chassis:
 
@@ -13,7 +16,6 @@ class Chassis:
         self.RPWMB = RPWMB
         self.LPWMF = LPWMF
         self.LPWMB = LPWMB
-        self.align_threshold = 1.5
 
         self.IMU = AdafruitIMU()
         self.arm = Arm(STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
@@ -54,7 +56,7 @@ class Chassis:
         elif (rightSpeed < 0) and (leftSpeed < 0):  # for going backward
             self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
             self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
-            self.pi_rpwmf.ChangeDutyCycle(0) 
+            self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(0)
         elif (rightSpeed > 0) and (leftSpeed < 0):  # for point turn left
             self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
@@ -98,11 +100,11 @@ class Chassis:
     def point_turn_IMU(self, wantedAngle, speed):
         # relativePointAngle = wantedAngle - self.IMU.get_yaw()   # self.IMU.angleWrap(wantedAngle - currentAngle)
 
-        while (self.IMU.get_yaw() > wantedAngle + self.align_threshold or self.IMU.get_yaw()
-               < wantedAngle - self.align_threshold):
+        while (self.IMU.get_yaw() > wantedAngle + Constants.DEG_THRESHOLD or self.IMU.get_yaw()
+               < wantedAngle - Constants.DEG_THRESHOLD):
             # turn_speed = max(turn_speed, 50.0)
             # print("error", abs(wantedAngle-currentAngle))
-            
+
             if wantedAngle > 0:
                 self.drive(-speed, speed) # Turn right
             elif wantedAngle < 0:
@@ -111,21 +113,21 @@ class Chassis:
                 self.drive(speed, -speed) # Turn left
             elif self.IMU.get_yaw() < 0 and wantedAngle == 0:
                 self.drive(-speed, speed) # Turn right
-                
+
             #print("desired angle: ", wantedAngle)
             #print("current angle: ", self.IMU.get_yaw())
 
         self.drive(0, 0)
-        
-        
+
+
     def point_turn_basebot(self, wantedAngle, speed):
         # relativePointAngle = wantedAngle - self.IMU.get_yaw()   # self.IMU.angleWrap(wantedAngle - currentAngle)
         current_angle = self.IMU.get_yaw()
-        
-        if(current_angle > wantedAngle + self.align_threshold or current_angle < wantedAngle - self.align_threshold):
+
+        if(current_angle > wantedAngle + Constants.DEG_THRESHOLD or current_angle < wantedAngle - Constants.DEG_THRESHOLD):
             # turn_speed = max(turn_speed, 50.0)
             # print("error", abs(wantedAngle-currentAngle))
-            
+
             if wantedAngle > 0:
                 self.drive(-speed, speed) # Turn right
             elif wantedAngle < 0:
@@ -137,7 +139,7 @@ class Chassis:
         else:
             self.drive(0,0)
             return True
-        
+
         return False
 
     def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
