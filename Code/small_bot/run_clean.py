@@ -2,16 +2,12 @@ from Chassis import Chassis
 from small_comm import TCP_COMM
 from DriveDetect import DriveDetect
 from time import sleep
-import sys
-
-sys.path.insert(1, 'beachbots2020\Code\support')
-
-import Constants
+from support.Constants import *
 
 
-chassis = Chassis(Constants.RPWMF, Constants.RPWMB, Constants.LPWMF, Constants.LPWMB, Constants.STEP, Constants.DIR, Constants.SWITCH, Constants.GRIPPER, Constants.ELBOW, Constants.BUCKET, Constants.MAX_BUCKET_CAPACITY)
-driveDetect = DriveDetect(chassis, Constants.RESOLUTION, Constants.VIEW_ANGLE)
-base_bot = TCP_COMM(Constants.TCP_IP, Constants.TCP_PORT, Constants.BUFFER_SIZE)
+chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET, MAX_BUCKET_CAPACITY)
+driveDetect = DriveDetect(chassis, RESOLUTION, VIEW_ANGLE)
+base_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
 
 current_state = b'none'
 trash_detected = False

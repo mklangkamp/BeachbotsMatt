@@ -2,11 +2,7 @@ import RPi.GPIO as GPIO
 import time
 from time import sleep
 from ServoController import ServoController
-import sys
-
-sys.path.insert(1, 'beachbots2020\Code\support')
-
-import Constants
+from support.Constants import *
 
 class Arm:
 
@@ -27,7 +23,7 @@ class Arm:
 
     def move_shoulder_angle(self, angle):
         target = angle - self.shoulder_current
-        steps = abs(int(target // Constants.STEP_ANGLE))
+        steps = abs(int(target // STEP_ANGLE))
         num_steps = 0
         '''
         print("target:",  target)
@@ -53,7 +49,7 @@ class Arm:
 
     def calibrate(self):
         self.servo.bucket(False)
-        self.servo.elbow(Constants.UP_POSE_ELBOW)  # UP position for elbow
+        self.servo.elbow(UP_POSE_ELBOW)  # UP position for elbow
         self.servo.gripper(False)  # Closed position for gripper
         GPIO.output(self.DIR, GPIO.LOW)
         while not GPIO.input(self.SWITCH):
@@ -79,12 +75,12 @@ class Arm:
 
         self.servo.gripper(True)
         sleep(4)
-        self.servo.elbow(Constants.DOWN_POSE_ELBOW)
+        self.servo.elbow(DOWN_POSE_ELBOW)
         sleep(3)
         self.move_shoulder_angle(45)
         self.servo.gripper(False)
         sleep(3)
-        self.servo.elbow(Constants.UP_POSE_ELBOW)
+        self.servo.elbow(UP_POSE_ELBOW)
         self.move_shoulder_angle(115)
         sleep(2)
         self.servo.gripper(True)

@@ -7,11 +7,7 @@ import sys
 import time
 from threading import Thread
 import importlib.util
-import sys
-
-sys.path.insert(1, 'beachbots2020\Code\support')
-
-import Constants
+from support.Constants import *
 
 
 # Import Smallbot packages
@@ -65,7 +61,7 @@ class Detection:
     def __init__(self, resolution):
         self.object = "test"
         self.object_area = 0.0
-        MODEL_NAME = Constants.MODEL_FOLDER_NAME
+        MODEL_NAME = MODEL_FOLDER_NAME
         GRAPH_NAME = 'detect.tflite'  # 'edgetpu.tflite'
         LABELMAP_NAME = 'labelmap.txt'
         self.min_conf_threshold = 0.5

@@ -1,13 +1,9 @@
 from base_comm import TCP_COMM
 from apriltag_detection import AprilTag
-import sys
+from support.Constants import *
 
-sys.path.insert(1, 'beachbots2020\Code\support')
-
-import Constants
-
-small_bot = TCP_COMM(Constants.TCP_IP, Constants.TCP_PORT, Constants.BUFFER_SIZE)
-april_tag_recognizer = AprilTag(Constants.RIGHT_ARPILTAG, Constants.LEFT_ARPILTAG, Constants.BACK_ARPILTAG, small_bot)
+small_bot = TCP_COMM(TCP_IP, TCP_PORT, BUFFER_SIZE)
+april_tag_recognizer = AprilTag(RIGHT_ARPILTAG, LEFT_ARPILTAG, BACK_ARPILTAG, small_bot)
 
 while True:
     april_tag_recognizer.detect_tag()
