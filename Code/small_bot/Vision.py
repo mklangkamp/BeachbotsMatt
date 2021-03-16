@@ -7,7 +7,10 @@ import sys
 import time
 from threading import Thread
 import importlib.util
-from support.Constants import *
+import sys
+sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
+
+import Constants
 
 
 # Import Smallbot packages
@@ -61,7 +64,7 @@ class Detection:
     def __init__(self, resolution):
         self.object = "test"
         self.object_area = 0.0
-        MODEL_NAME = MODEL_FOLDER_NAME
+        MODEL_NAME = Constants.MODEL_FOLDER_NAME
         GRAPH_NAME = 'detect.tflite'  # 'edgetpu.tflite'
         LABELMAP_NAME = 'labelmap.txt'
         self.min_conf_threshold = 0.5
@@ -70,21 +73,20 @@ class Detection:
         current_res = resolution  # '512x512'
         resW, resH = current_res.split('x')
         self.imW, self.imH = int(resW), int(resH)
-        use_TPU = True
+        use_TPU = Constants.USE_HARDWARE_ACCEL
 
         # Import TensorFlow libraries
         # If tflite_runtime is installed, import interpreter from tflite_runtime, else import from regular tensorflow
         # If using Coral Edge TPU, import the load_delegate library
-        # ---------------------------------TEST AGAIN-------------------------------------------
         pkg = importlib.util.find_spec('tflite_runtime')
-        # if pkg:
-        from tflite_runtime.interpreter import Interpreter
-        # if use_TPU:
-        from tflite_runtime.interpreter import load_delegate
-        '''else:
+        if pkg:
+            from tflite_runtime.interpreter import Interpreter
+            if use_TPU:
+                from tflite_runtime.interpreter import load_delegate
+        else:
             from tensorflow.lite.python.interpreter import Interpreter
             if use_TPU:
-                from tensorflow.lite.python.interpreter import load_delegate'''
+                from tensorflow.lite.python.interpreter import load_delegate
 
         # If using Edge TPU, assign filename for Edge TPU model
         if use_TPU:

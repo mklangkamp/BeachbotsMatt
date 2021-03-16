@@ -3,7 +3,10 @@ import time
 from Arm import Arm
 from AdafruitIMU import AdafruitIMU
 from time import sleep
-from support.Constants import *
+import sys
+sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
+
+import Constants
 
 class Chassis:
 
@@ -96,8 +99,8 @@ class Chassis:
     def point_turn_IMU(self, wantedAngle, speed):
         # relativePointAngle = wantedAngle - self.IMU.get_yaw()   # self.IMU.angleWrap(wantedAngle - currentAngle)
 
-        while (self.IMU.get_yaw() > wantedAngle + DEG_THRESHOLD or self.IMU.get_yaw()
-               < wantedAngle - DEG_THRESHOLD):
+        while (self.IMU.get_yaw() > wantedAngle + Constants.DEG_THRESHOLD or self.IMU.get_yaw()
+               < wantedAngle - Constants.DEG_THRESHOLD):
             # turn_speed = max(turn_speed, 50.0)
             # print("error", abs(wantedAngle-currentAngle))
 
@@ -120,7 +123,7 @@ class Chassis:
         # relativePointAngle = wantedAngle - self.IMU.get_yaw()   # self.IMU.angleWrap(wantedAngle - currentAngle)
         current_angle = self.IMU.get_yaw()
 
-        if(current_angle > wantedAngle + DEG_THRESHOLD or current_angle < wantedAngle - DEG_THRESHOLD):
+        if(current_angle > wantedAngle + Constants.DEG_THRESHOLD or current_angle < wantedAngle - Constants.DEG_THRESHOLD):
             # turn_speed = max(turn_speed, 50.0)
             # print("error", abs(wantedAngle-currentAngle))
 

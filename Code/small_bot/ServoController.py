@@ -1,9 +1,10 @@
-#!/usr/bin/env python
 import maestro
-#import rospy
 import time
 import RPi.GPIO as GPIO
-#from std_msgs.msg import Bool
+import sys
+sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
+
+import Constants
 
 
 class ServoController:
@@ -29,9 +30,9 @@ class ServoController:
         self.servo.setSpeed(self.gripper_pin, speed)  # set gripper speed
 
         if val:
-            self.servo.setTarget(self.gripper_pin, 8400)
+            self.servo.setTarget(self.gripper_pin, Constants.GRIPPER_OPEN_VAL)
         else:
-            self.servo.setTarget(self.gripper_pin, 5900)
+            self.servo.setTarget(self.gripper_pin, Constants.GRIPPER_CLOSED_VAL)
 
     def get_gripper_pos(self):
         """
@@ -51,9 +52,9 @@ class ServoController:
         self.servo.setSpeed(self.bucket_pin, speed)  # set gripper speed
 
         if val:
-            self.servo.setTarget(self.bucket_pin, 7500)  # set gripper position
+            self.servo.setTarget(self.bucket_pin, Constants.BUCKET_DISPOSE_VAL)  # set gripper position
         else:
-            self.servo.setTarget(self.bucket_pin, 4900)  # set gripper position
+            self.servo.setTarget(self.bucket_pin, Constants.BUCKET_DEFAULT_VAL)  # set gripper position
 
     def get_bucket_pos(self):
         """

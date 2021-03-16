@@ -2,10 +2,13 @@ from Chassis import Chassis
 import socket
 from time import sleep
 from DriveDetect import DriveDetect
-from support.Constants import *
+import sys
+sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 
-chassis = Chassis(RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET, MAX_BUCKET_CAPACITY)
-driveDetect = DriveDetect(chassis, RESOLUTION, VIEW_ANGLE)
+import Constants
+
+chassis = Chassis(Constants.RPWMF, Constants.RPWMB, Constants.LPWMF, Constants.LPWMB, Constants.STEP, Constants.DIR, Constants.SWITCH, Constants.GRIPPER, Constants.ELBOW, Constants.BUCKET, Constants.MAX_BUCKET_CAPACITY)
+driveDetect = DriveDetect(chassis, Constants.RESOLUTION, Constants.VIEW_ANGLE)
 
 '''
 current_state = b'drive'
@@ -38,9 +41,10 @@ finished_clean = False
 while True:
     #chassis.point_turn_IMU(0, 20)
 
-    driveDetect.cleanLitter()
+#    driveDetect.cleanLitter()
 
-    #driveDetect.object_detect.detect_litter()
+    driveDetect.object_detect.detect_litter()
+    
     #chassis.driveStraightIMU(-20, 5)
 '''
 while not finished_clean or trash_count < 4:
