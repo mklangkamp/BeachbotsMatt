@@ -1,7 +1,7 @@
 from base_comm import TCP_COMM
 from apriltag_detection import AprilTag
 import sys
-sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
+sys.path.insert(0, '/home/bob/beachbots2020/Code/support')
 
 import Constants
 

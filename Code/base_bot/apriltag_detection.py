@@ -2,7 +2,10 @@
 import apriltag
 # import time
 import cv2
-from support.Constants import *
+import sys
+sys.path.insert(0, '/home/bob/beachbots2020/Code/support')
+
+import Constants
 
 class AprilTag:
     def __init__(self, right_tag, left_tag, back_tag, small_bot):
@@ -14,7 +17,7 @@ class AprilTag:
         self.cap = cv2.VideoCapture(0)
         self.cam_width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)  # 640 pixels wide
         self.cam_height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # 480 pixels tall
-        self.focalLength = (KNOWN_PXL_WIDTH * KNOWN_DISTANCE) / KNOWN_WIDTH
+        self.focalLength = (Constants.KNOWN_PXL_WIDTH * Constants.KNOWN_DISTANCE) / Constants.KNOWN_WIDTH
         self.current_tag = ""
         self.current_action = ""
         self.options = apriltag.DetectorOptions(families=self.tag_families)
@@ -34,7 +37,7 @@ class AprilTag:
         # compute and return the distance from the maker to the camera in inches
         if perWidth == 0:
             return None
-        return ((KNOWN_WIDTH * self.focalLength) / perWidth) * 39.37
+        return ((Constants.KNOWN_WIDTH * self.focalLength) / perWidth) * 39.37
 
     def is_done_turning(self):
         check = self.small_bot.is_done_turning()
