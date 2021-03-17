@@ -36,13 +36,16 @@ UP_POSE_ELBOW = 8000
 
 # Servos Pre-determined
 GRIPPER_OPEN_VAL = 8400
-GRIPPER_CLOSE_VAL = 5900
+GRIPPER_CLOSED_VAL = 5900
 
 BUCKET_DISPOSE_VAL = 7500
 BUCKET_DEFAULT_VAL = 4900
 
 # Vision Constants
 MODEL_FOLDER_NAME = 'BottlesCan_model'
+
+# Tell Vision Inference Whether or not to Use the Google Coral
+USE_HARDWARE_ACCEL = True
 
 # Camera Smallbot Resolution for OpenCV
 RESOLUTION = "640x360"
