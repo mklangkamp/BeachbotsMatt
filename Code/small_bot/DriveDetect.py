@@ -30,7 +30,7 @@ class DriveDetect:
         #print("inside func")
 
     def is_full_capacity(self):
-        if self.bottles_acquired >= chassis.get_max_bucket_capacity():
+        if self.bottles_acquired >= Constants.MAX_BUCKET_CAPACITY:
             return True
         else:
             return False

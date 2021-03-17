@@ -10,7 +10,7 @@ import Constants
 
 class Chassis:
 
-    def __init__(self, RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET, MAX_BUCKET_CAPACITY):
+    def __init__(self, RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET):
         self.RPWMF = RPWMF
         self.RPWMB = RPWMB
         self.LPWMF = LPWMF
@@ -18,7 +18,6 @@ class Chassis:
 
         self.IMU = AdafruitIMU()
         self.arm = Arm(STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
-        self.MAX_BUCKET_CAPACITY = MAX_BUCKET_CAPACITY
 
         GPIO.setwarnings(False)  # disable warnings
         GPIO.setmode(GPIO.BOARD)  # set pin numbering system
@@ -37,9 +36,6 @@ class Chassis:
         self.pi_rpwmb.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmf.start(0)  # start PWM of required Duty Cycle
         self.pi_lpwmb.start(0)  # start PWM of required Duty Cycle
-
-    def get_max_bucket_capacity(self):
-        return self.MAX_BUCKET_CAPACITY
 
     def reset_heading(self):
         self.IMU = AdafruitIMU()

@@ -7,7 +7,7 @@ sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 
 import Constants
 
-chassis = Chassis(Constants.RPWMF, Constants.RPWMB, Constants.LPWMF, Constants.LPWMB, Constants.STEP, Constants.DIR, Constants.SWITCH, Constants.GRIPPER, Constants.ELBOW, Constants.BUCKET, Constants.MAX_BUCKET_CAPACITY)
+chassis = Chassis(Constants.RPWMF, Constants.RPWMB, Constants.LPWMF, Constants.LPWMB, Constants.STEP, Constants.DIR, Constants.SWITCH, Constants.GRIPPER, Constants.ELBOW, Constants.BUCKET)
 driveDetect = DriveDetect(chassis, Constants.RESOLUTION, Constants.VIEW_ANGLE)
 
 '''
@@ -41,9 +41,9 @@ finished_clean = False
 while True:
     #chassis.point_turn_IMU(0, 20)
 
-#    driveDetect.cleanLitter()
-
-    driveDetect.object_detect.detect_litter()
+    #driveDetect.cleanLitter()
+    chassis.arm.servo.bucket(False)
+    #driveDetect.object_detect.detect_litter()
     
     #chassis.driveStraightIMU(-20, 5)
 '''
