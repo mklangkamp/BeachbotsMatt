@@ -9,7 +9,7 @@ small_bot = TCP_COMM(Constants.TCP_IP, Constants.TCP_PORT, Constants.BUFFER_SIZE
 april_tag_recognizer = AprilTag(Constants.RIGHT_ARPILTAG, Constants.LEFT_ARPILTAG, Constants.BACK_ARPILTAG, small_bot)
 
 while True:
-    april_tag_recognizer.detect_tag()
+    april_tag_recognizer.run_state_machine()
     smallbot_action = april_tag_recognizer.get_action()
     print(smallbot_action)
     small_bot.send_data(smallbot_action)

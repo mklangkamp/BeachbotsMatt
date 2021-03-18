@@ -3,8 +3,8 @@ import apriltag
 import cv2
 import sys
 sys.path.insert(0, '/home/bob/beachbots2020/Code/support')
-
 import Constants
+
 
 class AprilTag:
     def __init__(self, right_tag, left_tag, back_tag, small_bot):
@@ -25,7 +25,7 @@ class AprilTag:
         self.current_state_index = 0
         self.path_states = []
         self.times_driven_forward = 0
-	# Starting state
+        # Starting state
         self.status = Constants.BEGINNING_STATES[0]
 
         self.dist_after_turn = 0  # in inches
@@ -71,14 +71,15 @@ class AprilTag:
             self.next_state()
 
         elif status == 'FORWARD':
-            if Constants.MAX_CAM_X_BOUND >= x >= Constants.MIN_CAM_X_BOUND and \
+            if (Constants.MAX_CAM_X_BOUND >= x >= Constants.MIN_CAM_X_BOUND or \
+                Constants.MAX_CAM_X_BOUND + Constants.X_BOUND_THRESHOLD >= x >= Constants.MIN_CAM_X_BOUND - Constants.X_BOUND_THRESHOLD) and \
                     (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
                 self.current_action = "drive"
             else:
                 self.next_state()
 
         elif status == 'BACKWARDS':
-            if x <= Constants.MAX_CAM_X_BOUND and \
+            if (x <= Constants.MAX_CAM_X_BOUND) and \
                     (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
                 self.current_action = "drivebackwards"
             else:
@@ -139,21 +140,53 @@ class AprilTag:
     def get_action(self):
         return self.current_action
 
-    def chunkIt(seq, num):
-        avg = len(seq) / float(num)
+    def split_tags_seen(self, tag_data, num_of_tags):
+        avg = len(tag_data) / float(num_of_tags)
         out = []
         last = 0.0
 
-        while last < len(seq):
-            out.append(seq[int(last):int(last + avg)])
+        while last < len(tag_data):
+            out.append(tag_data[int(last):int(last + avg)])
             last += avg
 
         return out
+
+    def run_state_machine(self):
+        return_tag_data = self.detect_tag()
+        temp_tag_data = return_tag_data[0]
+        num_tags = return_tag_data[1]
+
+        if num_tags > 0:
+
+            parsed_tag_data = self.split_tags_seen(temp_tag_data, num_tags)
+
+            for i in range(len(parsed_tag_data)):
+
+                current_tag = parsed_tag_data[i]
+
+                if self.status == 'CREEP_FORWARD' and (current_tag[0] == self.back_tag):
+                    self.current_tag = current_tag[0]
+                    print("ATTEMPTING TO UPDATE STATUS 1")
+                    self.update_action(self.status, current_tag[1], current_tag[2], current_tag[3])
+                elif self.status == 'CREEP_FORWARD' and (current_tag[0] == self.right_tag):
+                    print("ATTEMPTING TO UPDATE STATUS 2")
+                    pass
+                elif self.status == 'CREEP_FORWARD' and (current_tag[0] == self.left_tag):
+                    print("ATTEMPTING TO UPDATE STATUS 2")
+                    pass
+                else:
+                    self.current_tag = current_tag[0]
+                    print("ATTEMPTING TO UPDATE STATUS 3")
+                    self.update_action(self.status, current_tag[1], current_tag[2], current_tag[3])
+
+            else:
+                self.update_action(None, None, None, None)
 
     def detect_tag(self):
         # print("detect_tag")
         # load the input image and convert it to grayscale
         # print("[INFO] loading image...")
+        tags_seen = []
         ret, frame = self.cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
         # define the AprilTags detector options and then detect the AprilTags
@@ -163,15 +196,7 @@ class AprilTag:
         results = self.detector.detect(gray)
         # print("[INFO] {} total AprilTags detected".format(len(results)))
         # loop over the AprilTag detection results
-        '''
-        if len(results) < 1:
-            self.current_tag = "none"
-            self.current_action = "none"
-        elif len(results) > 1:
-            self.canUpdate_act = False
-        elif len(results) == 1:
-            self.canUpdate_act = True
-        '''
+        num_tags_seen = len(results)
         # print("TAGS IN VIEW:", self.tags_in_view)
 
         for r in results:
@@ -207,19 +232,13 @@ class AprilTag:
                 self.tags_in_view.append(tagFamily)
             '''
             # if self.canUpdate_act:
-            self.current_tag = tagFamily
 
-            if self.status == 'CREEP_FORWARD' and (tagFamily == self.back_tag):
-                print("ATTEMPTING TO UPDATE STATUS 1")
-                self.update_action(self.status, cx, cy, dist_in)
-            if self.status == 'CREEP_FORWARD' and (tagFamily == self.right_tag):
-                print("ATTEMPTING TO UPDATE STATUS 2")
-                pass
-            else:
-                print("ATTEMPTING TO UPDATE STATUS 3")
-                self.update_action(self.status, cx, cy, dist_in)
+
+            tags_seen.extend((tagFamily, cx, cy, dist_in))
 
         # show the output image after AprilTag detection
         cv2.imshow("Image", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
+
+        return tags_seen, num_tags_seen
