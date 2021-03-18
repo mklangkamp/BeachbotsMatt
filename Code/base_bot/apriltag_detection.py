@@ -25,7 +25,8 @@ class AprilTag:
         self.current_state_index = 0
         self.path_states = []
         self.times_driven_forward = 0
-        self.status = 'FORWARD'
+	# Starting state
+        self.status = Constants.BEGINNING_STATES[0]
 
         self.dist_after_turn = 0  # in inches
         self.tags_in_view = []
