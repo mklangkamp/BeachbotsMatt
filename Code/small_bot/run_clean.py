@@ -50,4 +50,4 @@ while not finished_clean and not driveDetect.is_full_capacity():
         chassis.drive(0, 0)
 
 base_bot.close_conn()
-
+exit()
