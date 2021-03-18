@@ -25,8 +25,8 @@ STEP_ANGLE = 0.035
 SWITCH = 13
 
 # Servo Controller Pins
-GRIPPER = 1
 ELBOW = 0
+GRIPPER = 1
 BUCKET = 2
 
 # Servo Values for Poses
@@ -65,12 +65,29 @@ RIGHT_ARPILTAG = 'tag25h7'
 LEFT_ARPILTAG = 'tag36h11'
 BACK_ARPILTAG = 'tag25h9'
 
+
+# One by default: Will drive in zig-zag manner for one lap
+NUMBER_LAPS = 1
+
+LAP_STATES = ['TURN_RIGHT', 'CREEP_FORWARD', 'TURN_RIGHT', 'FORWARD',\
+              'TURN_LEFT', 'CREEP_FORWARD', 'TURN_LEFT', 'FORWARD']
+
+BEGINNING_STATES = ['FORWARD']
+
+END_STATES = ['TURN_RIGHT', 'CREEP_BACKWARD', 'TURN_LEFT', 'BACKWARDS', 'HALT', 'DUMP', 'STOP']
+
 # Actual Distance of the Apriltag When Pointed 0.6 Meters Away From the Camera
 KNOWN_DISTANCE = 0.6
 # Width of the Apriltag in Pixels When Pointed 0.6 Meters Away From the Camera
 KNOWN_PXL_WIDTH = 170
 # Width of the Apiltag in Meters
 KNOWN_WIDTH = 0.1651
+# Distance to Travel Forward in Inches
+FWD_TRAVEL_DIST = 5
+# Left-side of Camera Bounds
+MIN_CAM_X_BOUND = 120
+# Right-side of Camera Bounds
+MAX_CAM_X_BOUND = 520
 
 # --------------------- TCP Communication Parameters ---------------------
 TCP_IP = '192.168.137.210'  # '192.168.4.2'

@@ -1,6 +1,5 @@
 # import the necessary packages
 import apriltag
-# import time
 import cv2
 import sys
 sys.path.insert(0, '/home/bob/beachbots2020/Code/support')
@@ -24,14 +23,27 @@ class AprilTag:
         self.detector = apriltag.Detector(self.options)
 
         self.current_state_index = 0
-        self.path_states = 'FORWARD', 'TURN_RIGHT', 'CREEP_FORWARD', 'TURN_RIGHT', 'FORWARD', 'TURN_LEFT', 'CREEP_FORWARD', 'TURN_LEFT', 'FORWARD', 'TURN_RIGHT', 'CREEP_BACKWARD', 'TURN_LEFT', 'BACKWARDS', 'HALT', 'DUMP', 'STOP'
-        self.times_driven_forward = self.path_states.count('CREEP_FORWARD')
+        self.path_states = []
+        self.times_driven_forward = 0
         self.status = 'FORWARD'
 
-        self.dist_to_travel = 5  # in inches
         self.dist_after_turn = 0  # in inches
         self.tags_in_view = []
         # self.canUpdate_act = True
+
+        self.calculate_path()
+
+    def calculate_path(self):
+        mid_states = []
+
+        for i in range(Constants.NUMBER_LAPS):
+            mid_states = mid_states + Constants.LAP_STATES
+
+        self.path_states = Constants.BEGINNING_STATES + mid_states + Constants.END_STATES
+
+        self.times_driven_forward = self.path_states.count('CREEP_FORWARD')
+
+        print("Calculated path: ", self.path_states)
 
     def distance_to_camera(self, perWidth):
         # compute and return the distance from the maker to the camera in inches
@@ -58,13 +70,15 @@ class AprilTag:
             self.next_state()
 
         elif status == 'FORWARD':
-            if 550 >= x >= 120 and (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
+            if Constants.MAX_CAM_X_BOUND >= x >= Constants.MIN_CAM_X_BOUND and \
+                    (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
                 self.current_action = "drive"
             else:
                 self.next_state()
 
         elif status == 'BACKWARDS':
-            if x <= 550 and (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
+            if x <= Constants.MAX_CAM_X_BOUND and \
+                    (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
                 self.current_action = "drivebackwards"
             else:
                 self.next_state()
@@ -80,7 +94,7 @@ class AprilTag:
 
         elif status == 'CREEP_FORWARD':
             print("current Y VAL AT Y: ", y)
-            if (dist_in < self.dist_after_turn + self.dist_to_travel) and self.current_tag == self.back_tag:
+            if (dist_in < self.dist_after_turn + Constants.FWD_TRAVEL_DIST) and self.current_tag == self.back_tag:
                 self.current_action = "drive"
                 print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
             else:
@@ -100,15 +114,12 @@ class AprilTag:
         elif status == 'CREEP_BACKWARD':
             print("current Y VAL AT Y: ", y)
             if (dist_in > self.dist_after_turn - (
-                    self.dist_to_travel * self.times_driven_forward)) and self.current_tag == self.back_tag:
+                    Constants.FWD_TRAVEL_DIST * self.times_driven_forward)) and self.current_tag == self.back_tag:
                 self.current_action = "drivebackwards"
                 print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
             else:
                 print("----------GONE TO NEXT STATE----------")
                 self.next_state()
-
-        elif status == 'STOP':
-            self.current_action = 'stop'
 
         elif status == 'HALT':
             self.current_action = 'stop'
@@ -117,6 +128,9 @@ class AprilTag:
         elif status == 'DUMP':
             self.current_action = 'dump'
             self.next_state()
+
+        elif status == 'STOP':
+            self.current_action = 'stop'
 
         else:
             self.current_action = 'none'
@@ -134,8 +148,6 @@ class AprilTag:
             last += avg
 
         return out
-
-
 
     def detect_tag(self):
         # print("detect_tag")
