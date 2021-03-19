@@ -48,6 +48,7 @@ class AprilTag:
     def calculate_apriltag_angle(self):
         """
         Calculates an apriltag's tilt angle relative from the camera
+        Source: https://github.com/ariwasch/OpenCV-Distance-Angle-Demo
         :return    [int] Angle (in degrees) about the z-axis of an apriltag in relation to the camera.
         """
         if(Constants.KNOWN_WIDTH != 0 and self.curr_tag_height > self.curr_tag_width):
