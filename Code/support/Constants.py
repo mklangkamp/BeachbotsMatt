@@ -76,6 +76,8 @@ BEGINNING_STATES = ['FORWARD']
 
 END_STATES = ['TURN_RIGHT', 'CREEP_BACKWARD', 'TURN_LEFT', 'BACKWARDS', 'HALT', 'DUMP', 'STOP']
 
+INIT_STATES = ['STARTUP', 'TURN_RIGHT_INDEF', 'ALIGN_LEFT_TAG', 'TURN_RIGHT', 'DRIVE_DIST', 'TURN_LEFT', 'DRIVE_X_BOUND']
+
 # Actual Distance of the Apriltag When Pointed 0.6 Meters Away From the Camera
 KNOWN_DISTANCE = 0.6
 # Width of the Apriltag in Pixels When Pointed 0.6 Meters Away From the Camera
@@ -84,12 +86,18 @@ KNOWN_PXL_WIDTH = 170
 KNOWN_WIDTH = 0.1651
 # Distance to Travel Forward in Inches
 FWD_TRAVEL_DIST = 5
-# Left-side of Camera Bounds
+# Left-side of Camera Bounds for Start
+MAX_CAM_X_BOUND_START = 130
+# Left-side of Camera Bounds / Right-side of Camera Bounds for Start
 MIN_CAM_X_BOUND = 120
 # Right-side of Camera Bounds
 MAX_CAM_X_BOUND = 520
 # OpenCV Threshold Values for X Bounds
 X_BOUND_THRESHOLD = 15
+# Lower bound for optimal starting distance in inches
+MIN_START_DISTANCE = 70
+# Upper bound for optimal starting distance in inches
+MAX_START_DISTANCE = 80
 # --------------------- TCP esp32_wifi Parameters ---------------------
 TCP_IP = '192.168.137.210'  # '192.168.4.2'
 TCP_PORT = 5005
