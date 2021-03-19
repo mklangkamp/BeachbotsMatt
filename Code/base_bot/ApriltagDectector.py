@@ -1,4 +1,12 @@
-# import the necessary packages
+# title           :ApriltagDetector.py
+# description     :Detects apriltags within the camera view
+# author          :Dennis Chavez Romero, Spencer Gregg
+# date            :2020-02-18
+# version         :0.1
+# notes           :Source code for apriltag detection
+#                  obtained from: https://www.pyimagesearch.com/2020/11/02/apriltag-with-python/
+# python_version  :2.7
+# ==============================================================================
 import apriltag
 import cv2
 import sys
@@ -8,178 +16,92 @@ import Constants
 
 class AprilTag:
     def __init__(self, right_tag, left_tag, back_tag):
-        self.right_tag = right_tag
-        self.left_tag = left_tag
-        self.back_tag = back_tag
-        self.tag_families = self.right_tag + " " + self.left_tag + " " + self.back_tag
+        """"
+        Class constructor
+        """
+
+        # Assigning tag families to detect based on the apriltags on the smallbot
+        self.tag_families = right_tag + " " + left_tag + " " + back_tag
+
+        # Video source for OpenCV
         self.cap = cv2.VideoCapture(0)
+
+        # Camera resolution (width and height)
         self.cam_width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)  # 640 pixels wide
         self.cam_height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # 480 pixels tall
+
+        # Calculate camera's focal length
         self.focalLength = (Constants.KNOWN_PXL_WIDTH * Constants.KNOWN_DISTANCE) / Constants.KNOWN_WIDTH
 
+        # Options and detector objects for apriltag detector
         self.options = apriltag.DetectorOptions(families=self.tag_families)
         self.detector = apriltag.Detector(self.options)
 
-
+        # Apriltag data from the tags within camera view
+        self.apriltag_tag_data = []
 
     def distance_to_camera(self, perWidth):
-        # compute and return the distance from the maker to the camera in inches
+        """
+        Computes and return the distance from an apriltag to the camera in inches
+        :param perWidth       [int]    The amount of pixel per width of the current apriltag in view.
+        :return               [float]  The distance in incnes from the apriltag to the camera.
+        """
+
         if perWidth == 0:
             return None
         return ((Constants.KNOWN_WIDTH * self.focalLength) / perWidth) * 39.37
 
-    def is_done_turning(self):
-        check = self.small_bot.is_done_turning()
-        print("DONE TURNING CHECK: ", check)
-        return check
-
-    def next_state(self):
-        self.current_state_index += 1
-        self.status = self.path_states[self.current_state_index]
-
-    def update_action(self, status, x, y, dist_in):
-        # print("TAGS IN VIEW:", self.tags_in_view)
-        print("CURRENT STATE:", self.status)
-        print("DISTANCE IN IN: ", dist_in)
-
-        if status == 'STARTUP':
-            raw_input('Press Enter to continue...')
-            self.next_state()
-
-        elif status == 'FORWARD':
-            if (Constants.MAX_CAM_X_BOUND >= x >= Constants.MIN_CAM_X_BOUND or \
-                Constants.MAX_CAM_X_BOUND + Constants.X_BOUND_THRESHOLD >= x >= Constants.MIN_CAM_X_BOUND - Constants.X_BOUND_THRESHOLD) and \
-                    (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
-                self.current_action = "drive"
-            else:
-                self.next_state()
-
-        elif status == 'BACKWARDS':
-            if (x <= Constants.MAX_CAM_X_BOUND) and \
-                    (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
-                self.current_action = "drivebackwards"
-            else:
-                self.next_state()
-
-        elif status == 'TURN_RIGHT':
-            if self.is_done_turning() != 'done_turning':
-                self.current_action = 'turnright'
-            else:
-                self.current_action = 'none'
-                self.dist_after_turn = dist_in
-                print("CAPTURED DIST: ", self.dist_after_turn)
-                self.next_state()
-
-        elif status == 'CREEP_FORWARD':
-            print("current Y VAL AT Y: ", y)
-            if (dist_in < self.dist_after_turn + Constants.FWD_TRAVEL_DIST) and self.current_tag == self.back_tag:
-                self.current_action = "drive"
-                print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
-            else:
-                print("----------GONE TO NEXT STATE----------")
-                self.next_state()
-
-        elif status == 'TURN_LEFT':
-            print("INSIDE TURN LEFT")
-            if self.is_done_turning() != 'done_turning':
-                self.current_action = 'turnleft'
-            else:
-                self.current_action = 'none'
-                self.dist_after_turn = dist_in
-                print("CAPTURED DIST: ", self.dist_after_turn)
-                self.next_state()
-
-        elif status == 'CREEP_BACKWARD':
-            print("current Y VAL AT Y: ", y)
-            if (dist_in > self.dist_after_turn - (
-                    Constants.FWD_TRAVEL_DIST * self.times_driven_forward)) and self.current_tag == self.back_tag:
-                self.current_action = "drivebackwards"
-                print("INSIDE IF STATMT----CURRENT Y VAL: ", y)
-            else:
-                print("----------GONE TO NEXT STATE----------")
-                self.next_state()
-
-        elif status == 'HALT':
-            self.current_action = 'stop'
-            self.next_state()
-
-        elif status == 'DUMP':
-            self.current_action = 'dump'
-            self.next_state()
-
-        elif status == 'STOP':
-            self.current_action = 'stop'
-
-        else:
-            self.current_action = 'none'
-
-    def get_action(self):
-        return self.current_action
-
     def split_tags_seen(self, tag_data, num_of_tags):
+        """
+        Parses a string of apriltag data into usable lists
+        :param tag_data         [list]  The apriltag data received from the ApriltagDetector class.
+        :param num_of_tags      [int]   The number of apriltags that were seen by the detector.
+        :return                 [list]  2D list of data from the apriltags seen
+        """
+
+        # Return None if no apriltags were seen
+        if num_of_tags == 0:
+            return None
+
         avg = len(tag_data) / float(num_of_tags)
         out = []
         last = 0.0
 
+        # Split the list of apriltag data to separate sub-lists
         while last < len(tag_data):
             out.append(tag_data[int(last):int(last + avg)])
             last += avg
 
         return out
 
-    def run_state_machine(self):
-        return_tag_data = self.detect_tag()
-        temp_tag_data = return_tag_data[0]
-        num_tags = return_tag_data[1]
+    def get_apriltag_data(self):
+        """
+        Returns parsed, usable lists of apriltag data
+        :return                 [list]  2D list of data from the apriltags seen
+        """
+        return self.apriltag_tag_data
 
-        if num_tags > 0:
-
-            parsed_tag_data = self.split_tags_seen(temp_tag_data, num_tags)
-
-            for i in range(len(parsed_tag_data)):
-
-                current_tag = parsed_tag_data[i]
-
-                if self.status == 'CREEP_FORWARD' and (current_tag[0] == self.back_tag):
-                    self.current_tag = current_tag[0]
-                    print("ATTEMPTING TO UPDATE STATUS 1")
-                    self.update_action(self.status, current_tag[1], current_tag[2], current_tag[3])
-                elif self.status == 'CREEP_FORWARD' and (current_tag[0] == self.right_tag):
-                    print("ATTEMPTING TO UPDATE STATUS 2")
-                    pass
-                elif self.status == 'CREEP_FORWARD' and (current_tag[0] == self.left_tag):
-                    print("ATTEMPTING TO UPDATE STATUS 2")
-                    pass
-                else:
-                    self.current_tag = current_tag[0]
-                    print("ATTEMPTING TO UPDATE STATUS 3")
-                    self.update_action(self.status, current_tag[1], current_tag[2], current_tag[3])
-
-            else:
-                self.update_action(None, None, None, None)
-
-    def detect_tag(self):
-        # print("detect_tag")
-        # load the input image and convert it to grayscale
-        # print("[INFO] loading image...")
+    def detect_tags(self):
+        """
+        Detects apriltags within the camera view
+        """
+        # Temp list of apriltag data
         tags_seen = []
+        # Load the input image and convert it to grayscale
         ret, frame = self.cap.read()
         gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
-        # define the AprilTags detector options and then detect the AprilTags
-        # in the input image
-        # print("[INFO] detecting AprilTags...")
-
+        # Define the AprilTags detector options and then detect the AprilTags in the input image
         results = self.detector.detect(gray)
-        # print("[INFO] {} total AprilTags detected".format(len(results)))
-        # loop over the AprilTag detection results
+        # Determine the number of apriltags that it detected
         num_tags_seen = len(results)
-        # print("TAGS IN VIEW:", self.tags_in_view)
+        # Loop over the AprilTag detection results
 
         for r in results:
             cx = r.center[0]
             cy = r.center[1]
             print("x position: ", cx)
             print("y position: ", cy)
+
             # extract the bounding box (x, y)-coordinates for the AprilTag
             # and convert each of the (x, y)-coordinate pairs to integers
             (ptA, ptB, ptC, ptD) = r.corners
@@ -187,34 +109,34 @@ class AprilTag:
             ptC = (int(ptC[0]), int(ptC[1]))
             ptD = (int(ptD[0]), int(ptD[1]))
             ptA = (int(ptA[0]), int(ptA[1]))
+
             # draw the bounding box of the AprilTag detection
             cv2.line(frame, ptA, ptB, (0, 255, 0), 2)
             cv2.line(frame, ptB, ptC, (0, 255, 0), 2)
             cv2.line(frame, ptC, ptD, (0, 255, 0), 2)
             cv2.line(frame, ptD, ptA, (0, 255, 0), 2)
+
             # draw the center (x, y)-coordinates of the AprilTag
             (cX, cY) = (int(r.center[0]), int(r.center[1]))
             cv2.circle(frame, (cX, cY), 5, (0, 0, 255), -1)
+
             # draw the tag family on the image
             tagFamily = r.tag_family.decode("utf-8")
             cv2.putText(frame, tagFamily, (ptA[0], ptA[1] - 15), cv2.FONT_HERSHEY_SIMPLEX, 0.5, (0, 255, 0), 2)
-            # print("[INFO] tag family: {}".format(tagFamily))
+
+            # Calculate pixel width of the apriltag
             pxl_width = int(ptB[0]) - int(ptA[0])
+
+            # Calculate distance away from the camera in in ches
             dist_in = self.distance_to_camera(pxl_width)
 
-            # del self.tags_in_view[:]
-            '''
-            for i in range(len(results)):
-                self.tags_in_view.append(tagFamily)
-            '''
-            # if self.canUpdate_act:
-
-
+            # Append raw data to list
             tags_seen.extend((tagFamily, cx, cy, dist_in))
+
+        # Split the data up into sub-lists of each individual apriltag
+        self.apriltag_tag_data = self.split_tags_seen(tags_seen, num_tags_seen)
 
         # show the output image after AprilTag detection
         cv2.imshow("Image", frame)
         if cv2.waitKey(1) & 0xFF == ord('q'):
             cv2.destroyAllWindows()
-
-        return tags_seen, num_tags_seen

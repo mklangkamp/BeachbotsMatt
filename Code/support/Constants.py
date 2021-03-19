@@ -88,7 +88,8 @@ FWD_TRAVEL_DIST = 5
 MIN_CAM_X_BOUND = 120
 # Right-side of Camera Bounds
 MAX_CAM_X_BOUND = 520
-
+# OpenCV Threshold Values for X Bounds
+X_BOUND_THRESHOLD = 15
 # --------------------- TCP Communication Parameters ---------------------
 TCP_IP = '192.168.137.210'  # '192.168.4.2'
 TCP_PORT = 5005
