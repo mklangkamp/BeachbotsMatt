@@ -51,8 +51,7 @@ class StateMachine:
         # Instance of ApriltagDetector class used to detect apriltags on smallbot
         self.apriltag_detector = AprilTag(self.right_tag, self.left_tag, self.back_tag)
 
-        # Determine the states needed for our path
-        self.calculate_path()
+
 
     def calculate_path(self):
         """
@@ -106,6 +105,8 @@ class StateMachine:
 
         # Startup state
         if status == 'STARTUP':
+	    # Determine the states needed for our path
+	    self.calculate_path()
             raw_input('Press Enter to continue...')
             self.next_state()
 
@@ -215,6 +216,8 @@ class StateMachine:
         """
         Executes the state machine
         """
+	if self.status == 'STARTUP':
+	    self.update_action(self.status, None, None, None)
 
         # Get apriltag data from the detector
         return_tag_data = self.apriltag_detector.get_apriltag_data()
