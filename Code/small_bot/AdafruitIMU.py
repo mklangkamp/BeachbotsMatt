@@ -1,4 +1,3 @@
-import time
 import math
 import adafruit_bno055
 from adafruit_extended_bus import ExtendedI2C as I2C

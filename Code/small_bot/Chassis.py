@@ -1,8 +1,6 @@
 import RPi.GPIO as GPIO
-import time
 from Arm import Arm
 from AdafruitIMU import AdafruitIMU
-from time import sleep
 import sys
 sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 

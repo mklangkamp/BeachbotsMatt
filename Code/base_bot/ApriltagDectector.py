@@ -7,44 +7,20 @@ import Constants
 
 
 class AprilTag:
-    def __init__(self, right_tag, left_tag, back_tag, small_bot):
+    def __init__(self, right_tag, left_tag, back_tag):
         self.right_tag = right_tag
         self.left_tag = left_tag
         self.back_tag = back_tag
-        self.small_bot = small_bot
         self.tag_families = self.right_tag + " " + self.left_tag + " " + self.back_tag
         self.cap = cv2.VideoCapture(0)
         self.cam_width = self.cap.get(cv2.CAP_PROP_FRAME_WIDTH)  # 640 pixels wide
         self.cam_height = self.cap.get(cv2.CAP_PROP_FRAME_HEIGHT)  # 480 pixels tall
         self.focalLength = (Constants.KNOWN_PXL_WIDTH * Constants.KNOWN_DISTANCE) / Constants.KNOWN_WIDTH
-        self.current_tag = ""
-        self.current_action = ""
+
         self.options = apriltag.DetectorOptions(families=self.tag_families)
         self.detector = apriltag.Detector(self.options)
 
-        self.current_state_index = 0
-        self.path_states = []
-        self.times_driven_forward = 0
-        # Starting state
-        self.status = Constants.BEGINNING_STATES[0]
 
-        self.dist_after_turn = 0  # in inches
-        self.tags_in_view = []
-        # self.canUpdate_act = True
-
-        self.calculate_path()
-
-    def calculate_path(self):
-        mid_states = []
-
-        for i in range(Constants.NUMBER_LAPS):
-            mid_states = mid_states + Constants.LAP_STATES
-
-        self.path_states = Constants.BEGINNING_STATES + mid_states + Constants.END_STATES
-
-        self.times_driven_forward = self.path_states.count('CREEP_FORWARD')
-
-        print("Calculated path: ", self.path_states)
 
     def distance_to_camera(self, perWidth):
         # compute and return the distance from the maker to the camera in inches

@@ -1,6 +1,4 @@
-import maestro
-import time
-import RPi.GPIO as GPIO
+import Maestro
 import sys
 sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 
@@ -10,7 +8,7 @@ import Constants
 class ServoController:
     def __init__(self, GRIPPER, ELBOW, BUCKET):
 
-        self.servo = maestro.Controller()
+        self.servo = Maestro.Controller()
 
         # Pins
         self.gripper_pin = GRIPPER
