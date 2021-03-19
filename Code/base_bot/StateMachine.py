@@ -113,11 +113,13 @@ class StateMachine:
         elif status == 'FORWARD':
             # If the current apriltag in view is either the smallbot's right or left tag
             # and the current apriltag's x position is within the camera bounds
-            if (Constants.MAX_CAM_X_BOUND >= x >= Constants.MIN_CAM_X_BOUND or \
-                Constants.MAX_CAM_X_BOUND + Constants.X_BOUND_THRESHOLD >= x >= Constants.MIN_CAM_X_BOUND - Constants.X_BOUND_THRESHOLD) and \
+            if (x < Constants.MAX_CAM_X_BOUND and x > Constants.MIN_CAM_X_BOUND) and \
                     (self.current_tag == self.left_tag or self.current_tag == self.right_tag):
                 self.current_action = "drive"
             else:
+                # Reset current action for 1 iteration to avoid data overlap
+                self.current_action = 'none'
+		print("DONE DRIVING STRAIGHT---------------------------------")
                 self.next_state()
 
         # Drive backwards state
@@ -216,22 +218,23 @@ class StateMachine:
 
         # Get apriltag data from the detector
         return_tag_data = self.apriltag_detector.get_apriltag_data()
+	#print(return_tag_data)
         # Assign apriltag data to the first element from the returned tuple
-        temp_tag_data = return_tag_data[0]
-        # Assign the number of apriltags seen the second element from the returned tuple
-        num_tags = return_tag_data[1]
 
-        # If the camera saw any apriltags
-        if num_tags > 0:
+	if return_tag_data != None:
 
-            # Separate the string of apriltag data into sub-lists
-            parsed_tag_data = self.split_tags_seen(temp_tag_data, num_tags)
 
             # Iterate over the data from each of the apriltags seen
-            for i in range(len(parsed_tag_data)):
+            for i in range(len(return_tag_data)):
 
                 # Temp apriltag data
-                temp_tag = parsed_tag_data[i]
+                temp_tag = return_tag_data[i]
+
+		print("current state: ", self.status)
+
+		print("Statemachine x VAL: ", temp_tag[1])
+
+		print("Statemachine y VAL: ", temp_tag[2])
 
                 # If the smallbot is currently in the CREEP_FORWARD state
                 # handle cases for when the camera sees the side tags while it is driving forward
@@ -251,7 +254,7 @@ class StateMachine:
                     print("ATTEMPTING TO UPDATE STATUS 3")
                     self.update_action(self.status, temp_tag[1], temp_tag[2], temp_tag[3])
 
-            # If the camera did not see any apriltags
-            else:
-                self.current_tag = None
-                self.update_action(None, None, None, None)
+	# If the camera did not see any apriltags
+	else:
+    	    self.current_tag = None
+            self.update_action(None, None, None, None)

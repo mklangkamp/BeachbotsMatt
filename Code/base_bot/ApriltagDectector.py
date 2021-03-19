@@ -79,6 +79,9 @@ class AprilTag:
         Returns parsed, usable lists of apriltag data
         :return                 [list]  2D list of data from the apriltags seen
         """
+	# Update the apriltag data
+	self.detect_tags()
+
         return self.apriltag_tag_data
 
     def detect_tags(self):

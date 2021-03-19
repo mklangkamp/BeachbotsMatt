@@ -44,7 +44,7 @@ class TCP_COMM:
         :return     [string] The echo received data from the smallbot
         """
 
-        return self.data_recieved
+        return self.data_received
 
     def close_conn(self):
         """
