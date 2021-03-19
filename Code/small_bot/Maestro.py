@@ -1,8 +1,3 @@
-import serial
-from sys import version_info
-
-PY2 = version_info[0] == 2   #Running Python 2.x?
-
 #
 #---------------------------
 # Maestro Servo Controller
@@ -16,6 +11,12 @@ PY2 = version_info[0] == 2   #Running Python 2.x?
 # These functions provide access to many of the Maestro's capabilities using the
 # Pololu serial protocol
 #
+import serial
+from sys import version_info
+
+PY2 = version_info[0] == 2   #Running Python 2.x?
+
+
 class Controller:
     # When connected via USB, the Maestro creates two virtual serial ports
     # /dev/ttyACM0 for commands and /dev/ttyACM1 for communications.
@@ -166,4 +167,3 @@ class Controller:
     def stopScript(self):
         cmd = chr(0x24)
         self.sendCmd(cmd)
-

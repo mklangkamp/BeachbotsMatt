@@ -1,167 +1,217 @@
+# title           :Chassis.py
+# description     :Class for the smallbot drivetrain
+# author          :Dennis Chavez Romero, Spencer Gregg, Yossef Naim
+# date            :2021-01-18
+# version         :0.1
+# notes           :
+# python_version  :3.7
+# ==============================================================================
 import RPi.GPIO as GPIO
 from Arm import Arm
 from AdafruitIMU import AdafruitIMU
 import sys
-sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 
+sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 import Constants
+
 
 class Chassis:
 
     def __init__(self, RPWMF, RPWMB, LPWMF, LPWMB, STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET):
-        self.RPWMF = RPWMF
-        self.RPWMB = RPWMB
-        self.LPWMF = LPWMF
-        self.LPWMB = LPWMB
+        """
+        Class constructor
+        """
 
+        # Set PWM pins for motors
+        self.RPWMF = RPWMF  # RIGHT PWM FORWARDS
+        self.RPWMB = RPWMB  # RIGHT PWM BACKWARDS
+        self.LPWMF = LPWMF  # LEFT PWM FORWARDS
+        self.LPWMB = LPWMB  # LEFT PWM BACKWARDS
+
+        # Instantiate IMU object
         self.IMU = AdafruitIMU()
+
+        # Instantiate arm object
         self.arm = Arm(STEP, DIR, SWITCH, GRIPPER, ELBOW, BUCKET)
 
-        GPIO.setwarnings(False)  # disable warnings
-        GPIO.setmode(GPIO.BOARD)  # set pin numbering system
+        # Disable warnings
+        GPIO.setwarnings(False)
 
+        # Set pin numbering system
+        GPIO.setmode(GPIO.BOARD)
+
+        # Setup pins as OUT for output
         GPIO.setup(self.RPWMF, GPIO.OUT)
         GPIO.setup(self.RPWMB, GPIO.OUT)
         GPIO.setup(self.LPWMF, GPIO.OUT)
         GPIO.setup(self.LPWMB, GPIO.OUT)
 
-        self.pi_rpwmf = GPIO.PWM(self.RPWMF, 1000)  # create PWM instance with frequency
-        self.pi_rpwmb = GPIO.PWM(self.RPWMB, 1000)  # create PWM instance with frequency
-        self.pi_lpwmf = GPIO.PWM(self.LPWMF, 1000)  # create PWM instance with frequency
-        self.pi_lpwmb = GPIO.PWM(self.LPWMB, 1000)  # create PWM instance with frequency
+        # Create PWM instance with frequency
+        self.pi_rpwmf = GPIO.PWM(self.RPWMF, 1000)
+        self.pi_rpwmb = GPIO.PWM(self.RPWMB, 1000)
+        self.pi_lpwmf = GPIO.PWM(self.LPWMF, 1000)
+        self.pi_lpwmb = GPIO.PWM(self.LPWMB, 1000)
 
-        self.pi_rpwmf.start(0)  # start PWM of required Duty Cycle
-        self.pi_rpwmb.start(0)  # start PWM of required Duty Cycle
-        self.pi_lpwmf.start(0)  # start PWM of required Duty Cycle
-        self.pi_lpwmb.start(0)  # start PWM of required Duty Cycle
+        # Start PWM of required Duty Cycle
+        self.pi_rpwmf.start(0)
+        self.pi_rpwmb.start(0)
+        self.pi_lpwmf.start(0)
+        self.pi_lpwmb.start(0)
 
     def reset_heading(self):
+        """
+        Resets the IMU heading by declaring a new instance of the IMU
+        """
         self.IMU = AdafruitIMU()
 
-    def drive(self, rightSpeed, leftSpeed):
+    def drive(self, right_speed, left_speed):
+        """
+        Moves the smallbot chassis based on right and left wheel efforts
+        :param right_speed     [int]  The wheel efforts for the right side of drivetrain.
+        :param left_speed      [int]  The wheel efforts for the left side of drivetrain.
+        """
+        # Define behavior for all possible effort combinations
 
-        # for right side of drivetrain
-        if (rightSpeed > 0) and (leftSpeed > 0):  # for going forward
-            self.pi_rpwmf.ChangeDutyCycle(rightSpeed)  # drive right side forward
-            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+        # Straight forward
+        if (right_speed > 0) and (left_speed > 0):
+            self.pi_rpwmf.ChangeDutyCycle(right_speed)
+            self.pi_lpwmf.ChangeDutyCycle(left_speed)
             self.pi_rpwmb.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
-        elif (rightSpeed < 0) and (leftSpeed < 0):  # for going backward
-            self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
-            self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+
+        # Straight backwards
+        elif (right_speed < 0) and (left_speed < 0):
+            self.pi_rpwmb.ChangeDutyCycle(abs(right_speed))
+            self.pi_lpwmb.ChangeDutyCycle(abs(left_speed))
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(0)
-        elif (rightSpeed > 0) and (leftSpeed < 0):  # for point turn left
-            self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
-            self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+
+        # Point turn left
+        elif (right_speed > 0) and (left_speed < 0):
+            self.pi_rpwmf.ChangeDutyCycle(right_speed)
+            self.pi_lpwmb.ChangeDutyCycle(abs(left_speed))
             self.pi_rpwmb.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(0)
-        elif (rightSpeed < 0) and (leftSpeed > 0):  # for point turn right
-            self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
-            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+
+        # Point turn right
+        elif (right_speed < 0) and (left_speed > 0):
+            self.pi_rpwmb.ChangeDutyCycle(abs(right_speed))
+            self.pi_lpwmf.ChangeDutyCycle(left_speed)
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
-        elif (rightSpeed == 0) and (leftSpeed > 0):  # for swing turn right
+
+        # Forwards swing turn right
+        elif (right_speed == 0) and (left_speed > 0):
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
-            self.pi_lpwmf.ChangeDutyCycle(leftSpeed)
+            self.pi_lpwmf.ChangeDutyCycle(left_speed)
             self.pi_lpwmb.ChangeDutyCycle(0)
-        elif (rightSpeed == 0) and (leftSpeed < 0):  # for swing turn right
+
+        # Backwards swing turn right
+        elif (right_speed == 0) and (left_speed < 0):
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
-            self.pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+            self.pi_lpwmb.ChangeDutyCycle(abs(left_speed))
             self.pi_lpwmf.ChangeDutyCycle(0)
-        elif (rightSpeed > 0) and (leftSpeed == 0):  # for swing turn left
-            self.pi_rpwmf.ChangeDutyCycle(rightSpeed)
+
+        # Forwards swing turn left
+        elif (right_speed > 0) and (left_speed == 0):  # for swing turn left
+            self.pi_rpwmf.ChangeDutyCycle(right_speed)
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
-        elif (rightSpeed < 0) and (leftSpeed == 0):  # for swing turn left
-            self.pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
+
+        # Backwards swing turn left
+        elif (right_speed < 0) and (left_speed == 0):  # for swing turn left
+            self.pi_rpwmb.ChangeDutyCycle(abs(right_speed))
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
-        elif rightSpeed == 0 and leftSpeed == 0:  # making robot stop
+
+        # Full stop
+        elif right_speed == 0 and left_speed == 0:
             self.pi_lpwmf.ChangeDutyCycle(0)
             self.pi_lpwmb.ChangeDutyCycle(0)
             self.pi_rpwmf.ChangeDutyCycle(0)
             self.pi_rpwmb.ChangeDutyCycle(0)
 
-    def limit(self, val, minVal, maxVal):
-        return min(max(val, minVal), maxVal)
+    def point_turn_IMU(self, wanted_angle, speed):
+        """
+        Moves the smallbot chassis to a desired angle relative from where it currently is by turning about its center
+        :param wanted_angle    [int]  The desired angle for the chassis to turn to in degrees.
+        :param speed           [int]  The wheel effort to apply to the chassis while performing the turn.
+        """
 
-    def point_turn_IMU(self, wantedAngle, speed):
-        # relativePointAngle = wantedAngle - self.IMU.get_yaw()   # self.IMU.angleWrap(wantedAngle - currentAngle)
+        # Keep turning while the current IMU yaw angle is not within our defined threshold
+        while (self.IMU.get_yaw() > wanted_angle + Constants.DEG_THRESHOLD or self.IMU.get_yaw()
+               < wanted_angle - Constants.DEG_THRESHOLD):
 
-        while (self.IMU.get_yaw() > wantedAngle + Constants.DEG_THRESHOLD or self.IMU.get_yaw()
-               < wantedAngle - Constants.DEG_THRESHOLD):
-            # turn_speed = max(turn_speed, 50.0)
-            # print("error", abs(wantedAngle-currentAngle))
+            # Turn right for a positive angle
+            if wanted_angle > 0:
+                self.drive(-speed, speed)
+            # Turn left for a negative angle
+            elif wanted_angle < 0:
+                self.drive(speed, -speed)
+            # Handling for when wanted angle is 0 (aka straight heading)
+            elif self.IMU.get_yaw() > 0 and wanted_angle == 0:
+                self.drive(speed, -speed)
+            elif self.IMU.get_yaw() < 0 and wanted_angle == 0:
+                self.drive(-speed, speed)
 
-            if wantedAngle > 0:
-                self.drive(-speed, speed) # Turn right
-            elif wantedAngle < 0:
-                self.drive(speed, -speed) # Turn left
-            elif self.IMU.get_yaw() > 0 and wantedAngle == 0:
-                self.drive(speed, -speed) # Turn left
-            elif self.IMU.get_yaw() < 0 and wantedAngle == 0:
-                self.drive(-speed, speed) # Turn right
-
-            #print("desired angle: ", wantedAngle)
-            #print("current angle: ", self.IMU.get_yaw())
-
+        # Stop after completing point turn
         self.drive(0, 0)
 
+    def point_turn_basebot(self, wanted_angle, speed):
+        """
+        Moves the smallbot chassis to a desired angle relative from where it currently is by turning about its center
+        without the use of any loops
+        :param wanted_angle    [int]  The desired angle for the chassis to turn to in degrees.
+        :param speed           [int]  The wheel effort to apply to the chassis while performing the turn.
+        :return                [bool] Boolean indicating whether or not the wanted angle has been achieved.
+        """
 
-    def point_turn_basebot(self, wantedAngle, speed):
-        # relativePointAngle = wantedAngle - self.IMU.get_yaw()   # self.IMU.angleWrap(wantedAngle - currentAngle)
-        current_angle = self.IMU.get_yaw()
+        # Check if the current IMU yaw angle is within our defined threshold
+        if (self.IMU.get_yaw() > wanted_angle + Constants.DEG_THRESHOLD or
+                self.IMU.get_yaw() < wanted_angle - Constants.DEG_THRESHOLD):
 
-        if(current_angle > wantedAngle + Constants.DEG_THRESHOLD or current_angle < wantedAngle - Constants.DEG_THRESHOLD):
-            # turn_speed = max(turn_speed, 50.0)
-            # print("error", abs(wantedAngle-currentAngle))
+            # Turn right for a positive angle
+            if wanted_angle > 0:
+                self.drive(-speed, speed)
+            # Turn left for a negative angle
+            elif wanted_angle < 0:
+                self.drive(speed, -speed)
+            # Handling for when wanted angle is 0 (aka straight heading)
+            elif self.IMU.get_yaw() > 0 and wanted_angle == 0:
+                self.drive(speed, -speed)
+            elif self.IMU.get_yaw() < 0 and wanted_angle == 0:
+                self.drive(-speed, speed)
 
-            if wantedAngle > 0:
-                self.drive(-speed, speed) # Turn right
-            elif wantedAngle < 0:
-                self.drive(speed, -speed) # Turn left
-            elif self.IMU.get_yaw() > 0 and wantedAngle == 0:
-                self.drive(speed, -speed) # Turn left
-            elif self.IMU.get_yaw() < 0 and wantedAngle == 0:
-                self.drive(-speed, speed) # Turn right
         else:
-            self.drive(0,0)
+            # Stop after completing point turn
+            self.drive(0, 0)
+
+            # Return true if desired angle has been achieved
             return True
 
+        # Return false if desired angle has not been achieved
         return False
 
-    def swing_turn_IMU(self, currentAngle, wantedAngle, decelerationAngle, speed):
-        relativePointAngle = wantedAngle - currentAngle  # self.IMU.angleWrap(wantedAngle - currentAngle)
-        turn_speed = (relativePointAngle / decelerationAngle) * speed
-        turn_speed = self.limit(turn_speed, -speed, speed)
-        turn_speed = max(turn_speed, 50.0)
-        if relativePointAngle > 0:
-            self.drive(0, turn_speed)
-        else:
-            self.drive(turn_speed, 0)
+    def drive_straight_IMU(self, straight_speed, curr_angle):
+        """
+        Allows the drivetrain to drive straight while maintaining a desired heading by using a simple P controller
+        :param straight_speed     [int]  The wheel effort to apply while driving straight.
+        :param curr_angle         [int]  The desired heading to maintain while driving straight.
+        """
 
-    # duration in millis
-    def driveStraightIMU(self, straightSpeed, curr_angle):
-        # destination = self.current_milli_time() + duration  # calculate time when destination is reached
+        # Set the target as the desired angle
         target = curr_angle
 
-        # while self.current_milli_time() < destination:  # while destination has not been reached
-
-        # if(self.IMU.angleWrap(sensor.euler[0]) != None):
-        #    absolute = self.IMU.angleWrap(sensor.euler[0])#getGyro() #continue reading gyro
-        # else:
-        #    absolute = 0
+        # Capture current yaw angle
         absolute = self.IMU.get_yaw()
-        leftSpeed = straightSpeed - (absolute - target)  # adjust motor speeds
-        rightSpeed = straightSpeed + (absolute - target)
-        # print("LEFTSPEED: ", leftSpeed)
-        # print("RIGHTSPEED: ", rightSpeed)
-        # print(rightSpeed, leftSpeed, absolute)
-        #print("desired angle: ", curr_angle)
-        #print("current angle: ", self.IMU.euler_from_quaternion())
-        self.drive(rightSpeed, leftSpeed)  # write to chassis
+
+        # Adjust wheel efforts accordingly
+        left_speed = straight_speed - (absolute - target)
+        right_speed = straight_speed + (absolute - target)
+
+        # Write calculated wheel efforts to chassis
+        self.drive(right_speed, left_speed)

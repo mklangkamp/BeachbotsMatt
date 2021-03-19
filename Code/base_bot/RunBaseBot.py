@@ -1,7 +1,7 @@
-# title           :BaseBotCom.py
+# title           :RunBaseBot.py
 # description     :Determines the smallbots actions and sends them over via TCP
 # author          :Dennis Chavez Romero
-# date            :2020-03-18
+# date            :2021-03-18
 # version         :0.1
 # notes           :Original source: https://wiki.python.org/moin/TcpCommunication
 # python_version  :2.7

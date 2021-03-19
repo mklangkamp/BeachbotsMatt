@@ -1,7 +1,7 @@
 # title           :BaseBotCom.py
-# description     :TCP Communication for the client side to send and receive data from and to the smallbot
+# description     :TCP esp32_wifi for the client side to send and receive data from and to the smallbot
 # author          :Dennis Chavez Romero
-# date            :2020-02-13
+# date            :2021-02-13
 # version         :0.1
 # notes           :Original source: https://wiki.python.org/moin/TcpCommunication
 # python_version  :2.7

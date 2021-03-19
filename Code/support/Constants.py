@@ -90,7 +90,7 @@ MIN_CAM_X_BOUND = 120
 MAX_CAM_X_BOUND = 520
 # OpenCV Threshold Values for X Bounds
 X_BOUND_THRESHOLD = 15
-# --------------------- TCP Communication Parameters ---------------------
+# --------------------- TCP esp32_wifi Parameters ---------------------
 TCP_IP = '192.168.137.210'  # '192.168.4.2'
 TCP_PORT = 5005
 BUFFER_SIZE = 20

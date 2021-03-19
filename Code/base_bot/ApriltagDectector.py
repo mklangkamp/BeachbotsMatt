@@ -1,7 +1,7 @@
 # title           :ApriltagDetector.py
 # description     :Detects apriltags within the camera view
 # author          :Dennis Chavez Romero, Spencer Gregg
-# date            :2020-02-18
+# date            :2021-02-18
 # version         :0.1
 # notes           :Source code for apriltag detection
 #                  obtained from: https://www.pyimagesearch.com/2020/11/02/apriltag-with-python/
@@ -10,6 +10,7 @@
 import apriltag
 import cv2
 import sys
+
 sys.path.insert(0, '/home/bob/beachbots2020/Code/support')
 import Constants
 
@@ -79,8 +80,8 @@ class AprilTag:
         Returns parsed, usable lists of apriltag data
         :return                 [list]  2D list of data from the apriltags seen
         """
-	# Update the apriltag data
-	self.detect_tags()
+        # Update the apriltag data
+        self.detect_tags()
 
         return self.apriltag_tag_data
 

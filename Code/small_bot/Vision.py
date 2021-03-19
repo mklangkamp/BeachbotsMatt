@@ -1,4 +1,11 @@
-# Import packages
+# title           :Vision.py
+# description     :Performs inference on frames from the webcam with the specified TFlite model
+# author          :Dennis Chavez Romero
+# date            :2021-02-05
+# version         :0.1
+# notes           :Original source: https://github.com/EdjeElectronics/TensorFlow-Lite-Object-Detection-on-Android-and-Raspberry-Pi/blob/master/TFLite_detection_webcam.py
+# python_version  :3.7
+# ==============================================================================
 import os
 import cv2
 import numpy as np
@@ -7,7 +14,6 @@ from threading import Thread
 import importlib.util
 import sys
 sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
-
 import Constants
 
 
@@ -20,6 +26,9 @@ class VideoStream:
     """Camera object that controls video streaming from the Picamera"""
 
     def __init__(self, resolution=(640, 360), framerate=30):  # was 640,480 framerate was 30
+        """
+        Class constructor
+        """
         # Initialize the PiCamera and the camera image stream
         self.stream = cv2.VideoCapture(0)
         ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
@@ -59,16 +68,25 @@ class VideoStream:
 
 
 class Detection:
+
     def __init__(self, resolution):
-        self.object = "test"
-        self.object_area = 0.0
+        """
+        Class constructor
+        """
+
+        # Load model from folder
         MODEL_NAME = Constants.MODEL_FOLDER_NAME
-        GRAPH_NAME = 'detect.tflite'  # 'edgetpu.tflite'
+
+        # Default names for unoptimized and optimized model files
+        GRAPH_NAME = 'detect.tflite'
         LABELMAP_NAME = 'labelmap.txt'
+
+        # 50% Threshold for valid detection
         self.min_conf_threshold = 0.5
+
         self.curr_object = ''
         self.coordinates = 0, 0
-        current_res = resolution  # '512x512'
+        current_res = resolution
         resW, resH = current_res.split('x')
         self.imW, self.imH = int(resW), int(resH)
         use_TPU = Constants.USE_HARDWARE_ACCEL
@@ -138,19 +156,16 @@ class Detection:
         self.freq = cv2.getTickFrequency()
 
         # Initialize video stream
-        self.videostream = VideoStream(resolution=(self.imW, self.imH), framerate=30).start()  # framerate was 30
+        self.videostream = VideoStream(resolution=(self.imW, self.imH), framerate=30).start()
         time.sleep(1)
 
     def get_current_object(self):
-        # print("current object: ", self.curr_object)
         return self.curr_object
 
     def get_centroid(self):
         return self.coordinates
 
     def detect_litter(self):
-
-        # for frame1 in camera.capture_continuous(rawCapture, format="bgr",use_video_port=True):
 
         # Start timer (for calculating frame rate)
         t1 = cv2.getTickCount()
@@ -173,12 +188,9 @@ class Detection:
         self.interpreter.invoke()
 
         # Retrieve detection results
-        boxes = self.interpreter.get_tensor(self.output_details[0]['index'])[
-            0]  # Bounding box coordinates of detected objects
+        boxes = self.interpreter.get_tensor(self.output_details[0]['index'])[0]  # Bounding box coordinates of detected objects
         classes = self.interpreter.get_tensor(self.output_details[1]['index'])[0]  # Class index of detected objects
         scores = self.interpreter.get_tensor(self.output_details[2]['index'])[0]  # Confidence of detected objects
-        # num = self.interpreter.get_tensor(self.output_details[3]['index'])[0]  # Total number of detected objects (inaccurate and not needed)
-
 
         # Assume no detection at first
         self.curr_object = 'None'
@@ -188,7 +200,8 @@ class Detection:
             if ((scores[i] > self.min_conf_threshold) and (scores[i] <= 1.0)):
                 
                 object_name = self.labels[int(classes[i])]  # Look up object name from "labels" array using class index
-                
+
+                # Only draw bounding boxes around objects that are not from the reject dataset
                 if object_name != 'not': 
                     # Get bounding box coordinates and draw box
                     # Interpreter can return coordinates that are outside of image dimensions, need to force them to be within image using max() and min()
@@ -197,27 +210,23 @@ class Detection:
                     ymax = int(min(self.imH, (boxes[i][2] * self.imH)))
                     xmax = int(min(self.imW, (boxes[i][3] * self.imW)))
 
+                    # Draw bounding box
                     cv2.rectangle(frame, (xmin, ymin), (xmax, ymax), (10, 255, 0), 2)
 
                     # Draw centroid
                     cv2.circle(frame, (int((xmin + xmax) / 2), int((ymin + ymax) / 2)), radius=5, color=(0, 0, 255),
                                thickness=-1)
 
-                    # Draw label
-
-                    # Change to avoid drawing labels to 'not' objects
-                    
-
+                    # Update current name of the object currently on cam
                     if object_name == 'bottle' or object_name == 'can':
                         self.curr_object = object_name
                     else:
                         self.curr_object = 'None'
 
-                    # self.objectArea = (xmax * ymax) / 100
+                    # Calculate x,y coordinates of the centroid on the screen
                     self.coordinates = int((xmin + xmax) / 2), int((ymin + ymax) / 2)
-                    # print the name of the detected object inside of the terminal for testing purposes.
-                    # print(object_name)
 
+                    # Draw label
                     label = '%s: %d%%' % (object_name, int(scores[i] * 100))  # Example: 'person: 72%'
                     labelSize, baseLine = cv2.getTextSize(label, cv2.FONT_HERSHEY_SIMPLEX, 0.7, 2)  # Get font size
                     label_ymin = max(ymin, labelSize[1] + 10)  # Make sure not to draw label too close to top of window
@@ -227,13 +236,11 @@ class Detection:
                     cv2.putText(frame, label, (xmin, label_ymin - 7), cv2.FONT_HERSHEY_SIMPLEX, 0.7, (0, 0, 0),
                                 2)  # Draw label text
 
-
         # Calculate framerate
         t2 = cv2.getTickCount()
         time1 = (t2 - t1) / self.freq
         frame_rate_calc = 1 / time1
 
-        # print(obj_name)
         # Draw framerate in corner of frame
         cv2.putText(frame, 'FPS: {0:.2f}'.format(frame_rate_calc), (30, 50), cv2.FONT_HERSHEY_SIMPLEX, 1, (255, 255, 0),
                     2, cv2.LINE_AA)

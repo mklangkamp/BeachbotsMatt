@@ -1,7 +1,7 @@
 # title           :StateMachine.py
 # description     :Runs the state machine used for path planning
 # author          :Dennis Chavez Romero, Spencer Gregg
-# date            :2020-03-18
+# date            :2021-03-18
 # version         :0.1
 # notes           :
 # python_version  :2.7
@@ -50,8 +50,6 @@ class StateMachine:
 
         # Instance of ApriltagDetector class used to detect apriltags on smallbot
         self.apriltag_detector = AprilTag(self.right_tag, self.left_tag, self.back_tag)
-
-
 
     def calculate_path(self):
         """
@@ -105,8 +103,10 @@ class StateMachine:
 
         # Startup state
         if status == 'STARTUP':
-	    # Determine the states needed for our path
-	    self.calculate_path()
+            # Determine the states needed for our path
+            self.calculate_path()
+
+            # Wait for user input to start
             raw_input('Press Enter to continue...')
             self.next_state()
 
@@ -120,7 +120,7 @@ class StateMachine:
             else:
                 # Reset current action for 1 iteration to avoid data overlap
                 self.current_action = 'none'
-		print("DONE DRIVING STRAIGHT---------------------------------")
+                print("DONE DRIVING STRAIGHT---------------------------------")
                 self.next_state()
 
         # Drive backwards state
@@ -211,21 +211,19 @@ class StateMachine:
         """
         return self.current_action
 
-
     def run_state_machine(self):
         """
         Executes the state machine
         """
-	if self.status == 'STARTUP':
-	    self.update_action(self.status, None, None, None)
+        # Initial check for startup state
+        if self.status == 'STARTUP':
+            self.update_action(self.status, None, None, None)
 
         # Get apriltag data from the detector
         return_tag_data = self.apriltag_detector.get_apriltag_data()
-	#print(return_tag_data)
-        # Assign apriltag data to the first element from the returned tuple
 
-	if return_tag_data != None:
-
+        # Check if it saw an apriltag
+        if return_tag_data is not None:
 
             # Iterate over the data from each of the apriltags seen
             for i in range(len(return_tag_data)):
@@ -233,11 +231,11 @@ class StateMachine:
                 # Temp apriltag data
                 temp_tag = return_tag_data[i]
 
-		print("current state: ", self.status)
+                print("current state: ", self.status)
 
-		print("Statemachine x VAL: ", temp_tag[1])
+                print("Statemachine x VAL: ", temp_tag[1])
 
-		print("Statemachine y VAL: ", temp_tag[2])
+                print("Statemachine y VAL: ", temp_tag[2])
 
                 # If the smallbot is currently in the CREEP_FORWARD state
                 # handle cases for when the camera sees the side tags while it is driving forward
@@ -257,7 +255,7 @@ class StateMachine:
                     print("ATTEMPTING TO UPDATE STATUS 3")
                     self.update_action(self.status, temp_tag[1], temp_tag[2], temp_tag[3])
 
-	# If the camera did not see any apriltags
-	else:
-    	    self.current_tag = None
+        # If the camera did not see any apriltags
+        else:
+            self.current_tag = None
             self.update_action(None, None, None, None)
