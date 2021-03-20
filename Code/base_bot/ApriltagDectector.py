@@ -38,37 +38,8 @@ class AprilTag:
         self.options = apriltag.DetectorOptions(families=self.tag_families)
         self.detector = apriltag.Detector(self.options)
 
-        # Values for the fitted tag pixel width & height
-        self.curr_tag_width = 0
-        self.curr_tag_height = 0
-
         # Apriltag data from the tags within camera view
         self.apriltag_tag_data = []
-
-    def calculate_apriltag_angle(self):
-        """
-        Calculates an apriltag's tilt angle relative from the camera
-        Source: https://github.com/ariwasch/OpenCV-Distance-Angle-Demo
-        :return    [int] Angle (in degrees) about the z-axis of an apriltag in relation to the camera.
-        """
-        if(Constants.KNOWN_WIDTH != 0 and self.curr_tag_height > self.curr_tag_width):
-            angle = (1 - (self.fitted_width/self.fitted_height)) * 90
-        else:
-            angle = 0
-
-        return angle
-
-    def calculate_euclidean_distance(self, x1, y1, x2, y2):
-        """
-        Calculates the distance from 2 coordinate points
-        :param x1      [int] x1 point.
-        :param y1      [int] y1 point.
-        :param x2      [int] x2 point.
-        :param y2      [int] y2 point.
-        :return:       [int] Euclidean distance between 2 coordinates points.
-        """
-        dist = math.sqrt((x2 - x1) ** 2 + (y2 - y1) ** 2)
-        return dist
 
     def distance_to_camera(self, perWidth):
         """
@@ -165,10 +136,6 @@ class AprilTag:
             # Bottom line
             cv2.line(frame, ptD, ptA, (0, 255, 0), 2)
 
-            # Calculate current apriltag's pixel width and height
-            self.curr_tag_width = self.calculate_euclidean_distance(ptA[0], ptA[1], ptB[0], ptB[1])
-            self.curr_tag_height = self.calculate_euclidean_distance(ptB[0], ptB[1], ptC[0], ptC[1])
-
             # draw the center (x, y)-coordinates of the AprilTag
             (cX, cY) = (int(r.center[0]), int(r.center[1]))
             cv2.circle(frame, (cX, cY), 5, (0, 0, 255), -1)
@@ -180,14 +147,11 @@ class AprilTag:
             # Calculate pixel width of the apriltag
             pxl_width = int(ptB[0]) - int(ptA[0])
 
-            # Calculate distance away from the camera in in ches
+            # Calculate distance away from the camera in inches
             dist_in = self.distance_to_camera(pxl_width)
 
-            # Calculate angle about the z-axis of the apriltag w.r.t. camera
-            angle = self.calculate_apriltag_angle()
-
             # Append raw data to list
-            tags_seen.extend((tagFamily, cx, cy, dist_in, angle))
+            tags_seen.extend((tagFamily, cx, cy, dist_in))
 
         # Split the data up into sub-lists of each individual apriltag
         self.apriltag_tag_data = self.split_tags_seen(tags_seen, num_tags_seen)

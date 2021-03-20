@@ -59,24 +59,6 @@ while not finished_clean and not driveDetect.is_full_capacity():
             # Reset IMU heading back to 0 for future turns
             chassis.reset_heading()
 
-    # If the smallbot needs to turn right indefinitely
-    elif current_state == b'turnright_indef':
-
-        # Turn for one angle relative from where it is
-        chassis.point_turn_basebot(chassis.IMU.get_yaw() + 1, Constants.MOTOR_SPEED)
-
-        # Reset IMU heading back to 0 for future turns
-        chassis.reset_heading()
-
-    # If the smallbot needs to turn left indefinitely
-    elif current_state == b'turnleft_indef':
-
-        # Turn for one angle relative from where it is
-        chassis.point_turn_basebot(chassis.IMU.get_yaw() - 1, Constants.MOTOR_SPEED)
-
-        # Reset IMU heading back to 0 for future turns
-        chassis.reset_heading()
-
     # Drive straight with IMU with negative wheel efforts when driving backwards
     elif current_state == b'drivebackwards':
         chassis.drive_straight_IMU(-Constants.MOTOR_SPEED, 0)
