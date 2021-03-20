@@ -10,61 +10,11 @@ import os
 import cv2
 import numpy as np
 import time
-from threading import Thread
 import importlib.util
 import sys
 sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 import Constants
-
-
-# Import Smallbot packages
-# from Testy import Testy
-
-# Define VideoStream class to handle streaming of video from webcam in separate processing thread
-# Source - Adrian Rosebrock, PyImageSearch: https://www.pyimagesearch.com/2015/12/28/increasing-raspberry-pi-fps-with-python-and-opencv/
-class VideoStream:
-    """Camera object that controls video streaming from the Picamera"""
-
-    def __init__(self, resolution=(640, 360), framerate=30):  # was 640,480 framerate was 30
-        """
-        Class constructor
-        """
-        # Initialize the PiCamera and the camera image stream
-        self.stream = cv2.VideoCapture(0)
-        ret = self.stream.set(cv2.CAP_PROP_FOURCC, cv2.VideoWriter_fourcc(*'MJPG'))
-        ret = self.stream.set(3, resolution[0])
-        ret = self.stream.set(4, resolution[1])
-
-        # Read first frame from the stream
-        (self.grabbed, self.frame) = self.stream.read()
-
-        # Variable to control when the camera is
-        self.stopped = False
-
-    def start(self):
-        # Start the thread that reads frames from the video stream
-        Thread(target=self.update, args=()).start()
-        return self
-
-    def update(self):
-        # Keep looping indefinitely until the thread is stopped
-        while True:
-            # If the camera is stopped, stop the thread
-            if self.stopped:
-                # Close camera resources
-                self.stream.release()
-                return
-
-            # Otherwise, grab the next frame from the stream
-            (self.grabbed, self.frame) = self.stream.read()
-
-    def read(self):
-        # Return the most recent frame
-        return self.frame
-
-    def stop(self):
-        # Indicate that the camera and thread should be stopped
-        self.stopped = True
+from Camera import VideoStream
 
 
 class Detection:
@@ -181,7 +131,7 @@ class Detection:
 
         # Normalize pixel values if using a floating model (i.e. if model is non-quantized)
         if self.floating_model:
-            input_data = (np.float32(input_data) - input_mean) / input_std
+            input_data = (np.float32(input_data) - self.input_mean) / self.input_std
 
         # Perform the actual detection by running the model with the image as input
         self.interpreter.set_tensor(self.input_details[0]['index'], input_data)
