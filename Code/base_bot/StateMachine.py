@@ -93,6 +93,7 @@ class StateMachine:
     def update_action(self, status, x, y, dist_in):
         """
         Main logic for state machine. Updates the data to be sent to the smallbot
+
         :param status     [string]  The current state the smallbot is in.
         :param x          [float]   The OpenCV x position from the current apiltag in view.
         :param y          [float]   The OpenCV y position from the current apiltag in view.
@@ -149,7 +150,7 @@ class StateMachine:
         # Turn left state
         elif status == 'TURN_LEFT':
             print("INSIDE TURN LEFT")
-            # Keep turning left while the smallbot is not done achieving its goal angle aka 90 deg
+            # Keep turning left while the smallbot is not done achieving its goal angle aka -90 deg
             if self.is_done_turning() != 'done_turning':
                 self.current_action = 'turnleft'
             else:
@@ -215,15 +216,12 @@ class StateMachine:
         """
         Executes the state machine
         """
-        # Initial check for startup state
-        if self.status == 'STARTUP':
-            self.update_action(self.status, None, None, None)
 
         # Get apriltag data from the detector
         return_tag_data = self.apriltag_detector.get_apriltag_data()
 
         # Check if it saw an apriltag
-        if return_tag_data is not None:
+        if len(return_tag_data) != 0:
 
             # Iterate over the data from each of the apriltags seen
             for i in range(len(return_tag_data)):
