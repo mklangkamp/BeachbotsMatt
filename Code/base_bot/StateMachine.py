@@ -92,7 +92,7 @@ class StateMachine:
 
     def update_action(self, status, x, y, dist_in):
         """
-        Checks if the smallbot is done performing a turn
+        Main logic for state machine. Updates the data to be sent to the smallbot
         :param status     [string]  The current state the smallbot is in.
         :param x          [float]   The OpenCV x position from the current apiltag in view.
         :param y          [float]   The OpenCV y position from the current apiltag in view.
