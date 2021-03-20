@@ -217,7 +217,11 @@ class StateMachine:
         Executes the state machine
         """
 
+        # Initial check for startup state
+        if self.status == 'STARTUP':
+            self.update_action(self.status, None, None, None)
         # Get apriltag data from the detector
+
         return_tag_data = self.apriltag_detector.get_apriltag_data()
 
         # Check if it saw an apriltag
