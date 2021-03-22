@@ -86,18 +86,10 @@ KNOWN_PXL_WIDTH = 170
 KNOWN_WIDTH = 0.1651
 # Distance to Travel Forward in Inches
 FWD_TRAVEL_DIST = 5
-# Left-side of Camera Bounds for Start
-MAX_CAM_X_BOUND_START = 130
 # Left-side of Camera Bounds / Right-side of Camera Bounds for Start
 MIN_CAM_X_BOUND = 120
 # Right-side of Camera Bounds
 MAX_CAM_X_BOUND = 520
-# OpenCV Threshold Values for X Bounds
-X_BOUND_THRESHOLD = 15
-# Lower bound for optimal starting distance in inches
-MIN_START_DISTANCE = 70
-# Upper bound for optimal starting distance in inches
-MAX_START_DISTANCE = 80
 # --------------------- TCP esp32_wifi Parameters ---------------------
 TCP_IP = '192.168.137.210'  # '192.168.4.2'
 TCP_PORT = 5005
