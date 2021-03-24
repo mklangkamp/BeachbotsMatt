@@ -91,6 +91,6 @@ MIN_CAM_X_BOUND = 120
 # Right-side of Camera Bounds
 MAX_CAM_X_BOUND = 520
 # --------------------- TCP esp32_wifi Parameters ---------------------
-TCP_IP = '192.168.137.210'  # '192.168.4.2'
+TCP_IP = '192.168.4.2'  # '192.168.137.210'
 TCP_PORT = 5005
 BUFFER_SIZE = 20
