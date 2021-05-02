@@ -3,11 +3,21 @@ This is the repository for the BeachBots MQP 2020
 ## Dependencies
 
 ### RPi.GPIO
+Run on the Smallbot
 ```
 sudo apt-get update
 ```
 ```
 sudo apt-get install rpi.gpio
+```
+
+### Apriltag for Python 2
+Run on the Basebot
+```
+sudo apt-get update
+```
+```
+pip install apriltag
 ```
 
 ### Computer Vision
