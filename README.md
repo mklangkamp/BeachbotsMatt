@@ -46,7 +46,7 @@ file. This essential file holds all the constants of the project and makes
 them global. This allows for easy changes across the project.
 
 ## How To Launch Basebot and Smallbot Code
-*Note the password on the Rasberry Pi is "bots2021"
+*Note the password on the Rasberry Pi is "bots2021" and "!bob2020" for the Jetson
 
 To launch the Smallbot with all the code, ssh into the Smallbot and type:
 ```
