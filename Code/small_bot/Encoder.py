@@ -1,3 +1,11 @@
+# title           :Encoder.py
+# description     :Counts and updates the encoder position for both of the back wheels.
+# author          :Dennis Chavez Romero
+# date            :2021-04-16
+# version         :0.1
+# notes           :
+# python_version  :3.7
+# ==============================================================================
 import RPi.GPIO as GPIO
 
 class Encoder:
