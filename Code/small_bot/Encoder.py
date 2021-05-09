@@ -3,7 +3,7 @@
 # author          :Dennis Chavez Romero
 # date            :2021-04-16
 # version         :0.1
-# notes           :
+# notes           :Original source: https://playground.arduino.cc/Main/RotaryEncoders/
 # python_version  :3.7
 # ==============================================================================
 import RPi.GPIO as GPIO
