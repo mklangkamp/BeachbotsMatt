@@ -96,6 +96,9 @@ def on_press(key): # Callback function for keypress
 with Listener(on_press = on_press) as listener: #Create listener, and start it 
     listener.join()
 
+
+print("Stop: Spacebar, Increase Speeds: Up Arrow, Decrease Speeds: Down Arrow, Left: Left Arrow, Right: Right Arrow")
+
 while(True):
     if(leftSpeed < 0):
         pi_lpwmf.ChangeDutyCycle(0)
@@ -109,4 +112,4 @@ while(True):
         pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
     else:
         pi_rpwmf.ChangeDutyCycle(rightSpeed)
-        pi_rpwmb.ChangeDutyCycle(0)    
+        pi_rpwmb.ChangeDutyCycle(0)
