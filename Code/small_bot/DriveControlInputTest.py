@@ -14,6 +14,8 @@ from time import sleep
 import sys
 sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 import Constants
+import termios
+import tty
 
 # Set PWM pins for motors
 RPWMF = Constants.RPWMF  # RIGHT PWM FORWARDS
@@ -22,7 +24,7 @@ LPWMF = Constants.LPWMF  # LEFT PWM FORWARDS
 LPWMB = Constants.LPWMB  # LEFT PWM BACKWARDS
 
 # Disable warnings
-# GPIO.setwarnings(False)
+GPIO.setwarnings(False)
 
 # Set pin numbering system
 GPIO.setmode(GPIO.BOARD)
@@ -60,9 +62,22 @@ pi_lpwmb.start(0)
 
 # finished_clean = False
 
-while(True):
-    # Straight forward
-    pi_rpwmf.ChangeDutyCycle(45)
-    pi_lpwmf.ChangeDutyCycle(45)
-    pi_rpwmb.ChangeDutyCycle(0)
-    pi_lpwmb.ChangeDutyCycle(0)
+
+leftSpeed = 0
+rightSpeed = 0
+
+def _getch():
+	fd = sys.stdin.fileno()
+	old_settings = termios.tcgetattr(fd)
+	try:
+		tty.setraw(fd)
+		ch = sys.stdin.read(1)
+	finally:
+		termios.tcsetattr(fd,termios.TCSADRAIN, old_settings)
+	return ch
+getch = _getch()
+print(getch)
+
+
+
+#print("Stop: Spacebar, Increase Speeds: Up Arrow, Decrease Speeds: Down Arrow, Left: Left Arrow, Right: Right Arrow")

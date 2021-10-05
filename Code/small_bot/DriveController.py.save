@@ -111,27 +111,27 @@ def on_press(key): # Callback function for keypress
 	rightSpeed = 100
     if(rightSpeed <= -100):
 	rightSpeed = -100
-    print(str(leftSpeed) + '\t' + str(rightSpeed))
+#    print(str(leftSpeed) + '\t' + str(rightSpeed))
 
     #Speed control
-    if(leftSpeed < 0):
-        pi_lpwmf.ChangeDutyCycle(0)
-        pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
-    else:
-        pi_lpwmf.ChangeDutyCycle(leftSpeed)
-        pi_lpwmb.ChangeDutyCycle(0)
+#    if(leftSpeed < 0):
+#        pi_lpwmf.ChangeDutyCycle(0)
+#        pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+#    else:
+#        pi_lpwmf.ChangeDutyCycle(leftSpeed)
+#        pi_lpwmb.ChangeDutyCycle(0)
 
-    if(rightSpeed < 0):
-        pi_rpwmf.ChangeDutyCycle(0)
-        pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
-    else:
-        pi_rpwmf.ChangeDutyCycle(rightSpeed)
-        pi_rpwmb.ChangeDutyCycle(0)
+#    if(rightSpeed < 0):
+#        pi_rpwmf.ChangeDutyCycle(0)
+#        pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
+#    else:
+#        pi_rpwmf.ChangeDutyCycle(rightSpeed)
+#        pi_rpwmb.ChangeDutyCycle(0)
     #print(str(leftSpeed) + '\t' + str(rightSpeed))
 
 
-with Listener(on_press = on_press) as listener: #Create listener, and start it 
-    listener.join()
+#with Listener(on_press = on_press) as listener: #Create listener, and start it 
+#    listener.join()
 
-
+ 
 #print("Stop: Spacebar, Increase Speeds: Up Arrow, Decrease Speeds: Down Arrow, Left: Left Arrow, Right: Right Arrow")

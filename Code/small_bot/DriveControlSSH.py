@@ -10,10 +10,16 @@
 # from SmallBotCom import TCP_COMM
 # from DriveDetect import DriveDetect
 import RPi.GPIO as GPIO
+#from pynput.keyboard import Listener # For keypress listening
+#from pynput.keyboard import Key
 from time import sleep
 import sys
 sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 import Constants
+#import keyboard
+
+#import evdev
+
 
 # Set PWM pins for motors
 RPWMF = Constants.RPWMF  # RIGHT PWM FORWARDS
@@ -22,7 +28,7 @@ LPWMF = Constants.LPWMF  # LEFT PWM FORWARDS
 LPWMB = Constants.LPWMB  # LEFT PWM BACKWARDS
 
 # Disable warnings
-# GPIO.setwarnings(False)
+GPIO.setwarnings(False)
 
 # Set pin numbering system
 GPIO.setmode(GPIO.BOARD)
@@ -61,8 +67,21 @@ pi_lpwmb.start(0)
 # finished_clean = False
 
 while(True):
-    # Straight forward
-    pi_rpwmf.ChangeDutyCycle(45)
-    pi_lpwmf.ChangeDutyCycle(45)
-    pi_rpwmb.ChangeDutyCycle(0)
-    pi_lpwmb.ChangeDutyCycle(0)
+	print('initial')
+	val = input('Enter key')
+	print(val)
+	if val == 'w':
+		pi_lpwmf.ChangeDutyCycle(50)
+		pi_lpwmb.ChangeDutyCycle(0)
+		pi_rpwmf.ChangeDutyCycle(50)
+		pi_rpwmb.ChangeDutyCycle(0)
+	elif val == 's':
+		pi_lpwmf.ChangeDutyCycle(0)
+		pi_lpwmb.ChangeDutyCycle(50)
+		pi_rpwmf.ChangeDutyCycle(0)
+		pi_rpwmb.ChangeDutyCycle(50)
+	else:
+		pi_lpwmf.ChangeDutyCycle(0)
+		pi_lpwmb.ChangeDutyCycle(0)
+		pi_rpwmf.ChangeDutyCycle(0)
+		pi_rpwmb.ChangeDutyCycle(0)
