@@ -10,13 +10,13 @@
 # from SmallBotCom import TCP_COMM
 # from DriveDetect import DriveDetect
 import RPi.GPIO as GPIO
-from pynput.keyboard import Listener # For keypress listening
-from pynput.keyboard import Key
+
 from time import sleep
 import sys
 sys.path.insert(0, '/home/pi/beachbots2020/Code/support')
 import Constants
-import keyboard
+import termios
+import tty
 
 # Set PWM pins for motors
 RPWMF = Constants.RPWMF  # RIGHT PWM FORWARDS
@@ -48,90 +48,75 @@ pi_rpwmb.start(0)
 pi_lpwmf.start(0)
 pi_lpwmb.start(0)
 
-# Instance of chassis
-# chassis = Chassis(Constants.RPWMF, Constants.RPWMB, Constants.LPWMF, Constants.LPWMB, Constants.STEP, Constants.DIR,
-#                   Constants.SWITCH, Constants.GRIPPER, Constants.ELBOW, Constants.BUCKET)
 
-# # Instance of DriveDetect class
-# driveDetect = DriveDetect(chassis, Constants.RESOLUTION, Constants.VIEW_ANGLE)
-
-# # Instance of basebot
-# base_bot = TCP_COMM(Constants.TCP_IP, Constants.TCP_PORT, Constants.BUFFER_SIZE)
-
-# # Starting variables before cleanup
-# current_state = b'none'
-
-# finished_clean = False
-
-print('before')
-keyboard.wait('up')
-print('after')
-
+#Start Control code
 
 leftSpeed = 0
 rightSpeed = 0
 
-def on_press(key): # Callback function for keypress
-    global leftSpeed
-    global rightSpeed
-#    print(key)
+def getChar():
+	fd = sys.stdin.fileno()
+	old_settings = termios.tcgetattr(fd)
+	try:
+		tty.setraw(fd)
+		ch = sys.stdin.read(1)
+	finally:
+		termios.tcsetattr(fd,termios.TCSADRAIN, old_settings)
+	return ch
 
+while(True):
 
-    if(key == Key.space):#Stop if space is pressed
-        leftSpeed = 0
-        rightSpeed = 0
+    charTyped = getChar()
 
-    elif(key == Key.up): #Increase speed
+    #Use character typed to modify speed
+    if(charTyped == "w"): #Increase speed
         if(leftSpeed == rightSpeed): # already driving forwards or backwards
             leftSpeed = leftSpeed + 5
             rightSpeed = rightSpeed + 5
 
-    elif(key == Key.down): # Decrease speed
+    elif(charTyped == "s"): # Decrease speed
         if(leftSpeed == rightSpeed): # already driving forwards or backwards
             leftSpeed = leftSpeed - 5
             rightSpeed = rightSpeed - 5
 
-    elif(key == Key.left): #decrease left, increase right
+    elif(charTyped == "a"): #decrease left, increase right
         leftSpeed = leftSpeed - 5
         rightSpeed = rightSpeed + 5
 
-    elif(key == Key.right): #increase left, decrease right
+    elif(charTyped == "d"): #increase left, decrease right
         leftSpeed = leftSpeed + 5
         rightSpeed = rightSpeed - 5
     else:
-	leftSpeed = 0
-	rightSpeed = 0
+	    leftSpeed = 0
+	    rightSpeed = 0
 
+    #Keep values in range of motor controllers.
     if(leftSpeed >= 100):
-	leftSpeed = 100
+	    leftSpeed = 100
     if(leftSpeed <= -100):
-	leftSpeed = -100
+	    leftSpeed = -100
 
     if(rightSpeed >= 100):
-	rightSpeed = 100
+	    rightSpeed = 100
     if(rightSpeed <= -100):
-	rightSpeed = -100
-    print(str(leftSpeed) + '\t' + str(rightSpeed))
+	    rightSpeed = -100
+    
+    #If a character has been typed, update the PWM signals sent with that info. 
+    if(charTyped != None):
+        #Speed control
+        if(leftSpeed < 0):
+            pi_lpwmf.ChangeDutyCycle(0)
+            pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
+        else:
+            pi_lpwmf.ChangeDutyCycle(leftSpeed)
+            pi_lpwmb.ChangeDutyCycle(0)
 
-    #Speed control
-    if(leftSpeed < 0):
-        pi_lpwmf.ChangeDutyCycle(0)
-        pi_lpwmb.ChangeDutyCycle(abs(leftSpeed))
-    else:
-        pi_lpwmf.ChangeDutyCycle(leftSpeed)
-        pi_lpwmb.ChangeDutyCycle(0)
+        if(rightSpeed < 0):
+            pi_rpwmf.ChangeDutyCycle(0)
+            pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
+        else:
+            pi_rpwmf.ChangeDutyCycle(rightSpeed)
+            pi_rpwmb.ChangeDutyCycle(0)
+        print(str(leftSpeed) + '\t' + str(rightSpeed))
 
-    if(rightSpeed < 0):
-        pi_rpwmf.ChangeDutyCycle(0)
-        pi_rpwmb.ChangeDutyCycle(abs(rightSpeed))
-    else:
-        pi_rpwmf.ChangeDutyCycle(rightSpeed)
-        pi_rpwmb.ChangeDutyCycle(0)
-    #print(str(leftSpeed) + '\t' + str(rightSpeed))
-
-
-with Listener(on_press = on_press) as listener: #Create listener, and start it 
-    listener.join()
-
-
-#print("Stop: Spacebar, Increase Speeds: Up Arrow, Decrease Speeds: Down Arrow, Left: Left Arrow, Right: Right Arrow")
+        charTyped = None
