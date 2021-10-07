@@ -53,6 +53,7 @@ pi_lpwmb.start(0)
 
 leftSpeed = 0
 rightSpeed = 0
+running = True
 
 def getChar():
 	fd = sys.stdin.fileno()
@@ -64,20 +65,45 @@ def getChar():
 		termios.tcsetattr(fd,termios.TCSADRAIN, old_settings)
 	return ch
 
-while(True):
+
+
+while(running):
 
     charTyped = getChar()
 
+    #When arrow keys are pressed, a series of three keypresses are registered.
+    #Each arrow keypress has ASCII characters of 7, then 91, followed by either
+    #A, B, C, or D. The following code is to interpret that and translate it into
+    #The WASD controls already implemented.
+    #7,91,65: up, 7,91,66: down, 7,91,67: right, 7,91,68: left
+
+    #If any of the characters that are in the series of messages are pressed,
+    #Check if its the determining character (A,B,C,D) otherwise return to beginning
+    #Of loop to receive remainder of data (including determining character)
+    if(charTyped != None and ([7,91,65,66,67,68].count(ord(charTyped)) != 0)):
+        if(charTyped == "A"):
+            charTyped = "w"
+        elif(charTyped == "B"):
+            charTyped = "s"
+        elif(charTyped == "C"):
+            charTyped = "d"
+        elif(charTyped == "D"):
+            charTyped = "a"
+        else:
+            continue
+
+    #End code if z is typed
+    if(charTyped == "z"):
+        running = False
+
     #Use character typed to modify speed
     if(charTyped == "w"): #Increase speed
-        if(leftSpeed == rightSpeed): # already driving forwards or backwards
-            leftSpeed = leftSpeed + 5
-            rightSpeed = rightSpeed + 5
+        leftSpeed = leftSpeed + 5
+        rightSpeed = rightSpeed + 5
 
     elif(charTyped == "s"): # Decrease speed
-        if(leftSpeed == rightSpeed): # already driving forwards or backwards
-            leftSpeed = leftSpeed - 5
-            rightSpeed = rightSpeed - 5
+        leftSpeed = leftSpeed - 5
+        rightSpeed = rightSpeed - 5
 
     elif(charTyped == "a"): #decrease left, increase right
         leftSpeed = leftSpeed - 5
